@@ -8,6 +8,6 @@ namespace HRProject.Entities.Entities
 {
     public class User : BaseEntity
     {
-        
+        //deneme
     }
 }
