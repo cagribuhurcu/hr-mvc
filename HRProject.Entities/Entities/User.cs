@@ -11,5 +11,7 @@ namespace HRProject.Entities.Entities
         //deneme
 
         //Deneme berna branch
+
+        //Bu 2. branchdir.-berna
     }
 }
