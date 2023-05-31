@@ -8,10 +8,5 @@ namespace HRProject.Entities.Entities
 {
     public class User : BaseEntity
     {
-        //deneme
-
-        //Deneme berna branch
-
-        //cagri deneme
     }
 }
