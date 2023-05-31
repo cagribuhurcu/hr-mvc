@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HRProject.Entities.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace HRProject.Entities.Entities
 {
     public class BaseEntity
     {
         public int ID { get; set; }
+        public string Name { get; set; }
+        public Departments Department { get; set; }
     }
 }

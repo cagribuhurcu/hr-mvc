@@ -1,4 +1,6 @@
+using HRProject.Entities.Entities;
 using HRProject.Repositories.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,10 @@ builder.Services.AddDbContext<HRProjectContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 });
+
+builder.Services.AddIdentity<User, Role>(options =>
+{
+}).AddEntityFrameworkStores<HRProjectContext>();
 
 var app = builder.Build();
 
