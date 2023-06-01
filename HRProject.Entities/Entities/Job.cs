@@ -9,7 +9,13 @@ namespace HRProject.Entities.Entities
 {
     public class Job : BaseEntity
     {
+        public Job()
+        {
+            Users = new List<User>();
+        }
+
         public string Name { get; set; }
         public Departments Department { get; set; }
+        public List<User> Users { get; set; }
     }
 }

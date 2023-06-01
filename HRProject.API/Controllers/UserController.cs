@@ -35,7 +35,7 @@ namespace HRProject.API.Controllers
         //Create
 
         [HttpPost]
-        public IActionResult CreateUser([FromQuery] User user)
+        public IActionResult CreateUser([FromBody] User user)
         {
             service.Add(user);
             return Ok(user);

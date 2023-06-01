@@ -1,4 +1,5 @@
 ﻿using HRProject.Entities.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRProject.Entities.Entities
 {
@@ -21,7 +22,10 @@ namespace HRProject.Entities.Entities
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public Departments Department { get; set; }
-        public Job Job { get; set; }
+
+        [ForeignKey("Job")]
+        public int JobID { get; set; }
+        public Job? Job { get; set; }
         public string PhotoURL { get; set; }
         public Roles Role { get; set; }
     }
