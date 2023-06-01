@@ -11,12 +11,9 @@ namespace HRProject.API.Controllers
     {
         private readonly IGenericRepository<User> service;
 
-        public IGenericRepository<Job> JobService { get; }
-
-        public UserController(IGenericRepository<User> service, IGenericRepository<Job> jobService)
+        public UserController(IGenericRepository<User> service)
         {
             this.service= service;
-            JobService = jobService;
         }
 
         //Listele
@@ -50,8 +47,6 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] User user)
         {
-            //var job = JobService.GetByDefault(x => x.ID == user.JobID);
-            //user.Job = job;
             service.Add(user);
             return Ok(user);
         }
