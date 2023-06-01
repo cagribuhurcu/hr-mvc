@@ -1,5 +1,6 @@
 using HRProject.Repositories.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<HRProjectContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("Connect"));
 });
 
+//AutoMapper
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 

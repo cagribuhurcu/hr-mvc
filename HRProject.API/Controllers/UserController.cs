@@ -11,10 +11,23 @@ namespace HRProject.API.Controllers
     {
         private readonly IGenericRepository<User> service;
 
-        public UserController(IGenericRepository<User> service)
+        public IGenericRepository<Job> JobService { get; }
+
+        public UserController(IGenericRepository<User> service, IGenericRepository<Job> jobService)
         {
             this.service= service;
+            JobService = jobService;
         }
+
+        //Listele
+
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            var users = service.GetAll();
+            return Ok(users);
+        }
+
         //Site Yöneticisi Özet Bilgileri
 
         [HttpGet("{id}")]
@@ -37,6 +50,8 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] User user)
         {
+            //var job = JobService.GetByDefault(x => x.ID == user.JobID);
+            //user.Job = job;
             service.Add(user);
             return Ok(user);
         }
