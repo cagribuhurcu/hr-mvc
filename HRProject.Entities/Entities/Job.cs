@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HRProject.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace HRProject.Entities.Entities
 {
     public class Job : BaseEntity
     {
-        public ICollection<User> Users { get; set; }
+        public string Name { get; set; }
+        public Departments Department { get; set; }
     }
 }

@@ -8,6 +8,8 @@ namespace HRProject.Entities.Enums
 {
     public enum Roles
     {
-        SiteManager=1
+        SiteManager=1,
+        CompanyManager=2,
+        Employee=3
     }
 }

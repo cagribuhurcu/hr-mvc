@@ -1,9 +1,8 @@
 ﻿using HRProject.Entities.Enums;
-using Microsoft.AspNetCore.Identity;
 
 namespace HRProject.Entities.Entities
 {
-    public class User : IdentityUser
+    public class User : BaseEntity
     {
         public string FirstName { get; set; }
         public string? MiddleName { get; set; }
@@ -21,9 +20,9 @@ namespace HRProject.Entities.Entities
 
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public bool IsActive { get; set; } = true;
         public Departments Department { get; set; }
         public Job Job { get; set; }
-
+        public string PhotoURL { get; set; }
+        public Roles Role { get; set; }
     }
 }

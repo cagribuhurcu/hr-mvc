@@ -1,19 +1,13 @@
 ﻿using HRProject.Entities.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRProject.Repositories.Context
 {
-    public class HRProjectContext : IdentityDbContext<User,Role,string> 
+    public class HRProjectContext : DbContext
     {
         public HRProjectContext(DbContextOptions options) : base(options)
         {
-            
+
         }
 
 
@@ -26,5 +20,6 @@ namespace HRProject.Repositories.Context
 
         //DBSetler bu kısımın altında olacak
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

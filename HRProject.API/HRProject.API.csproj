@@ -22,10 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HRProject.Repositories\HRProject.Repositories.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\HRProject.Service\HRProject.Service.csproj" />
   </ItemGroup>
 
 </Project>

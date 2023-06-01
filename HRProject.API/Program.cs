@@ -1,5 +1,9 @@
 using HRProject.Entities.Entities;
+using HRProject.Repositories.Abstract;
+using HRProject.Repositories.Concrete;
 using HRProject.Repositories.Context;
+using HRProject.Service.Abstract;
+using HRProject.Service.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,14 +16,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddDbContext<HRProjectContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 });
 
-builder.Services.AddIdentity<User, Role>(options =>
-{
-}).AddEntityFrameworkStores<HRProjectContext>();
+builder.Services.AddTransient(typeof(IGenericService<>), typeof(GenericService<>));
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
