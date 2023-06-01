@@ -1,4 +1,5 @@
 ﻿using HRProject.Entities.Entities;
+using HRProject.Entities.Validation;
 using HRProject.Repositories.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,8 +39,17 @@ namespace HRProject.API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User user)
         {
-            service.Update(user);
-            return Ok(user);
+            UserValidator validator = new UserValidator();
+            var result = validator.Validate(user);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+            else
+            {
+                service.Update(user);
+                return Ok(user);
+            }
 
         }
         //Create
@@ -47,8 +57,17 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] User user)
         {
-            service.Add(user);
-            return Ok(user);
+            UserValidator validator = new UserValidator();
+            var result = validator.Validate(user);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+            else
+            {
+                service.Add(user);
+                return Ok(user);
+            }
         }
     }
 }
