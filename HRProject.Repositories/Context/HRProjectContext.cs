@@ -15,7 +15,7 @@ namespace HRProject.Repositories.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=tcp:ikkaynak.database.windows.net,1433;Initial Catalog=HRProjectDatabase;Persist Security Info=False;User ID=ikkaynak;Password=admin123.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("Server=tcp:ikkaynak.database.windows.net,1433;Initial Catalog=ProjectDatabase;Persist Security Info=False;User ID=ikkaynak;Password=admin123.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         //DBSetler bu kısımın altında olacak
