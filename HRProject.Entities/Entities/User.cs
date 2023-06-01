@@ -1,5 +1,6 @@
 ﻿using HRProject.Entities.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace HRProject.Entities.Entities
 {
@@ -16,7 +17,7 @@ namespace HRProject.Entities.Entities
         public DateTime? QuitDate { get; set; }
         public string EmailAddress
         {
-            get { return $"{FirstName}.{LastName}@bilgeadam.com"; }
+            get { return $"{ConvertToEnglish(FirstName).ToLower()}.{ConvertToEnglish(LastName).ToLower()}@bilgeadam.com"; }
         }
 
         public string Address { get; set; }
@@ -28,5 +29,55 @@ namespace HRProject.Entities.Entities
         public Job? Job { get; set; }
         public string? PhotoURL { get; set; }
         public Roles Role { get; set; }
+
+        private string ConvertToEnglish(string text)
+        {
+            StringBuilder convertedText = new StringBuilder();
+            foreach (char c in text)
+            {
+                convertedText.Append(ConvertCharacterToEnglish(c));
+            }
+            return convertedText.ToString();
+        }
+
+        private char ConvertCharacterToEnglish(char c)
+        {
+            switch (c)
+            {
+                case 'ı':
+                    return 'i';
+                case 'İ':
+                    return 'I';
+                case 'ç':
+                    return 'c';
+                case 'Ç':
+                    return 'C';
+                case 'ş':
+                    return 's';
+                case 'Ş':
+                    return 'S';
+                case 'ğ':
+                    return 'g';
+                case 'Ğ':
+                    return 'G';
+                case 'ü':
+                    return 'u';
+                case 'Ü':
+                    return 'U';
+                case 'ö':
+                    return 'o';
+                case 'Ö':
+                    return 'O';
+                case 'â':
+                case 'Â':
+                case 'î':
+                case 'Î':
+                case 'û':
+                case 'Û':
+                    return 'a';
+                default:
+                    return c;
+            }
+        }
     }
 }

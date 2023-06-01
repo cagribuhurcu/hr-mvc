@@ -1,4 +1,6 @@
+using FluentValidation.AspNetCore;
 using HRProject.Entities.Entities;
+using HRProject.Entities.Validation;
 using HRProject.Repositories.Abstract;
 using HRProject.Repositories.Concrete;
 using HRProject.Repositories.Context;
@@ -11,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<UserValidator>());
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
