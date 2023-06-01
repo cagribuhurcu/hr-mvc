@@ -19,13 +19,13 @@ namespace HRProject.Service.Concrete
             this.repository = repository;
         }
 
-        public bool Activate(int id)
-        {
-            if (id == 0 || GetById(id) == null)
-                return false;
-            else
-                return repository.Activate(id);
-        }
+        //public bool Activate(int id)
+        //{
+        //    if (id == 0 || GetById(id) == null)
+        //        return false;
+        //    else
+        //        return repository.Activate(id);
+        //}
 
         public bool Add(T item)
         {
@@ -45,15 +45,15 @@ namespace HRProject.Service.Concrete
                 return false;
         }
 
-        public List<T> GetActive()
-        {
-            return repository.GetActive();
-        }
+        //public List<T> GetActive()
+        //{
+        //    return repository.GetActive();
+        //}
 
-        public IQueryable<T> GetActive(params Expression<Func<T, object>>[] includes)
-        {
-            return repository.GetActive(includes);
-        }
+        //public IQueryable<T> GetActive(params Expression<Func<T, object>>[] includes)
+        //{
+        //    return repository.GetActive(includes);
+        //}
 
         public List<T> GetAll()
         {
