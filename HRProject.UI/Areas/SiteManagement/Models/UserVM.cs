@@ -7,8 +7,9 @@ namespace HRProject.UI.Areas.SiteManagement.Models
     {
         public UserVM(User user)
         {
+            PhotoURL = user.PhotoURL;
             FullName = $"{user.FirstName} {user.MiddleName} {user.LastName} {user.SecondLastName}";
-            EmailAddress = user.Email;
+            EmailAddress = user.EmailAddress;
             PhoneNumber = user.PhoneNumber;
             Address = user.Address;
             Job = user.Job;
