@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HRProject.Repositories.Migrations
 {
-    public partial class firstmig : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,7 +43,7 @@ namespace HRProject.Repositories.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Department = table.Column<int>(type: "int", nullable: false),
                     JobID = table.Column<int>(type: "int", nullable: false),
-                    PhotoURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhotoURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Role = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },

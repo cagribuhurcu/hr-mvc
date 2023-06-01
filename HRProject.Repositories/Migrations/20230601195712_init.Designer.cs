@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRProject.Repositories.Migrations
 {
     [DbContext(typeof(HRProjectContext))]
-    [Migration("20230601184930_encapsulation1")]
-    partial class encapsulation1
+    [Migration("20230601195712_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,10 +69,6 @@ namespace HRProject.Repositories.Migrations
                     b.Property<int>("Department")
                         .HasColumnType("int");
 
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -102,7 +98,6 @@ namespace HRProject.Repositories.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoURL")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("QuitDate")
