@@ -48,17 +48,31 @@
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <!-- Menu -->
+            <div class="layout-page">
 
-            <partial name="_Leftpanel" />
+                <partial name="_LeftPanel" />
 
-            <!-- / Menu -->
-            <!-- Layout container -->
-            
-            @RenderBody()
-            <partial name="_RightPanel" />
+                <!-- Navbar -->
 
-            <!-- / Layout page -->
+                <partial name="_NavPanel" />
+
+                <!-- / Navbar -->
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+
+                    @RenderBody()
+                    <!-- / Content -->
+                    <!-- Footer -->
+                    
+                    <partial name="_FooterPanel" />
+
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
         </div>
 
         <!-- Overlay -->
