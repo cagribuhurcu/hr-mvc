@@ -14,7 +14,19 @@ namespace HRProject.Entities.Entities
         public DateTime BirthDate { get; set; }
         public string IdentificationNumber { get; set; }
         public DateTime HireDate { get; set; }
-        public DateTime? QuitDate { get; set; }
+
+        private DateTime? quitDate;
+        public DateTime? QuitDate
+        {
+            get
+            {
+                return quitDate;
+            }
+            set
+            {
+                quitDate = value; IsActive = !quitDate.HasValue;
+            }
+        }
         public string EmailAddress
         {
             get { return $"{ConvertToEnglish(FirstName).ToLower()}.{ConvertToEnglish(LastName).ToLower()}@bilgeadam.com"; }
@@ -30,6 +42,9 @@ namespace HRProject.Entities.Entities
         public string? PhotoURL { get; set; }
         public Roles Role { get; set; }
 
+
+
+        //ConvertToEnglish Method
         private string ConvertToEnglish(string text)
         {
             StringBuilder convertedText = new StringBuilder();

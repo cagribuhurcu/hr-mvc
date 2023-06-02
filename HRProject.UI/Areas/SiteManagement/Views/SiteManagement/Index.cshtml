@@ -62,7 +62,7 @@
                     <p class="card-text"><strong>Email:</strong> @item.EmailAddress</p>
                     <p class="card-text"><strong>Telefon:</strong> @item.PhoneNumber</p>
                     <p class="card-text"><strong>Adres:</strong> @item.Address</p>
-                    <p class="card-text"><strong>Meslek:</strong> @item.Job</p>
+                    <p class="card-text"><strong>Meslek:</strong> @item.Job.Name</p>
                     <p class="card-text"><strong>Departman:</strong> @item.Department</p>
                     <button class="btn btn-primary btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
                     <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateUser" asp-route-id="@item.ID" class="btn btn-secondary">Güncelle</a>

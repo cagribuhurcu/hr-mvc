@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using HRProject.Entities.Entities;
 using HRProject.Entities.Enums;
+using HRProject.Entities.Validation;
 using HRProject.UI.Areas.SiteManagement.Models;
 using HRProject.UI.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -39,40 +41,40 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
             List<UserVM> userVMs = _mapper.Map<List<UserVM>>(users);
 
-            return View(userVMs); 
+            return View(userVMs);
         }
 
-          
+
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
-            User user=new User();
+            User user = new User();
             using (var httpClient = new HttpClient())
             {
                 using (var cevap = await httpClient.GetAsync($"{baseURL}/api/User/GetUserById/{id}"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    user = JsonConvert.DeserializeObject<User>(apiCevap);
+                    user = JsonConvert.DeserializeObject<List<User>>(apiCevap)[0];
                 }
             }
             return Json(user);
         }
         static User updateduser;
-       
+
         [HttpGet]
         public async Task<IActionResult> UpdateUser(int id)
         {
-           
+
             using (var httpClient = new HttpClient())
             {
                 using (var cevap = await httpClient.GetAsync($"{baseURL}/api/User/GetUserById/{id}"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    updateduser = JsonConvert.DeserializeObject<User>(apiCevap);
+                    updateduser = JsonConvert.DeserializeObject<List<User>>(apiCevap)[0];
                 }
             }
 
-            UpdateUserVM vm =_mapper.Map<UpdateUserVM>(updateduser);
+            UpdateUserVM vm = _mapper.Map<UpdateUserVM>(updateduser);
 
             return View(vm);
         }
@@ -80,6 +82,15 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserVM uservm, List<IFormFile> files)
         {
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(errorMessages);
+            }
             if (files.Count == 0) //Foto seçilemz ise
             {
                 uservm.PhotoUrl = updateduser.PhotoURL;
@@ -103,7 +114,8 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             }
             using (var httpClient = new HttpClient())
             {
-
+                updateduser.Address = uservm.Address;
+                updateduser.PhoneNumber = uservm.PhoneNumber;
                 StringContent content = new StringContent(JsonConvert.SerializeObject(updateduser), Encoding.UTF8, "application/json");
 
                 using (var cevap = await httpClient.PutAsync($"{baseURL}/api/User/UpdateUser/{updateduser.ID}", content))
@@ -113,6 +125,5 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             }
             return RedirectToAction("Index");
         }
-
     }
 }

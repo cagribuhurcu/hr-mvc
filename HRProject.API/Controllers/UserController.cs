@@ -22,7 +22,7 @@ namespace HRProject.API.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var users = service.GetAll();
+            var users = service.GetAll(t0=> t0.Job);
             return Ok(users);
         }
 
@@ -31,7 +31,8 @@ namespace HRProject.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetUserById(int id)
         {
-            return Ok(service.GetById(id));
+            var user = service.GetById(id,t0=>t0.Job);
+            return Ok(user);
         }
 
         //Güncelleme
@@ -39,6 +40,10 @@ namespace HRProject.API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User user)
         {
+            if (user.QuitDate!=null)
+            {
+                user.IsActive = false;
+            }
             UserValidator validator = new UserValidator();
             var result = validator.Validate(user);
             if (!result.IsValid)

@@ -6,6 +6,6 @@
 
         public string  Address { get; set; }
 
-        public string Tel { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }
