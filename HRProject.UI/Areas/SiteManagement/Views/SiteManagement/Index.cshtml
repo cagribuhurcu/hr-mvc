@@ -18,7 +18,7 @@
     }
 </style>
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+@*<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -48,6 +48,38 @@
             </div>
         </div>
     </div>
+</div>*@
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p><strong>Name:</strong> <span id="nameBasic"></span></p>
+                    <p><strong>Email:</strong> <span id="emailBasic"></span></p>
+                    <p><strong>DOB:</strong> <span id="dobBasic"></span></p>
+                    <p><strong>Address:</strong> <span id="addressBasic"></span></p>
+                    <p><strong>Phone Number:</strong> <span id="phoneBasic"></span></p>
+                    <p><strong>Department:</strong> <span id="departmentBasic"></span></p>
+                    <p><strong>Job ID:</strong> <span id="jobIDBasic"></span></p>
+                    <p><strong>Role:</strong> <span id="roleBasic"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @foreach (UserVM item in Model)
@@ -74,7 +106,6 @@
 }
 
 @section Scripts{
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript">
 
@@ -86,10 +117,15 @@
                     url: "/SiteManagement/SiteManagement/Detail/" + id,
                     type: "GET",
                     success: function (response) {
-                        $('#tablo').html('');
-                        $.each(response, function (index, item) {
-                            $('#tablo').append('<tr></tr>')
-                        });
+                        $('#nameBasic').text(response.firstName + ' ' + response.lastName);
+                        $('#emailBasic').text(response.emailAddress);
+                        $('#dobBasic').text(response.birthDate);
+                        $('#addressBasic').text(response.address);
+                        $('#phoneBasic').text(response.phoneNumber);
+                        $('#departmentBasic').text(response.department);
+                        $('#jobIDBasic').text(response.jobID);
+                        $('#roleBasic').text(response.role);
+
                         $('#exampleModalCenter').modal('show');
                     },
                     error: function () {
