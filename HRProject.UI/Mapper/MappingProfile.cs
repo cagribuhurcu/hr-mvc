@@ -11,7 +11,7 @@ namespace HRProject.UI.Mapper
             CreateMap<User, UserVM>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName}{src.MiddleName}{src.LastName}{src.SecondLastName}"));
 
-            CreateMap<UserVM, UpdateUserVM>().ReverseMap();
+            CreateMap<User, UpdateUserVM>().ReverseMap();
         }
     }
 }
