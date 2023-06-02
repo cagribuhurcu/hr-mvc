@@ -1,5 +1,5 @@
 ﻿@using HRProject.UI.Areas.SiteManagement.Models;
-@model List<UserVM>
+@model List<User>
 
 @{
     ViewData["Title"] = "Index";
@@ -30,11 +30,18 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p><strong>Name:</strong> <span id="nameBasic"></span></p>
+                    <p><strong>Firstname:</strong> <span id="firstnameBasic"></span></p>
+                    <p><strong>Middlename:</strong> <span id="middlenameBasic"></span></p>
+                    <p><strong>Lastname:</strong> <span id="lastnameBasic"></span></p>
+                    <p><strong>Second Lastname:</strong> <span id="secondlastnameBasic"></span></p>
                     <p><strong>Email:</strong> <span id="emailBasic"></span></p>
-                    <p><strong>DOB:</strong> <span id="dobBasic"></span></p>
+                    <p><strong>Identification Number:</strong> <span id="idnumberBasic"></span></p>
+                    <p><strong>Birth Date:</strong> <span id="dobBasic"></span></p>
+                    <p><strong>Birth Place:</strong> <span id="bplaceBasic"></span></p>
                     <p><strong>Address:</strong> <span id="addressBasic"></span></p>
                     <p><strong>Phone Number:</strong> <span id="phoneBasic"></span></p>
+                    <p><strong>Hire Date:</strong> <span id="hireDTBasic"></span></p>
+                    <p><strong>Quit Date:</strong> <span id="quitDTBasic"></span></p>
                     <p><strong>Department:</strong> <span id="departmentBasic"></span></p>
                     <p><strong>Job :</strong> <span id="jobIDBasic"></span></p>
                     <p><strong>Role:</strong> <span id="roleBasic"></span></p>
@@ -49,23 +56,23 @@
     </div>
 </div>
 
-@foreach (UserVM item in Model)
+@foreach (User item in Model)
 {
     <div class="card mt-4 mx-4">
         <div class="row no-gutters">
             <div class="col-md-4 d-flex justify-content-center align-items-center">
-                <img src="/Content/assets/img/avatars/@item.PhotoURL" class="card-img rounded-circle" alt="User Image">
+                <img src="~/Uploads/@item.PhotoURL" class="card-img rounded-circle" alt="User Image">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">@item.FullName</h5>
+                    <h5 class="card-title">@item.FirstName @item.LastName</h5>
                     <p class="card-text"><strong>Email:</strong> @item.EmailAddress</p>
-                    <p class="card-text"><strong>Telefon:</strong> @item.PhoneNumber</p>
-                    <p class="card-text"><strong>Adres:</strong> @item.Address</p>
-                    <p class="card-text"><strong>Meslek:</strong> @item.Job.Name</p>
-                    <p class="card-text"><strong>Departman:</strong> @item.Department</p>
+                    <p class="card-text"><strong>Phone:</strong> @item.PhoneNumber</p>
+                    <p class="card-text"><strong>Address:</strong> @item.Address</p>
+                    <p class="card-text"><strong>Job Title:</strong> @item.Job.Name</p>
+                    <p class="card-text"><strong>Department:</strong> @item.Department</p>
                     <button class="btn btn-primary btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
-                    <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateUser" asp-route-id="@item.ID" class="btn btn-secondary">Güncelle</a>
+                    <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateUser" asp-route-id="@item.ID" class="btn btn-secondary">Update</a>
                 </div>
             </div>
         </div>
@@ -84,12 +91,26 @@
                     url: "/SiteManagement/SiteManagement/Detail/" + id,
                     type: "GET",
                     success: function (response) {
-                        // Tarih formatını değiştirme
+                        // Doğum günü Tarih formatını değiştirme
                         var birthDate = new Date(response.birthDate);
                         var day = birthDate.getDate();
                         var month = birthDate.getMonth() + 1;
                         var year = birthDate.getFullYear();
-                        var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+                        var formattedBirthDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşe giriş Tarih formatını değiştirme
+                        var hireDate = new Date(response.hireDate);
+                        var day = hireDate.getDate();
+                        var month = hireDate.getMonth() + 1;
+                        var year = hireDate.getFullYear();
+                        var formattedHireDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşten çıkış Tarih formatını değiştirme
+                        var quitDate = new Date(response.quitDate);
+                        var day = quitDate.getDate();
+                        var month = quitDate.getMonth() + 1;
+                        var year = quitDate.getFullYear();
+                        var formattedQuitDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
 
                         // Enum değerlerine karşılık gelen metinleri almak
                         var roleText = "";
@@ -105,7 +126,7 @@
                                 break;
                             // Diğer enum değerleri için gerekli case ifadelerini buraya ekleyebilirsiniz
                         }
-                         //Departments enum değerlerine karşılık gelen metinleri tanımlama
+                        //Departments enum değerlerine karşılık gelen metinleri tanımlama
                         var departmentText = "";
                         switch (response.department) {
                             case 1:
@@ -126,14 +147,21 @@
                             // Diğer enum değerleri için gerekli case ifadelerini buraya ekleyebilirsiniz
                         }
 
-                        $('#nameBasic').text(response.firstName + ' ' + response.lastName);
+                        $('#firstnameBasic').text(response.firstName);
+                        $('#middlenameBasic').text(response.middleName);
+                        $('#lastnameBasic').text(response.lastName);
+                        $('#secondlastnameBasic').text(response.secondLastName);
                         $('#emailBasic').text(response.emailAddress);
-                        $('#dobBasic').text(formattedDate);
+                        $('#dobBasic').text(formattedBirthDate);
+                        $('#hireDTBasic').text(formattedHireDate);
+                        $('#quitDTBasic').text(formattedQuitDate);
                         $('#addressBasic').text(response.address);
                         $('#phoneBasic').text(response.phoneNumber);
                         $('#departmentBasic').text(departmentText);
                         $('#jobIDBasic').text(response.job.name);
                         $('#roleBasic').text(roleText);
+                        $('#idnumberBasic').text(response.identificationNumber);
+                        $('#bplaceBasic').text(response.birthPlace);
 
                         $('#exampleModalCenter').modal('show');
                     },
@@ -143,6 +171,7 @@
                 });
             });
         });
+
 
     </script>
 }

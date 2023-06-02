@@ -38,10 +38,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     users = JsonConvert.DeserializeObject<List<User>>(apiCevap);
                 }
             }
-
-            List<UserVM> userVMs = _mapper.Map<List<UserVM>>(users);
-
-            return View(userVMs);
+            return View(users);
         }
 
 
@@ -91,6 +88,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
                 return BadRequest(errorMessages);
             }
+
             if (files.Count == 0) //Foto seçilemz ise
             {
                 uservm.PhotoUrl = updateduser.PhotoURL;
@@ -112,6 +110,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     return View(uservm);
                 }
             }
+            
             using (var httpClient = new HttpClient())
             {
                 updateduser.Address = uservm.Address;
