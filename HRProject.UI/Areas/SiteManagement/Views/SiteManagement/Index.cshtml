@@ -22,7 +22,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel1">Details</h5>
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
@@ -36,7 +36,7 @@
                     <p><strong>Address:</strong> <span id="addressBasic"></span></p>
                     <p><strong>Phone Number:</strong> <span id="phoneBasic"></span></p>
                     <p><strong>Department:</strong> <span id="departmentBasic"></span></p>
-                    <p><strong>Job ID:</strong> <span id="jobIDBasic"></span></p>
+                    <p><strong>Job :</strong> <span id="jobIDBasic"></span></p>
                     <p><strong>Role:</strong> <span id="roleBasic"></span></p>
                 </div>
             </div>
@@ -84,14 +84,56 @@
                     url: "/SiteManagement/SiteManagement/Detail/" + id,
                     type: "GET",
                     success: function (response) {
+                        // Tarih formatını değiştirme
+                        var birthDate = new Date(response.birthDate);
+                        var day = birthDate.getDate();
+                        var month = birthDate.getMonth() + 1;
+                        var year = birthDate.getFullYear();
+                        var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // Enum değerlerine karşılık gelen metinleri almak
+                        var roleText = "";
+                        switch (response.role) {
+                            case 1:
+                                roleText = "Site Manager";
+                                break;
+                            case 2:
+                                roleText = "Company Manager";
+                                break;
+                            case 3:
+                                roleText = "Employee";
+                                break;
+                            // Diğer enum değerleri için gerekli case ifadelerini buraya ekleyebilirsiniz
+                        }
+                         //Departments enum değerlerine karşılık gelen metinleri tanımlama
+                        var departmentText = "";
+                        switch (response.department) {
+                            case 1:
+                                departmentText = "Human Resources";
+                                break;
+                            case 2:
+                                departmentText = "Marketing";
+                                break;
+                            case 3:
+                                departmentText = "Finance";
+                                break;
+                            case 4:
+                                departmentText = "Sales";
+                                break;
+                            case 5:
+                                departmentText = "Information Systems";
+                                break;
+                            // Diğer enum değerleri için gerekli case ifadelerini buraya ekleyebilirsiniz
+                        }
+
                         $('#nameBasic').text(response.firstName + ' ' + response.lastName);
                         $('#emailBasic').text(response.emailAddress);
-                        $('#dobBasic').text(response.birthDate);
+                        $('#dobBasic').text(formattedDate);
                         $('#addressBasic').text(response.address);
                         $('#phoneBasic').text(response.phoneNumber);
-                        $('#departmentBasic').text(response.department);
-                        $('#jobIDBasic').text(response.jobID);
-                        $('#roleBasic').text(response.role);
+                        $('#departmentBasic').text(departmentText);
+                        $('#jobIDBasic').text(response.job.name);
+                        $('#roleBasic').text(roleText);
 
                         $('#exampleModalCenter').modal('show');
                     },
