@@ -16,7 +16,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
-        string baseURL = "https://localhost:7270";
+        string baseURL = "https://localhost:7127";
 
         public SiteManagementController(IMapper mapper, IWebHostEnvironment environment)
         {
@@ -55,7 +55,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     user = JsonConvert.DeserializeObject<User>(apiCevap);
                 }
             }
-            return View(user);
+            return Json(user);
         }
         static User updateduser;
        

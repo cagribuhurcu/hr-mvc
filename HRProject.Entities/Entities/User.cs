@@ -46,6 +46,8 @@ namespace HRProject.Entities.Entities
             {
                 case 'ı':
                     return 'i';
+                case 'I':
+                    return 'i';
                 case 'İ':
                     return 'I';
                 case 'ç':

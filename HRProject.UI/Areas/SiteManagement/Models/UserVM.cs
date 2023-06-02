@@ -5,6 +5,7 @@ namespace HRProject.UI.Areas.SiteManagement.Models
 {
     public class UserVM
     {
+        public int ID { get; set; }
         public string? PhotoURL { get; set; }
         public string FullName { get; set; }
         public string EmailAddress { get; set; }

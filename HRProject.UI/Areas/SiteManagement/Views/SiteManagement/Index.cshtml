@@ -6,7 +6,128 @@
     Layout = "~/Areas/SiteManagement/Views/Shared/_LayoutSiteManagement.cshtml";
 }
 
-<div class="card mt-4 mx-4">
+<style>
+    .card-img {
+        width: 150px; /* İstenilen genişlik değeri */
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">User Detay</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="exampleModalCenterBody">
+                <table class="table table-hover table-bordored">
+                    <thead>
+                        <tr>
+                            <th>FullName</th>
+                            <th>Mail</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Job</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablo">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@foreach (UserVM item in Model)
+{
+    <div class="card mt-4 mx-4">
+        <div class="row no-gutters">
+            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                <img src="/Content/assets/img/avatars/@item.PhotoURL" class="card-img rounded-circle" alt="User Image">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@item.FullName</h5>
+                    <p class="card-text"><strong>Email:</strong> @item.EmailAddress</p>
+                    <p class="card-text"><strong>Telefon:</strong> @item.PhoneNumber</p>
+                    <p class="card-text"><strong>Adres:</strong> @item.Address</p>
+                    <p class="card-text"><strong>Meslek:</strong> @item.Job</p>
+                    <p class="card-text"><strong>Departman:</strong> @item.Department</p>
+                    <button class="btn btn-primary btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
+                    <a href="#" class="btn btn-secondary">Güncelle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.btnDetail').click(function () {
+                var id = $(this).val();
+
+                $.ajax({
+                    url: "/SiteManagement/SiteManagement/Detail/" + id,
+                    type: "GET",
+                    success: function (response) {
+                        $('#tablo').html('');
+                        $.each(response, function (index, item) {
+                            $('#tablo').append('<tr></tr>')
+                        });
+                        $('#exampleModalCenter').modal('show');
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+        });
+
+        //$(document).ready(function () {
+        //    $('#btnListele').click(function () { //btnSubmit ID'sine sahip butona tıklandığında çalışacak fonsiyon
+
+        //        $.ajax({
+        //            type: "GET",
+        //            url: "/Kursiyer/KursiyerListesi",
+
+        //            success: function (veri) {//başarılı olması durumunda dönecek olana data ile ilgili işlemler yapılabilir
+        //                console.log(veri);
+        //                $('table').removeAttr("style");
+        //                $('table tbody').html('');
+        //                $.each(veri, function (index, item) {
+        //                    $('table tbody').append('<tr><td>' + item.adi + '</td><td>' + item.soyadi + '</td><td>' + item.mail + '</td><td>' + item.adres + '</td></tr>')
+        //                });
+
+
+        //            },
+        //            error: function (veri) {//hatalı olması durumunda dönecek olana data ile ilgili işlemler yapılabilir
+        //                alert("Hata!);
+
+        //                }
+        //        });
+        //    });
+        //});
+
+    </script>
+}
+
+@*<div class="card mt-4 mx-4">
     <div class="table-responsive text-nowrap">
         <table class="table table-hover">
             <thead>
@@ -62,4 +183,4 @@
             </tbody>
         </table>
     </div>
-</div>
+</div>*@
