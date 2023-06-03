@@ -39,7 +39,7 @@ namespace HRProject.Entities.Entities
         [ForeignKey("Job")]
         public int JobID { get; set; }
         public Job? Job { get; set; }
-        public string? PhotoURL { get; set; }
+        public string? PhotoURL { get; set; } = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
         public Roles Role { get; set; }
 
 

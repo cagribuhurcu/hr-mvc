@@ -7,7 +7,9 @@ using HRProject.UI.Areas.SiteManagement.Models;
 using HRProject.UI.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Text;
 
@@ -79,17 +81,8 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserVM uservm, List<IFormFile> files)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                return BadRequest(errorMessages);
-            }
-
-            if (files.Count == 0) //Foto seçilemz ise
+           
+            if (files.Count == 0) //Foto seçilemez ise
             {
                 uservm.PhotoUrl = updateduser.PhotoURL;
             }
@@ -105,22 +98,57 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
                 else
                 {
+                    uservm.PhotoUrl = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
                     ViewBag.PhotoMessage = returnedMessaage;
-                    //updateduser = _mapper.Map<UpdateUserVM>(uservm);
-                    return View(uservm);
+                    ModelState.AddModelError("", ViewBag.PhotoMessage);
+
                 }
             }
             
+
             using (var httpClient = new HttpClient())
             {
+                updateduser.PhotoURL = uservm.PhotoUrl;
                 updateduser.Address = uservm.Address;
                 updateduser.PhoneNumber = uservm.PhoneNumber;
                 StringContent content = new StringContent(JsonConvert.SerializeObject(updateduser), Encoding.UTF8, "application/json");
 
-                using (var cevap = await httpClient.PutAsync($"{baseURL}/api/User/UpdateUser/{updateduser.ID}", content))
+                using (var response = await httpClient.PutAsync($"{baseURL}/api/User/UpdateUser/{updateduser.ID}", content))
                 {
-                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var jsonResponse = await response.Content.ReadAsStringAsync();
+                        var errorResponse = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+
+                        string errorMessage = "";
+                        if (errorResponse.errors != null)
+                        {
+                            var errors = errorResponse.errors;
+                            foreach (var error in errors)
+                            {
+                                var errorMessages = (JArray)error.Value;
+                                foreach (var errorMessageToken in errorMessages)
+                                {
+                                    errorMessage += errorMessageToken.ToString() + "\n";
+                                }
+                            }
+                        }
+                        ModelState.AddModelError("", errorMessage); // Hata mesajını ModelState'e ekleyin
+                        //var allmasseges = ModelState.ToList();
+                        ViewData["allmasseges"] = ModelState.ToList();
+                        return View(uservm);
+                    }
+
+                    if (!ModelState.IsValid)
+                    {
+                        ViewData["allmasseges"] = ModelState.ToList();
+                        return View(uservm);
+                    }
+
+
                 }
+                
             }
             return RedirectToAction("Index");
         }

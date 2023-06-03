@@ -27,7 +27,7 @@
                         {
                             file.CopyTo(fileStream);
                             result = true;
-                            return filePath.Substring(filePath.IndexOf("\\Uploads\\"));
+                            return filePath.Substring(filePath.IndexOf("\\Uploads\\")).Replace("\\", "/");
                         }
                     }
                     else

@@ -2,7 +2,7 @@
 {
     public class UpdateUserVM
     {
-        public string PhotoUrl { get; set; }
+        public string? PhotoUrl { get; set; }
 
         public string  Address { get; set; }
 

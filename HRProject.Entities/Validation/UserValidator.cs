@@ -26,7 +26,8 @@ namespace HRProject.Entities.Validation
             RuleFor(user => user.Department).NotNull().WithMessage("Departmant cannot be null");
             RuleFor(user => user.JobID).NotNull().WithMessage("JobID cannot be null");
             RuleFor(user => user.Address).NotNull().WithMessage("Address cannot be null").NotEmpty().WithMessage("Address cannot be empty");
-            RuleFor(user => user.PhoneNumber).Length(10).WithMessage("The length of the Phone number must be 10 digits.").Must(BeAllDigits).WithMessage("The phone number must consist of numeric expressions.");
+            RuleFor(user => user.PhoneNumber).Length(10).WithMessage("The length of the Phone number must be 10 digits.");
+            RuleFor(user => user.PhoneNumber).Must(BeAllDigits).WithMessage("The phone number must consist of numeric expressions."); ;
             RuleFor(user => user.IdentificationNumber).Must(IdentificationNumberVerify).WithMessage("Wrong Identification Number");
             RuleFor(user => user.Address).MaximumLength(100).WithMessage("Address field is cannot more than 100 characters");
         }
