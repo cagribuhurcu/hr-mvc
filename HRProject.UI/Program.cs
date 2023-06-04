@@ -36,13 +36,17 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapAreaControllerRoute(
+        name: "SiteManagement",
+        areaName: "SiteManagement",
+        pattern: "User/{controller=SiteManagement}/{action=Index}/{id?}"
+        );
+
     endpoints.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+        name: "default",
+        pattern: "{controller=SiteManagement}/{action=Index}/{id?}",
+        defaults: new { area = "SiteManagement" }
     );
-    app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 
 
