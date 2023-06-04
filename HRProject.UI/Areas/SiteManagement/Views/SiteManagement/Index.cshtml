@@ -88,7 +88,7 @@
                 var id = $(this).val();
 
                 $.ajax({
-                    url: "/SiteManagement/SiteManagement/Detail/" + id,
+                    url: "/SiteManagement/Detail/" + id,
                     type: "GET",
                     success: function (response) {
                         // Doğum günü Tarih formatını değiştirme
@@ -106,11 +106,20 @@
                         var formattedHireDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
 
                         // İşten çıkış Tarih formatını değiştirme
-                        var quitDate = new Date(response.quitDate);
-                        var day = quitDate.getDate();
-                        var month = quitDate.getMonth() + 1;
-                        var year = quitDate.getFullYear();
-                        var formattedQuitDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+                        var formattedQuitDate;
+                        
+                        if (response.quitDate != null) 
+                        {
+                            var quitDate = new Date(response.quitDate);
+                            var day = quitDate.getDate();
+                            var month = quitDate.getMonth() + 1;
+                            var year = quitDate.getFullYear();
+                            formattedQuitDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+                        }
+                        else
+                        {
+                            formattedQuitDate=null;
+                        }
 
                         // Enum değerlerine karşılık gelen metinleri almak
                         var roleText = "";

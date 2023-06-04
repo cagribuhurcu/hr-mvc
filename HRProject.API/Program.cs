@@ -6,7 +6,6 @@ using HRProject.Repositories.Concrete;
 using HRProject.Repositories.Context;
 using HRProject.Service.Abstract;
 using HRProject.Service.Concrete;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +29,20 @@ builder.Services.AddTransient(typeof(IGenericService<>), typeof(GenericService<>
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<HRProjectContext>();
+
+    // Veritabanýný oluþtur ve seed iþlemini gerçekleþtir (yalnýzca bir kez yapýlacak)
+    if (context.Jobs.Count() == 0 && context.Users.Count() == 0)
+    {
+        context.Database.EnsureCreated();
+        SeedData.Initialize(context);
+        context.SaveChanges();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

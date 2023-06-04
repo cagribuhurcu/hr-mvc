@@ -150,6 +150,11 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
                 
             }
+            //if (uservm.PhotoUrl == "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg")
+            //{
+            //    ViewBag.NullPhoto = "Please Choose a photo!";
+            //    return View(uservm);
+            //}
             return RedirectToAction("Index");
         }
     }

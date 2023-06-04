@@ -7,9 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
 builder.Services.AddDbContext<HRProjectContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("Connect"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 });
 
 //AutoMapper
