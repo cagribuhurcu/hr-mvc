@@ -56,6 +56,12 @@
     </div>
 </div>
 
+<style>
+    .bosluklu-nsp {
+        margin-right: 3px; /* Örnek olarak 3 piksel boşluk */
+    }
+</style>
+
 @foreach (User item in Model)
 {
     <div class="card mt-4 mx-4">
@@ -65,12 +71,35 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">@item.FirstName @item.LastName</h5>
-                    <p class="card-text"><strong>Email:</strong> @item.EmailAddress</p>
-                    <p class="card-text"><strong>Phone:</strong> @item.PhoneNumber</p>
-                    <p class="card-text"><strong>Address:</strong> @item.Address</p>
-                    <p class="card-text"><strong>Job Title:</strong> @item.Job.Name</p>
-                    <p class="card-text"><strong>Department:</strong> @item.Department</p>
+                    <h5 class="card-title">
+                        @if (item.MiddleName != null && item.SecondLastName == null)
+                        {
+                            @item.FirstName
+
+                            <span class="bosluklu-nsp">@item.MiddleName</span>
+
+                            @item.LastName
+                        }
+                        else if (item.MiddleName == null && item.SecondLastName != null)
+                        {
+                            @item.FirstName
+
+                            <span class="bosluklu-nsp">@item.LastName</span>
+
+                            @item.SecondLastName
+                        }
+                        else
+                        {
+                            @item.FirstName
+
+                            <span class="bosluklu-nsp">@item.LastName</span>
+                        }
+                    </h5>
+                    <p class="card-text"><strong>Email: </strong> @item.EmailAddress</p>
+                    <p class="card-text"><strong>Phone: </strong>(+90)<span class="bosluklu-nsp"> @item.PhoneNumber</span></p>
+                    <p class="card-text"><strong>Address: </strong> @item.Address</p>
+                    <p class="card-text"><strong>Job Title: </strong> @item.Job.Name</p>
+                    <p class="card-text"><strong>Department: </strong> @item.Department</p>
                     <button class="btn btn-primary btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
                     <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateUser" asp-route-id="@item.ID" class="btn btn-secondary">Update</a>
                 </div>
