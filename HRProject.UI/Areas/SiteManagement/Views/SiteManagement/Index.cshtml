@@ -202,6 +202,13 @@
                         $('#bplaceBasic').text(response.birthPlace);
 
                         $('#exampleModalCenter').modal('show');
+
+                        $('.modal-body p').each(function () {
+                            var spanValue = $(this).find('span').text();
+                            if (spanValue == null || spanValue.trim() == '') {
+                                $(this).remove();
+                            }
+                        });
                     },
                     error: function () {
 
