@@ -62,6 +62,7 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] User user)
         {
+            user.EmailAddress = user.CreateEmail(user.FirstName,user.LastName);
             UserValidator validator = new UserValidator();
             var result = validator.Validate(user);
             if (!result.IsValid)
@@ -73,6 +74,21 @@ namespace HRProject.API.Controllers
                 service.Add(user);
                 return Ok(user);
             }
+        }
+
+        [HttpGet]
+        public IActionResult Login(string email, string password)
+        {
+            if (service.Any(x => x.EmailAddress == email))
+            {
+                User loggeduser = service.GetByDefault(x => x.EmailAddress == email && x.Password == password);
+                if (loggeduser != null)
+                    return Ok(loggeduser);
+
+                else
+                    return BadRequest("Email Address or Password is incorrect!");
+            }
+            return NotFound("User not found");
         }
     }
 }

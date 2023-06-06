@@ -84,8 +84,10 @@ namespace HRProject.Repositories.Context
                 PhotoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg",
                 Department = Entities.Enums.Departments.InformationSystems,
                 Role = Entities.Enums.Roles.SiteManager,
-
+                Password = "Deneme123."
             };
+
+            user1.EmailAddress=user1.CreateEmail(user1.FirstName,user1.LastName);
             user1.Job = job1;
             job1.Users.Add(user1);
             context.Jobs.AddRange(job1, job2, job3, job4, job5, job6, job7, job8, job9, job10, job11);

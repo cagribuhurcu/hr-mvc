@@ -27,10 +27,7 @@ namespace HRProject.Entities.Entities
                 quitDate = value; IsActive = !quitDate.HasValue;
             }
         }
-        public string EmailAddress
-        {
-            get { return $"{ConvertToEnglish(FirstName).ToLower()}.{ConvertToEnglish(LastName).ToLower()}@bilgeadam.com"; }
-        }
+        public string? EmailAddress { get; set; }
 
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
@@ -42,9 +39,14 @@ namespace HRProject.Entities.Entities
         public string? PhotoURL { get; set; } = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
         public Roles Role { get; set; }
 
-
+        public string Password { get; set; }
 
         //ConvertToEnglish Method
+
+        public string CreateEmail(string firstname,string lastname)
+        {
+            return $"{ConvertToEnglish(firstname).ToLower()}.{ConvertToEnglish(lastname).ToLower()}@bilgeadam.com";
+        }
         private string ConvertToEnglish(string text)
         {
             StringBuilder convertedText = new StringBuilder();

@@ -1,4 +1,5 @@
-using HRProject.Repositories.Context;
+﻿using HRProject.Repositories.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -11,6 +12,26 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HRProjectContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
+});
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
+{
+    option.AccessDeniedPath = "/Home/ErisimEngellendi";//Yetkisiz kişiler girmek istediğinde bu actiona yönlendirilir.
+    option.ExpireTimeSpan = TimeSpan.FromDays(30); //Cookinin ne zama sona ereceği
+    option.SlidingExpiration = true; //Ötelemeli zaman aşımı aktif
+    option.LoginPath = "/Home/Login";
+
+
+
+    //option.ReturnUrlParameter = "returnUrl";
+    option.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
+
+
+
 });
 
 //AutoMapper

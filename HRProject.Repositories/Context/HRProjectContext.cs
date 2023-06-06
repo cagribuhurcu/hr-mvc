@@ -26,6 +26,7 @@ namespace HRProject.Repositories.Context
         //DBSetler bu kısımın altında olacak
         public DbSet<Job> Jobs { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
     }
 }

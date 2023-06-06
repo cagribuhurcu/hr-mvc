@@ -1,13 +1,8 @@
 ﻿using FluentValidation;
 using HRProject.Entities.Entities;
-using Microsoft.AspNetCore.Rewrite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static HRProject.Entities.Validation.IdentificationNumberValidation;
 using static HRProject.Entities.Validation.PhoneNumberValidation;
+
 
 namespace HRProject.Entities.Validation
 {

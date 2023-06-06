@@ -15,7 +15,7 @@ using System.Text;
 
 namespace HRProject.UI.Areas.SiteManagement.Controllers
 {
-    [Area("SiteManagement") /*Authorize(Roles = "Admin")*/]
+    [Area("SiteManagement"),Authorize(Roles = "SiteManager")]
     public class SiteManagementController : Controller
     {
         private readonly IMapper _mapper;
