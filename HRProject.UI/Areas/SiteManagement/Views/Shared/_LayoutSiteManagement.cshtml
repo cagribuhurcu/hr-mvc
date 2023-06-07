@@ -58,18 +58,26 @@
 
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
-                <div class="content-wrapper">
+                <div class="fluid">
                     <!-- Content -->
 
-                    @RenderBody()
+                    <div class="content">
+                        @RenderBody()
+                    </div>
+
                     <!-- / Content -->
+                    <div class="content-backdrop fade"></div>
                     <!-- Footer -->
-                    
-                    <partial name="_FooterPanel" />
+
+                    <div class="footer-wrapper fixed-bottom">
+                        <!-- Footer -->
+                        <partial name="_FooterPanel" />
+                        <!-- / Footer -->
+                    </div>
 
                     <!-- / Footer -->
 
-                    <div class="content-backdrop fade"></div>
+                    
                 </div>
                 <!-- Content wrapper -->
             </div>
@@ -79,9 +87,6 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    
-
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="~/Content/assets/vendor/libs/jquery/jquery.js"></script>

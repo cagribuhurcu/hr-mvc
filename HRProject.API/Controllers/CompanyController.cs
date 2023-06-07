@@ -28,7 +28,7 @@ namespace HRProject.API.Controllers
         //Company Özet Bilgileri
 
         [HttpGet("{id}")]
-        public IActionResult GetUserById(int id)
+        public IActionResult GetCompanyById(int id)
         {
             var company = service.GetById(id);
             return Ok(company);
