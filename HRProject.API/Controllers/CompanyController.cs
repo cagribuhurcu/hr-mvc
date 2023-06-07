@@ -47,7 +47,7 @@ namespace HRProject.API.Controllers
             else
             {
                 service.Add(newCompany);
-                return Ok("Company successfully added");
+                return Ok(newCompany);
             }
         }
     }

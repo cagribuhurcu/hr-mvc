@@ -35,21 +35,22 @@ namespace HRProject.Entities.Entities
 
         public DateTime ContractEndDate
         {
-            get
-            {
-                return ContractEndDate;
-            }
-            set
-            {
-                if (ContractEndDate < DateTime.Now)
-                {
-                    IsActive = false;
-                }
-                else
-                {
-                    IsActive = true;
-                }
-            }
+            //get
+            //{
+            //    return ContractEndDate;
+            //}
+            //set
+            //{
+            //    if (ContractEndDate < DateTime.Now)
+            //    {
+            //        IsActive = false;
+            //    }
+            //    else
+            //    {
+            //        IsActive = true;
+            //    }
+            //}
+            get; set;
         }
 
         //ConvertToEnglish Method
