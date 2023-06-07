@@ -1,7 +1,9 @@
 ﻿using HRProject.Entities.Entities;
+using HRProject.Entities.Validation;
 using HRProject.Service.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace HRProject.API.Controllers
 {
@@ -39,15 +41,25 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateCompany([FromBody] Company newCompany)
         {
-            var company = service.GetByDefault(x => x.CompanyName == newCompany.CompanyName);
-            if (company is not null)
+            newCompany.EmailAddress = newCompany.CreateEmail(newCompany.CompanyName);
+            CompanyValidator validator = new CompanyValidator();
+            var result = validator.Validate(newCompany);
+            if (!result.IsValid)
             {
-                return BadRequest("The company already exists");
+                return BadRequest(result.Errors);
             }
             else
             {
-                service.Add(newCompany);
-                return Ok(newCompany);
+                var company = service.GetByDefault(x => x.CompanyName == newCompany.CompanyName);
+                if (company is not null)
+                {
+                    return BadRequest("The company already exists");
+                }
+                else
+                {
+                    service.Add(newCompany);
+                    return Ok(newCompany);
+                }
             }
         }
     }
