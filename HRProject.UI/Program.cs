@@ -63,6 +63,11 @@ app.UseEndpoints(endpoints =>
         areaName: "SiteManagement",
         pattern: "SiteManagement/{controller=SiteManagement}/{action=Index}/{id?}"
         );
+    //endpoints.MapAreaControllerRoute(
+    //   name: "SiteManagement",
+    //   areaName: "SiteManagement",
+    //   pattern: "SiteManagement/{controller=Company}/{action=Index}/{id?}"
+    //   );
 
     endpoints.MapAreaControllerRoute(
         name: "Users",

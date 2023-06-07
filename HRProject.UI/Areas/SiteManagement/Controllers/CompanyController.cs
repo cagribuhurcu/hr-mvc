@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
+using HRProject.Entities.Entities;
 using HRProject.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HRProject.UI.Areas.SiteManagement.Controllers
 {
     [Area("SiteManagement"), Authorize(Roles = "SiteManager")]
     public class CompanyController : Controller
     {
-        string baseURL = "https://hrprojectapi20230605125226.azurewebsites.net";
+        string baseURL = "https://localhost:7127";
         private readonly IMapper _mapper;
 
         public CompanyController(IMapper mapper)
@@ -17,9 +19,20 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
           
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Company> companies = new List<Company>();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Company/GetAllCompanies"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    companies = JsonConvert.DeserializeObject<List<Company>>(apiCevap);
+                }
+            }
+            return View(companies);
         }
     }
 }
