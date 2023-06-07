@@ -52,10 +52,15 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCompany(Company company, List<IFormFile> files)
         {
-            company.IsActive = true;
+            company.EmailAddress = company.CreateEmail(company.CompanyName);
+
+            if (company.ContractEndDate >= DateTime.Now)
+            {
+                company.IsActive = false;
+            }
             if (files.Count == 0) //Foto seçilemez ise
             {
-                company.LogoURL = createCompany.LogoURL;
+                company.LogoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
             }
             else
             {
