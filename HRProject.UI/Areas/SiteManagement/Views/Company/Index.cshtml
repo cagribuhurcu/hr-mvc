@@ -6,7 +6,7 @@
 @model List<Company>
 
 <div class="mt-4 mx-4" style="margin-bottom:0px;">
-    <a class="btn btn-success" asp-action="Create" asp-controller="Company" asp-area="SiteManagement"><i class="bx bx-edit-alt me-1"></i> + Create</a>
+    <a class="btn btn-success" asp-action="CreateCompany" asp-controller="Company" asp-area="SiteManagement"><i class="bx bx-edit-alt me-1"></i> + Create</a>
 </div>
 <div class="card mx-4" style="margin-top:0px;">
     <div class="table-responsive text-nowrap">
@@ -33,12 +33,11 @@
                         <th>@rowCount</th>
                         <td>
                             <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                <li data-bs-toggle="tooltip"
+                                <li> data-bs-toggle="tooltip"
                                 data-popup="tooltip-custom"
                                 data-bs-placement="top"
                                 class="avatar avatar-xs pull-up"
-                                title="Lilian Fuller">
-                                    <img src="@item.LogoURL" alt="Avatar" class="rounded-circle" />
+                                    <img src="@item.LogoURL" alt="logo" class="rounded-circle" />
                                 </li>
                             </ul>
                         </td>

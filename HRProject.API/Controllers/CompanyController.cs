@@ -32,5 +32,22 @@ namespace HRProject.API.Controllers
             var company = service.GetById(id);
             return Ok(company);
         }
+
+        // Company Add
+
+        [HttpPost]
+        public IActionResult CreateCompany([FromBody] Company newCompany)
+        {
+            var company = service.GetByDefault(x => x.CompanyName == newCompany.CompanyName);
+            if (company is not null)
+            {
+                return BadRequest("The company already exists");
+            }
+            else
+            {
+                service.Add(newCompany);
+                return Ok("Company successfully added");
+            }
+        }
     }
 }

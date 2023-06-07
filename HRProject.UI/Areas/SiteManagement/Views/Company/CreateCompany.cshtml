@@ -1,0 +1,121 @@
+﻿@model Company
+
+<form id="formAccountSettings" asp-action="CreateCompany" method="post" enctype="multipart/form-data">
+    <div class="card mb-4 mt-4 mx-4">
+        <h5 class="card-header">Create Company</h5>
+        <!-- Account -->
+        <div class="card-body">
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img src="/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg"
+                     alt="company-logo"
+                     class="d-block rounded"
+                     height="100"
+                     width="100"
+                     id="uploadedAvatar" />
+                <div class="button-wrapper">
+                    <label asp-for="LogoURL" for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new logo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input asp-for="LogoURL" type="file" name="files"
+                               id="upload"
+                               class="account-file-input"
+                               hidden
+                               accept="image/png, image/jpeg" />
+                    </label>
+                    <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                        <i class="bx bx-reset d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Reset</span>
+                    </button>
+
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 4MB</p>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0" />
+        <div class="card-body">
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label asp-for="CompanyName" class="form-label">Company Name</label>
+                    <input asp-for="CompanyName" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <select asp-for="Title" class="form-control" id="html5-text-input">
+                        <option value="">Select Title</option>
+                        @foreach (var title in Enum.GetValues(typeof(Titles)))
+                        {
+                            <option value="@title">@title</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="MERSISNo" class="form-label">MERSIS No</label>
+                    <input asp-for="MERSISNo" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="TaxNumber" class="form-label">Tax Number</label>
+                    <input asp-for="TaxNumber" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="TaxAdministration" class="form-label">Tax Administration</label>
+                    <input asp-for="TaxAdministration" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                    <div class="input-group input-group-merge">
+                        <span class="input-group-text">TR (+90)</span>
+                        <input asp-for="PhoneNumber" type="tel"
+                               id="phoneNumber"
+                               name="phoneNumber"
+                               class="form-control"
+                               placeholder="(505)5055555" />
+                    </div>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Address" class="form-label">Address</label>
+                    <input asp-for="Address" type="text" class="form-control" id="address" name="address" placeholder="Address" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="TotalEmployees" class="form-label">Total Employees</label>
+                    <input asp-for="TotalEmployees" class="form-control" type="number" value="18" id="html5-number-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="FoundationDate" class="form-label">Foundation Date</label>
+                    <input asp-for="FoundationDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="ContractStartDate" class="form-label">Contract Start Date</label>
+                    <input asp-for="ContractStartDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="ContractEndDate" class="form-label">Contract End Date</label>
+                    <input asp-for="ContractEndDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                </div>
+            </div>
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary me-2">Create</button>
+                <a asp-action="Index" asp-controller="Company" asp-area="SiteManagement" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </div>
+        <!-- /Account -->
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#upload').change(function () {
+                var file = $(this)[0].files[0];
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#uploadedAvatar').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+}
+
