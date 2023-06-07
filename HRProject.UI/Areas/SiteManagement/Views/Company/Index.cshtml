@@ -1,16 +1,20 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/SiteManagement/Views/Shared/_LayoutSiteManagement.cshtml";
 }
 @model List<Company>
 
-<div class="mt-4 mx-4" style="margin-bottom:0px;">
-    <a class="btn btn-success" asp-action="CreateCompany" asp-controller="Company" asp-area="SiteManagement"><i class="bx bx-edit-alt me-1"></i> + Create</a>
+<div class="mt-4 mx-4 mb-4">
+    <a class="btn btn-success" asp-action="CreateCompany" asp-controller="Company" asp-area="SiteManagement"><i class='bx bx-buildings'></i> + Create</a>
 </div>
-<div class="card mx-4" style="margin-top:0px;">
-    <div class="table-responsive text-nowrap">
-        <table class="table table-hover">
+
+<div class="card mx-4">
+    <h5 class="card-header">Company List</h5>
+    <div class="table-responsive text-nowrap text-center">
+        <table class="table">
+            <caption class="ms-4">
+                List of Companies
+            </caption>
             <thead>
                 <tr>
                     <th>#</th>
@@ -23,7 +27,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody class="table-border-bottom-0">
+            <tbody>
                 @{
                     int rowCount = 1;
                 }
@@ -52,8 +56,8 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a asp-action="Update" asp-controller="Company" asp-area="SiteManagement" class="dropdown-item" ><i class="bx bx-edit-alt me-1"></i> Update</a>
-                                    <a asp-action="Details" asp-controller="Company" asp-area="SiteManagement" class="dropdown-item" ><i class="bx bx-trash me-1"></i> Details</a>
+                                    <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class="bx bx-trash me-1"></i> Details</button>
+                                    <a asp-action="Update" asp-controller="Company" asp-area="SiteManagement" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Update</a>
                                 </div>
                             </div>
                         </td>
@@ -65,3 +69,137 @@
     </div>
 </div>
 
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Details</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p><strong>Company Name:</strong> <span id="companynameBasic"></span></p>
+                    <p><strong>Title:</strong> <span id="titleBasic"></span></p>
+                    <p><strong>MERSIS No:</strong> <span id="mersisBasic"></span></p>
+                    <p><strong>Tax Number:</strong> <span id="taxnumberBasic"></span></p>
+                    <p><strong>Tax Administration:</strong> <span id="taxadministrationBasic"></span></p>
+                    <p><strong>PhoneNumber:</strong> <span id="phoneBasic"></span></p>
+                    <p><strong>Address:</strong> <span id="addressBasic"></span></p>
+                    <p><strong>Email:</strong> <span id="emailBasic"></span></p>
+                    <p><strong>Total Employees:</strong> <span id="totalemployeeBasic"></span></p>
+                    <p><strong>Foundation Date:</strong> <span id="foundationdateBasic"></span></p>
+                    <p><strong>Contract Start Date:</strong> <span id="contractstartdateBasic"></span></p>
+                    <p><strong>Contract End Date:</strong> <span id="contractenddateBasic"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.btnDetail').click(function () {
+                var id = $(this).val();
+
+                $.ajax({
+                    url: "/SiteManagement/Company/Detail/" + id,
+                    type: "GET",
+                    success: function (response) {
+                        // Doğum günü Tarih formatını değiştirme
+                        var foundationDate = new Date(response.foundationDate);
+                        var day = foundationDate.getDate();
+                        var month = foundationDate.getMonth() + 1;
+                        var year = foundationDate.getFullYear();
+                        var formattedFoundationDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşe giriş Tarih formatını değiştirme
+                        var contractStartDate = new Date(response.contractStartDate);
+                        var day = contractStartDate.getDate();
+                        var month = contractStartDate.getMonth() + 1;
+                        var year = contractStartDate.getFullYear();
+                        var formattedContractStartDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşten çıkış Tarih formatını değiştirme
+                        var contractEndDate = new Date(response.contractEndDate);
+                        var day = contractEndDate.getDate();
+                        var month = contractEndDate.getMonth() + 1;
+                        var year = contractEndDate.getFullYear();
+                        var formattedContractEndDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        var titleText = "";
+                        switch (response.title) {
+                            case 1:
+                                titleText = "Limited Company (Ltd.)";
+                                break;
+                            case 2:
+                                titleText = "Incorporated (Inc.)";
+                                break;
+                            case 3:
+                                titleText = "Corporation (Corp.)";
+                                break;
+                            case 4:
+                                titleText = "Company (Co.)";
+                                break;
+                            case 5:
+                                titleText = "Partnership";
+                                break;
+                            case 6:
+                                titleText = "Sole Proprietorship";
+                                break;
+                            case 7:
+                                titleText = "Public Limited Company (PLC)";
+                                break;
+                            case 8:
+                                titleText = "Nonprofit Organization";
+                                break;
+                            case 9:
+                                titleText = "Cooperative (Co-op)";
+                                break;
+                            case 10:
+                                titleText = "Limited Liability Company (LLC)";
+                                break;
+                        }
+
+                        $('#companynameBasic').text(response.companyName);
+                        $('#titleBasic').text(titleText);
+                        $('#mersisBasic').text(response.mersisNo);
+                        $('#taxnumberBasic').text(response.taxNumber);
+                        $('#taxadministrationBasic').text(response.taxAdministration);
+                        $('#phoneBasic').text(response.phoneNumber);
+                        $('#addressBasic').text(response.address);
+                        $('#emailBasic').text(response.email);
+                        $('#totalemployeeBasic').text(response.totalEmployees);
+                        $('#foundationdateBasic').text(formattedFoundationDate);
+                        $('#contractstartdateBasic').text(formattedContractStartDate);
+                        $('#contractenddateBasic').text(formattedContractEndDate);
+
+                        $('#exampleModalCenter').modal('show');
+
+                        $('.modal-body p').each(function () {
+                            var spanValue = $(this).find('span').text();
+                            if (spanValue == null || spanValue.trim() == '') {
+                                $(this).remove();
+                            }
+                        });
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+        });
+
+
+    </script>
+}

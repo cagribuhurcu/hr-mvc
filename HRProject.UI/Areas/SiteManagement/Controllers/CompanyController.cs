@@ -42,6 +42,21 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            Company company = new Company();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Company/GetCompanyById/{id}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    company = JsonConvert.DeserializeObject<Company>(apiCevap);
+                }
+            }
+            return Json(company);
+        }
+
+        [HttpGet]
         public IActionResult CreateCompany()
         {
             return View();
