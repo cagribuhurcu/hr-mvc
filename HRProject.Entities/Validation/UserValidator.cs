@@ -25,6 +25,11 @@ namespace HRProject.Entities.Validation
             RuleFor(user => user.PhoneNumber).Must(BeAllDigits).WithMessage("The phone number must consist of numeric expressions."); ;
             RuleFor(user => user.IdentificationNumber).Must(IdentificationNumberVerify).WithMessage("Wrong Identification Number");
             RuleFor(user => user.Address).MaximumLength(100).WithMessage("Address field is cannot more than 100 characters");
+            RuleFor(user => user.Password)
+            .NotEmpty().WithMessage("Password cannot be empty")
+            .MinimumLength(8).WithMessage("Password must contain at least 8 characters.")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$")
+            .WithMessage("The password must contain at least one uppercase letter, one lowercase letter, one number and one special character.");
         }
     }
 }

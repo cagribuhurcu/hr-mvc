@@ -1,10 +1,12 @@
 ﻿using HRProject.Entities.Entities;
+using HRProject.Entities.Validation;
 using HRProject.UI.Models;
 using HRProject.UI.Models.Entitites;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net;
 using System.Security.Claims;
 
 namespace HRProject.UI.Controllers
@@ -34,8 +36,25 @@ namespace HRProject.UI.Controllers
             {
                 using (var answ = await httpClient.GetAsync($"{baseURL}/api/User/Login?email={loginVM.EmailAddress}&password={loginVM.Password}"))
                 {
-                    string apiResult = await answ.Content.ReadAsStringAsync();
-                    logged = JsonConvert.DeserializeObject<User>(apiResult);
+                    if (!answ.IsSuccessStatusCode)
+                    {
+                        string errorMessage = "";
+                        if (loginVM.EmailAddress==null || loginVM.Password==null)
+                        {
+                            errorMessage = "Email address or password cannot be empty";
+                        }
+                        else
+                        {
+                            errorMessage = await answ.Content.ReadAsStringAsync();
+                        }
+                        ModelState.AddModelError("Error", errorMessage);
+                        return View(loginVM);
+                    }
+                    else
+                    {
+                        string apiResult = await answ.Content.ReadAsStringAsync();
+                        logged = JsonConvert.DeserializeObject<User>(apiResult);
+                    }
                 }
 
             }

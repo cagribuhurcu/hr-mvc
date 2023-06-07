@@ -14,7 +14,7 @@ namespace HRProject.API.Controllers
 
         public UserController(IGenericRepository<User> service)
         {
-            this.service= service;
+            this.service = service;
         }
 
         //Listele
@@ -22,7 +22,7 @@ namespace HRProject.API.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var users = service.GetAll(t0=> t0.Job);
+            var users = service.GetAll(t0 => t0.Job);
             return Ok(users);
         }
 
@@ -31,7 +31,7 @@ namespace HRProject.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetUserById(int id)
         {
-            var user = service.GetById(id,t0=>t0.Job);
+            var user = service.GetById(id, t0 => t0.Job);
             return Ok(user);
         }
 
@@ -40,7 +40,7 @@ namespace HRProject.API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User user)
         {
-            if (user.QuitDate!=null)
+            if (user.QuitDate != null)
             {
                 user.IsActive = false;
             }
@@ -62,7 +62,7 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] User user)
         {
-            user.EmailAddress = user.CreateEmail(user.FirstName,user.LastName);
+            user.EmailAddress = user.CreateEmail(user.FirstName, user.LastName);
             UserValidator validator = new UserValidator();
             var result = validator.Validate(user);
             if (!result.IsValid)
