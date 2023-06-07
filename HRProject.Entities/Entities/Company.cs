@@ -17,7 +17,7 @@ namespace HRProject.Entities.Entities
         public string TaxNumber { get; set; }
         public string TaxAdministration { get; set; }
 
-        public string LogoURL { get; set; }
+        public string? LogoURL { get; set; }
 
         public string PhoneNumber { get; set; }
 
