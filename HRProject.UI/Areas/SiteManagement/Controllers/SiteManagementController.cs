@@ -42,6 +42,17 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     users = JsonConvert.DeserializeObject<List<User>>(apiCevap);
                 }
             }
+            var newLoginClaim = new Claim("PhotoUrl", users[0].PhotoURL);
+
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginClaim = currentUser.FindFirst("PhotoUrl");
+            if (loginClaim != null)
+            {
+                currentUser.RemoveClaim(loginClaim);
+                currentUser.AddClaim(newLoginClaim);
+            }
+            var newPrincipal = new ClaimsPrincipal(currentUser);
+            await HttpContext.SignInAsync(newPrincipal);
             return View(users);
         }
 
@@ -152,22 +163,6 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
                 }
             }
-            //var newLoginClaim = new List<Claim>()
-            //{
-            //        new Claim ("ID",updateduser.ID.ToString()),
-            //        new Claim("PhotoUrl",updateduser.PhotoURL),
-            //        new Claim(ClaimTypes.Name,updateduser.FirstName+" "+updateduser.MiddleName),
-            //        new Claim(ClaimTypes.Surname,updateduser.LastName+" "+updateduser.SecondLastName),
-            //        new Claim(ClaimTypes.Email,updateduser.EmailAddress),
-            //        new Claim(ClaimTypes.Role,updateduser.Role.ToString()),
-            //};
-
-            //var currentUser = HttpContext.User.Identity as ClaimsIdentity;
-            //var loginClaim = currentUser.FindFirst("Login"); 
-            //if (loginClaim != null) 
-            //{ 
-            //    currentUser.RemoveClaim(loginClaim); currentUser.AddClaim(new Claim("Login", newLoginClaim)); 
-            //}
 
             return RedirectToAction("Index");
         }
