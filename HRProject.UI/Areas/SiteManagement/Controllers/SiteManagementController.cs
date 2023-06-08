@@ -83,7 +83,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserVM uservm, List<IFormFile> files)
         {
-            
+
 
             if (files.Count == 0) //Foto seçilemez ise
             {
@@ -151,12 +151,23 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
 
                 }
-
             }
-            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
-            var loginClaim = currentUser.FindFirst("Login");
-            ClaimsPrincipal newPrincipal = new ClaimsPrincipal(currentUser);
-            await HttpContext.SignInAsync(newPrincipal);
+            //var newLoginClaim = new List<Claim>()
+            //{
+            //        new Claim ("ID",updateduser.ID.ToString()),
+            //        new Claim("PhotoUrl",updateduser.PhotoURL),
+            //        new Claim(ClaimTypes.Name,updateduser.FirstName+" "+updateduser.MiddleName),
+            //        new Claim(ClaimTypes.Surname,updateduser.LastName+" "+updateduser.SecondLastName),
+            //        new Claim(ClaimTypes.Email,updateduser.EmailAddress),
+            //        new Claim(ClaimTypes.Role,updateduser.Role.ToString()),
+            //};
+
+            //var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            //var loginClaim = currentUser.FindFirst("Login"); 
+            //if (loginClaim != null) 
+            //{ 
+            //    currentUser.RemoveClaim(loginClaim); currentUser.AddClaim(new Claim("Login", newLoginClaim)); 
+            //}
 
             return RedirectToAction("Index");
         }
