@@ -52,33 +52,24 @@
 
                 <partial name="_LeftPanel" />
 
-                <!-- Navbar -->
-
-                <partial name="_NavPanel" />
-
-                <!-- / Navbar -->
                 <!-- Content wrapper -->
-                <div class="fluid">
-                    <!-- Content -->
+                <div class="content-wrapper d-flex flex-column">
 
                     <div class="content">
-                        @RenderBody()
+
+                        <partial name="_NavPanel" />
+
+                        <div class="container-fluid">
+                            @RenderBody()
+                        </div>
+
+                        <div class="content-backdrop fade"></div>
+
                     </div>
-
-                    <!-- / Content -->
-                    <div class="content-backdrop fade"></div>
-                    <!-- Footer -->
-
-                    <div class="footer-wrapper fixed-bottom">
-                        <!-- Footer -->
-                        <partial name="_FooterPanel" />
-                        <!-- / Footer -->
-                    </div>
-
-                    <!-- / Footer -->
-
                     
                 </div>
+
+                <partial name="_FooterPanel" />
                 <!-- Content wrapper -->
             </div>
         </div>
