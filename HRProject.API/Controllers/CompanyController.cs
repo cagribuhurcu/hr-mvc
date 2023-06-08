@@ -1,4 +1,5 @@
-﻿using HRProject.Entities.Entities;
+﻿using FluentValidation;
+using HRProject.Entities.Entities;
 using HRProject.Entities.Validation;
 using HRProject.Service.Abstract;
 using Microsoft.AspNetCore.Http;
@@ -50,7 +51,7 @@ namespace HRProject.API.Controllers
             }
             else
             {
-                var company = service.GetByDefault(x => x.CompanyName == newCompany.CompanyName);
+                var company = service.GetByDefault(x => x.CompanyName == newCompany.CompanyName && x.TaxNumber == newCompany.TaxNumber);
                 if (company is not null)
                 {
                     return BadRequest("The company already exists");
@@ -61,6 +62,29 @@ namespace HRProject.API.Controllers
                     return Ok(newCompany);
                 }
             }
+        }
+
+        //Update
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCompany(int id, [FromBody] Company company)
+        {
+            if (company.ContractEndDate <= DateTime.Now)
+            {
+                company.IsActive = false;
+            }
+            CompanyValidator validator = new CompanyValidator();
+            var result = validator.Validate(company);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+            else
+            {
+                service.Update(company);
+                return Ok(company);
+            }
+
         }
     }
 }

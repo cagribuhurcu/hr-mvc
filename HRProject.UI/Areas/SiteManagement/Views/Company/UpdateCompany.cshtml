@@ -1,9 +1,15 @@
-﻿@using HRProject.Entities.Enums;
+﻿
+@{
+    ViewData["Title"] = "UpdateCompany";
+    Layout = "~/Areas/SiteManagement/Views/Shared/_LayoutSiteManagement.cshtml";
+}
+
+@using HRProject.Entities.Enums;
 @model Company
 
-<form id="formAccountSettings" asp-action="CreateCompany" method="post" enctype="multipart/form-data">
-    <div class="card mt-4 mx-4">
-        <h5 class="card-header">Create Company</h5>
+<form id="formAccountSettings" asp-action="UpdateCompany" method="post" enctype="multipart/form-data">
+    <div class="card mb-4 mt-4 mx-4">
+        <h5 class="card-header">Update Company</h5>
 
         @if (!ViewData.ModelState.IsValid)
         {
@@ -15,7 +21,7 @@
         <!-- Account -->
         <div class="card-body">
             <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <img src="/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg"
+                <img src="@Model.LogoURL"
                      alt="company-logo"
                      class="d-block rounded"
                      height="100"
@@ -76,33 +82,32 @@
                         <input asp-for="PhoneNumber" type="tel"
                                id="phoneNumber"
                                name="phoneNumber"
-                               class="form-control"
-                               placeholder="(505)5055555" />
+                               class="form-control" />
                     </div>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="Address" class="form-label">Address</label>
-                    <input asp-for="Address" type="text" class="form-control" id="address" name="address" placeholder="Address" />
+                    <input asp-for="Address" type="text" class="form-control" id="address" name="address" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="TotalEmployees" class="form-label">Total Employees</label>
-                    <input asp-for="TotalEmployees" class="form-control" type="number" value="18" id="html5-number-input" />
+                    <input asp-for="TotalEmployees" class="form-control" type="number" id="html5-number-input" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="FoundationDate" class="form-label">Foundation Date</label>
-                    <input asp-for="FoundationDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                    <input asp-for="FoundationDate" class="form-control" type="date" id="html5-date-input" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="ContractStartDate" class="form-label">Contract Start Date</label>
-                    <input asp-for="ContractStartDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                    <input asp-for="ContractStartDate" class="form-control" type="date" id="html5-date-input" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="ContractEndDate" class="form-label">Contract End Date</label>
-                    <input asp-for="ContractEndDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                    <input asp-for="ContractEndDate" class="form-control" type="date" id="html5-date-input" />
                 </div>
             </div>
             <div class="mt-2">
-                <button type="submit" class="btn btn-primary me-2">Create</button>
+                <button type="submit" class="btn btn-primary me-2">Update</button>
                 <a asp-action="Index" asp-controller="Company" asp-area="SiteManagement" class="btn btn-outline-secondary">Cancel</a>
             </div>
         </div>

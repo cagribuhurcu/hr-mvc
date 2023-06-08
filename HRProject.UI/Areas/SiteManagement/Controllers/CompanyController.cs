@@ -6,6 +6,7 @@ using HRProject.UI.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Security.Policy;
 using System.Text;
@@ -69,7 +70,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         {
             company.EmailAddress = company.CreateEmail(company.CompanyName);
 
-            if (company.ContractEndDate >= DateTime.Now)
+            if (company.ContractEndDate <= DateTime.Now)
             {
                 company.IsActive = false;
             }
@@ -100,7 +101,122 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
                 using (var cevap = await httpClient.PostAsync($"{baseURL}/api/Company/CreateCompany", content))
                 {
+                    if (!cevap.IsSuccessStatusCode)
+                    {
+                        var jsonResponse = await cevap.Content.ReadAsStringAsync();
+                        var errorResponse = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+
+                        string errorMessage = "";
+                        if (errorResponse.errors != null)
+                        {
+                            var errors = errorResponse.errors;
+                            foreach (var error in errors)
+                            {
+                                var errorMessages = (JArray)error.Value;
+                                foreach (var errorMessageToken in errorMessages)
+                                {
+                                    errorMessage = errorMessageToken.ToString() + "\n";
+                                    ModelState.AddModelError("", errorMessage);
+                                }
+                            }
+                        }
+
+                        ViewData["allmasseges"] = ModelState.ToList();
+                        return View(company);
+                    }
+
+                    if (!ModelState.IsValid)
+                    {
+                        ViewData["allmasseges"] = ModelState.ToList();
+                        return View(company);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        static Company updatedCompany;
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateCompany(int id)
+        {
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Company/GetCompanyById/{id}"))
+                {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    updatedCompany = JsonConvert.DeserializeObject<Company>(apiCevap);
+                }
+            }
+
+            return View(updatedCompany);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCompany(Company company, List<IFormFile> files)
+        {
+            company.EmailAddress = company.CreateEmail(company.CompanyName);
+
+            if (files.Count == 0)
+            {
+                company.LogoURL = updatedCompany.LogoURL;
+            }
+            else
+            {
+
+                string returnedMessaage = Upload.ImageUpload(files, environment, out bool imgresult);
+
+                if (imgresult)
+                {
+                    company.LogoURL = returnedMessaage;
+                }
+                else
+                {
+                    company.LogoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
+                    ViewBag.PhotoMessage = returnedMessaage;
+                    ModelState.AddModelError("", ViewBag.PhotoMessage);
+                }
+            }
+
+            using (var httpClient = new HttpClient())
+            {
+                updatedCompany = _mapper.Map<Company>(company);
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(updatedCompany), Encoding.UTF8, "application/json");
+
+                using (var response = await httpClient.PutAsync($"{baseURL}/api/Company/UpdateCompany/{updatedCompany.ID}", content))
+                {
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var jsonResponse = await response.Content.ReadAsStringAsync();
+                        var errorResponse = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+
+                        string errorMessage = "";
+                        if (errorResponse.errors != null)
+                        {
+                            var errors = errorResponse.errors;
+                            foreach (var error in errors)
+                            {
+                                var errorMessages = (JArray)error.Value;
+                                foreach (var errorMessageToken in errorMessages)
+                                {
+                                    errorMessage = errorMessageToken.ToString() + "\n";
+                                    ModelState.AddModelError("", errorMessage);
+                                }
+                            }
+                        }
+                        
+                        ViewData["allmasseges"] = ModelState.ToList();
+                        return View(company);
+                    }
+
+                    if (!ModelState.IsValid)
+                    {
+                        ViewData["allmasseges"] = ModelState.ToList();
+                        return View(company);
+                    }
                 }
             }
             return RedirectToAction("Index");

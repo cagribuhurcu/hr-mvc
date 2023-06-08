@@ -9,7 +9,7 @@ namespace HRProject.Entities.Validation
 {
     public static class MersisValidation
     {
-        public static bool IsMersisNoValid(string mersisNo,string vergiNo)
+        public static bool IsMersisNoValid(string mersisNo)
         {
             if (mersisNo.Length != 16)
             {
@@ -24,7 +24,7 @@ namespace HRProject.Entities.Validation
                 }
                 else
                 {
-                    vergiNo = mersisNo.Substring(1, 10);
+                    string vergiNo = mersisNo.Substring(1, 10);
                     if (!IsTaxNumber(vergiNo))
                     {
                         return false;
