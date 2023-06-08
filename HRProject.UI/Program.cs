@@ -1,5 +1,6 @@
 ﻿using HRProject.Repositories.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -29,9 +30,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         context.Response.Redirect(context.RedirectUri);
         return Task.CompletedTask;
     };
-
-
-
 });
 
 //AutoMapper
@@ -58,26 +56,15 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapAreaControllerRoute(
-        name: "SiteManagement",
-        areaName: "SiteManagement",
-        pattern: "SiteManagement/{controller=SiteManagement}/{action=Index}/{id?}"
-        );
-    //endpoints.MapAreaControllerRoute(
-    //   name: "SiteManagement",
-    //   areaName: "SiteManagement",
-    //   pattern: "SiteManagement/{controller=Company}/{action=Index}/{id?}"
-    //   );
-
-    endpoints.MapAreaControllerRoute(
-        name: "Users",
-        areaName: "Users",
-        pattern: "Users/{controller=Account}/{action=Index}/{id?}"
-        );
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
 
     endpoints.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Login}/{id?}"
+    );
 });
 
 

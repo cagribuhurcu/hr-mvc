@@ -64,11 +64,10 @@ namespace HRProject.UI.Controllers
                 {
                     new Claim ("ID",logged.ID.ToString()),
                     new Claim("PhotoUrl",logged.PhotoURL),
-                    new Claim(ClaimTypes.Name,logged.FirstName),
-                    new Claim(ClaimTypes.Surname,logged.LastName),
+                    new Claim(ClaimTypes.Name,logged.FirstName+" "+logged.MiddleName),
+                    new Claim(ClaimTypes.Surname,logged.LastName+" "+logged.SecondLastName),
                     new Claim(ClaimTypes.Email,logged.EmailAddress),
                     new Claim(ClaimTypes.Role,logged.Role.ToString()),
-
                 };
                 var userIdentity = new ClaimsIdentity(claims, "Login");
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
@@ -90,6 +89,12 @@ namespace HRProject.UI.Controllers
                     return View(loginVM);
             }
 
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Home", new { Area = "" });
         }
 
 

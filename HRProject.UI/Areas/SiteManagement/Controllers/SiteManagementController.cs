@@ -5,17 +5,19 @@ using HRProject.Entities.Enums;
 using HRProject.Entities.Validation;
 using HRProject.UI.Areas.SiteManagement.Models;
 using HRProject.UI.Models.DTOs;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Security.Claims;
 using System.Text;
 
 namespace HRProject.UI.Areas.SiteManagement.Controllers
 {
-    [Area("SiteManagement"),Authorize(Roles = "SiteManager")]
+    [Area("SiteManagement"), Authorize(Roles = "SiteManager")]
     public class SiteManagementController : Controller
     {
         private readonly IMapper _mapper;
@@ -81,7 +83,8 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserVM uservm, List<IFormFile> files)
         {
-           
+            
+
             if (files.Count == 0) //Foto seçilemez ise
             {
                 uservm.PhotoUrl = updateduser.PhotoURL;
@@ -104,7 +107,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
                 }
             }
-            
+
 
             using (var httpClient = new HttpClient())
             {
@@ -148,13 +151,13 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
 
                 }
-                
+
             }
-            //if (uservm.PhotoUrl == "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg")
-            //{
-            //    ViewBag.NullPhoto = "Please Choose a photo!";
-            //    return View(uservm);
-            //}
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginClaim = currentUser.FindFirst("Login");
+            ClaimsPrincipal newPrincipal = new ClaimsPrincipal(currentUser);
+            await HttpContext.SignInAsync(newPrincipal);
+
             return RedirectToAction("Index");
         }
     }
