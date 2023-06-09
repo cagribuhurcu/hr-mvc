@@ -5,6 +5,7 @@ using HRProject.UI.Areas.SiteManagement.Models;
 using HRProject.UI.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -60,23 +61,29 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpGet]
         public IActionResult CreateCompany()
         {
+            ViewBag.BaseLogoUrl = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
             return View();
         }
-
-        static Company createCompany;
+        public static string BackUpLogoURL;
 
         [HttpPost]
         public async Task<IActionResult> CreateCompany(Company company, List<IFormFile> files)
         {
-            company.EmailAddress = company.CreateEmail(company.CompanyName);
-
             if (company.ContractEndDate <= DateTime.Now)
             {
                 company.IsActive = false;
             }
             if (files.Count == 0) //Foto seçilemez ise
             {
-                company.LogoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
+                if(company.LogoURL!= "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg")
+                {
+                    company.LogoURL = BackUpLogoURL;
+                }
+                else
+                {
+                    company.LogoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
+                }
+               
             }
             else
             {
@@ -85,6 +92,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 if (imgresult)
                 {
                     company.LogoURL = returnedMessaage;
+                    BackUpLogoURL = company.LogoURL;
                 }
                 else
                 {
@@ -104,12 +112,12 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     if (!cevap.IsSuccessStatusCode)
                     {
                         var jsonResponse = await cevap.Content.ReadAsStringAsync();
-                        var errorResponse = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
 
+                        var errorResponse = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
                         string errorMessage = "";
-                        if (errorResponse.errors != null)
+                        if (errorResponse.Errors != null)
                         {
-                            var errors = errorResponse.errors;
+                            var errors = errorResponse.Errors;
                             foreach (var error in errors)
                             {
                                 var errorMessages = (JArray)error.Value;
@@ -119,12 +127,14 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                                     ModelState.AddModelError("", errorMessage);
                                 }
                             }
+                           
                         }
+                            ViewData["allmasseges"] = ModelState.ToList();
+                            return View(company);
 
-                        ViewData["allmasseges"] = ModelState.ToList();
-                        return View(company);
                     }
-
+                    company.EmailAddress = company.CreateEmail(company.CompanyName);
+                    
                     if (!ModelState.IsValid)
                     {
                         ViewData["allmasseges"] = ModelState.ToList();
@@ -156,7 +166,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCompany(Company company, List<IFormFile> files)
         {
-            company.EmailAddress = company.CreateEmail(company.CompanyName);
+            
 
             if (files.Count == 0)
             {
@@ -211,6 +221,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                         ViewData["allmasseges"] = ModelState.ToList();
                         return View(company);
                     }
+                    company.EmailAddress = company.CreateEmail(company.CompanyName);
 
                     if (!ModelState.IsValid)
                     {
@@ -219,6 +230,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     }
                 }
             }
+            
             return RedirectToAction("Index");
         }
     }
