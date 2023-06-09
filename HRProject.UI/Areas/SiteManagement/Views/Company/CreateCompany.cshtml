@@ -71,7 +71,18 @@
                     </select>
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label asp-for="MERSISNo" class="form-label">MERSIS No</label>
+                    <label asp-for="MERSISNo" class="form-label">
+                        MERSIS No  <a class="mx-1"
+                                      data-bs-toggle="tooltip"
+                                      data-bs-offset="0,4"
+                                      data-bs-html="true"
+                                      title="<i class='bx bx-lock-alt' style='color:#faf7f7'></i> <span>The length of the Mersis number must be 16 digits.
+                                      Mersis number must start with 0
+                                      The mersis number must contain the tax number
+                                      Mersis number must end with 15-16-17</span>">
+                            <i class='bx bx-help-circle'></i>
+                        </a>
+                    </label>
                     <input asp-for="MERSISNo" class="form-control" type="text" id="html5-text-input" />
                 </div>
                 <div class="mb-3 col-md-6">
