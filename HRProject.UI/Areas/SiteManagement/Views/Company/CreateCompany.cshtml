@@ -14,13 +14,26 @@
 
         <!-- Account -->
         <div class="card-body">
-            <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <img src="/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg"
-                     alt="company-logo"
-                     class="d-block rounded"
-                     height="100"
-                     width="100"
-                     id="uploadedAvatar" />
+            <div class="d-flex align-items-start align-items-sm-center gap-4">   
+                @if (ViewBag.BaseLogoUrl!=null)
+                {
+                    <img src="@ViewBag.BaseLogoUrl"
+                         alt="company-logo"
+                         class="d-block rounded"
+                         height="100"
+                         width="100"
+                    id="uploadedAvatar" />
+                }
+                else
+                {
+                    <img src="@Model.LogoURL"
+                         alt="company-logo"
+                         class="d-block rounded"
+                         height="100"
+                         width="100"
+                         id="uploadedAvatar" />
+                }
+
                 <div class="button-wrapper">
                     <label asp-for="LogoURL" for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                         <span class="d-none d-sm-block">Upload new logo</span>
@@ -90,15 +103,15 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="FoundationDate" class="form-label">Foundation Date</label>
-                    <input asp-for="FoundationDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                    <input asp-for="FoundationDate" class="form-control" type="date" id="html5-date-input" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="ContractStartDate" class="form-label">Contract Start Date</label>
-                    <input asp-for="ContractStartDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                    <input asp-for="ContractStartDate" class="form-control" type="date"  id="html5-date-input" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="ContractEndDate" class="form-label">Contract End Date</label>
-                    <input asp-for="ContractEndDate" class="form-control" type="date" value="2000-01-01" id="html5-date-input" />
+                    <input asp-for="ContractEndDate" class="form-control" type="date"  id="html5-date-input" />
                 </div>
             </div>
             <div class="mt-2">
