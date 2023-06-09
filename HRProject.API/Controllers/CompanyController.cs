@@ -56,16 +56,7 @@ namespace HRProject.API.Controllers
                 var company = service.GetByDefault(x => x.CompanyName == newCompany.CompanyName && x.TaxNumber == newCompany.TaxNumber);
                 if (company is not null)
                 {
-                    //List<ValidationFailure> failures = new List<ValidationFailure>
-                    //{
-                    //    new ValidationFailure
-                    //    {
-                    //        ErrorMessage="The company already exists",
-                    //    },
-                    //};
-                  
-                    //result.Errors.AddRange(failures);
-                   
+
                     return BadRequest("The company already exists");
                 }
                 else

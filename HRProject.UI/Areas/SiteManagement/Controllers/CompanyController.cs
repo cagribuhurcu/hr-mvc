@@ -112,25 +112,35 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     if (!cevap.IsSuccessStatusCode)
                     {
                         var jsonResponse = await cevap.Content.ReadAsStringAsync();
-
-                        var errorResponse = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
-                        string errorMessage = "";
-                        if (errorResponse.Errors != null)
+                        
+                        if(!jsonResponse.Contains("The company already exists"))
                         {
-                            var errors = errorResponse.Errors;
-                            foreach (var error in errors)
+                            var errorResponseAll = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+                            string errorMessage = "";
+                            if (errorResponseAll.errors!=null)
                             {
-                                var errorMessages = (JArray)error.Value;
-                                foreach (var errorMessageToken in errorMessages)
+                                var errors = errorResponseAll.errors;
+                                foreach (var error in errors)
                                 {
-                                    errorMessage = errorMessageToken.ToString() + "\n";
-                                    ModelState.AddModelError("", errorMessage);
+                                    var errorMessages = (JArray)error.Value;
+                                    foreach (var errorMessageToken in errorMessages)
+                                    {
+                                        errorMessage = errorMessageToken.ToString() + "\n";
+                                        ModelState.AddModelError("", errorMessage);
+                                    }
                                 }
+
                             }
-                           
                         }
+                        else
+                        {
+                            ModelState.AddModelError("ExistingError","The company already exists");
                             ViewData["allmasseges"] = ModelState.ToList();
                             return View(company);
+                        }
+                        
+                         ViewData["allmasseges"] = ModelState.ToList();
+                         return View(company);
 
                     }
                     company.EmailAddress = company.CreateEmail(company.CompanyName);
@@ -201,12 +211,12 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     if (!response.IsSuccessStatusCode)
                     {
                         var jsonResponse = await response.Content.ReadAsStringAsync();
-                        var errorResponse = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+                        var errorResponseAll = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
 
                         string errorMessage = "";
-                        if (errorResponse.errors != null)
+                        if (errorResponseAll.errors != null)
                         {
-                            var errors = errorResponse.errors;
+                            var errors = errorResponseAll.errors;
                             foreach (var error in errors)
                             {
                                 var errorMessages = (JArray)error.Value;
