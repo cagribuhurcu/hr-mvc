@@ -73,8 +73,17 @@
                        autofocus />
             </div>
             <div class="mb-3 form-password-toggle">
-                <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">Password</label>
+                <div class="d-flex">
+                    <label class="form-label" for="password">
+                        Password  <a class="mx-1"
+                                     data-bs-toggle="tooltip"
+                                     data-bs-offset="0,4"
+                                     data-bs-html="true"
+                                     title="<i class='bx bx-lock-alt' style='color:#faf7f7'></i> <span>The password must contain at least one uppercase letter, one lowercase letter, one number and one special character.</span>">
+                            <i class='bx bx-help-circle'></i>
+                        </a>
+                    </label>
+                    
                 </div>
                 <div class="input-group input-group-merge">
                     <input asp-for="Password" type="password"
