@@ -44,7 +44,6 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateCompany([FromBody] Company newCompany)
         {
-            newCompany.EmailAddress = newCompany.CreateEmail(newCompany.CompanyName);
             CompanyValidator validator = new CompanyValidator();
             var result = validator.Validate(newCompany);
             if (!result.IsValid)
@@ -73,7 +72,6 @@ namespace HRProject.API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateCompany(int id, [FromBody] Company company)
         {
-            company.EmailAddress = company.CreateEmail(company.CompanyName);
             if (company.ContractEndDate <= DateTime.Now)
             {
                 company.IsActive = false;

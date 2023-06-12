@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HRProject.Entities.Entities
 {
-    public class Company:BaseEntity
+    public class Company : BaseEntity
     {
         public string? CompanyName { get; set; } //,boş geçilemez
 
@@ -17,7 +17,7 @@ namespace HRProject.Entities.Entities
         public string? TaxNumber { get; set; }
         public string? TaxAdministration { get; set; }
 
-        public string? LogoURL { get; set; } 
+        public string? LogoURL { get; set; }
 
         public string? PhoneNumber { get; set; } //10 hane, ,boş geçilemez
 
@@ -31,68 +31,6 @@ namespace HRProject.Entities.Entities
 
         public DateTime? ContractStartDate { get; set; } // validation: günümüz tarihinden büyük olamaz ,boş geçilemez
 
-        public DateTime? ContractEndDate
-        {
-            get;set;
-        }
-        //Email created method
-        public string CreateEmail(string companyname)
-        {
-            return $"info@{ConvertToEnglish(companyname).ToLower()}.com";
-        }
-        //ConvertToEnglish Method
-        private string ConvertToEnglish(string text)
-        {
-            StringBuilder convertedText = new StringBuilder();
-            foreach (char c in text)
-            {
-                convertedText.Append(ConvertCharacterToEnglish(c));
-            }
-            return convertedText.ToString();
-        }
-
-        private char ConvertCharacterToEnglish(char c)
-        {
-            switch (c)
-            {
-                case 'ı':
-                    return 'i';
-                case 'I':
-                    return 'i';
-                case 'İ':
-                    return 'I';
-                case 'ç':
-                    return 'c';
-                case 'Ç':
-                    return 'C';
-                case 'ş':
-                    return 's';
-                case 'Ş':
-                    return 'S';
-                case 'ğ':
-                    return 'g';
-                case 'Ğ':
-                    return 'G';
-                case 'ü':
-                    return 'u';
-                case 'Ü':
-                    return 'U';
-                case 'ö':
-                    return 'o';
-                case 'Ö':
-                    return 'O';
-                case 'â':
-                case 'Â':
-                case 'î':
-                case 'Î':
-                case 'û':
-                case 'Û':
-                    return 'a';
-                default:
-                    return c;
-            }
-        }
-
-
+        public DateTime? ContractEndDate { get; set; }
     }
 }

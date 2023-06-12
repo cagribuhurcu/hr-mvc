@@ -144,7 +144,6 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                          return View(company);
 
                     }
-                    company.EmailAddress = company.CreateEmail(company.CompanyName);
                     
                     if (!ModelState.IsValid)
                     {
@@ -232,7 +231,6 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                         ViewData["allmasseges"] = ModelState.ToList();
                         return View(company);
                     }
-                    company.EmailAddress = company.CreateEmail(company.CompanyName);
 
                     if (!ModelState.IsValid)
                     {
