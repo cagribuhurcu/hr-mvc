@@ -65,10 +65,23 @@
         </li>
 
         <li class="menu-item active">
-            <a asp-action="Index" asp-controller="Company" asp-area="SiteManagement" class="menu-link">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Layouts">Companies Operation</div>
+                <div data-i18n="Layouts">Company Operation</div>
             </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                  <a asp-area="SiteManagement" asp-controller="Company" asp-action="Index" class="menu-link">
+                    <div data-i18n="Without menu">Company List</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a asp-area="SiteManagement" asp-controller="Company" asp-action="CreateCompany" class="menu-link">
+                    <div data-i18n="Without menu">Create Company</div>
+                  </a>
+                </li>
+            </ul>
         </li>
 
         <!-- Layouts --> @*ŞİMDİLİK BURAYI YORUM SATIRINA ALDIM*@
