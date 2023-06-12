@@ -18,7 +18,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
     [Area("SiteManagement"), Authorize(Roles = "SiteManager")]
     public class CompanyController : Controller
     {
-        string baseURL = "https://hrprojectapi20230605125226.azurewebsites.net";
+        string baseURL = "https://localhost:7127";
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
 
@@ -62,7 +62,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpGet]
         public IActionResult CreateCompany()
         {
-            ViewBag.BaseLogoUrl = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
+            ViewBag.BaseLogoUrl = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
             return View();
         }
         public static string BackUpLogoURL;
@@ -76,13 +76,13 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             }
             if (files.Count == 0) //Foto seçilemez ise
             {
-                if(company.LogoURL!= "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg")
+                if(company.LogoURL!= "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png")
                 {
                     company.LogoURL = BackUpLogoURL;
                 }
                 else
                 {
-                    company.LogoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
+                    company.LogoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
                 }
                
             }
@@ -97,7 +97,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
                 else
                 {
-                    company.LogoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
+                    company.LogoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
                     ViewBag.PhotoMessage = returnedMessaage;
                     ModelState.AddModelError("", ViewBag.PhotoMessage);
 
@@ -194,7 +194,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
                 else
                 {
-                    company.LogoURL = "/Uploads/ef2fefcf_0dbb_4239_8b28_7f87983acf87.jpeg";
+                    company.LogoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
                     ViewBag.PhotoMessage = returnedMessaage;
                     ModelState.AddModelError("", ViewBag.PhotoMessage);
                 }

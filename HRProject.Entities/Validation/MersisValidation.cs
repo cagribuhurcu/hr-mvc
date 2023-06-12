@@ -11,33 +11,37 @@ namespace HRProject.Entities.Validation
     {
         public static bool IsMersisNoValid(string mersisNo)
         {
-            if (mersisNo.Length != 16)
+            if (!string.IsNullOrEmpty(mersisNo))
             {
-                return false;
-            }
-            else if(mersisNo.Length==16)
-            {
-                if (!mersisNo.StartsWith("0"))
+                if (mersisNo.Length != 16)
                 {
                     return false;
-
                 }
-                else
+                else if (mersisNo.Length == 16)
                 {
-                    string vergiNo = mersisNo.Substring(1, 10);
-                    if (!IsTaxNumber(vergiNo))
+                    if (!mersisNo.StartsWith("0"))
                     {
                         return false;
+
                     }
                     else
                     {
-                        if (mersisNo.EndsWith("00015") || mersisNo.EndsWith("00016") || mersisNo.EndsWith("00017"))
+                        string vergiNo = mersisNo.Substring(1, 10);
+                        if (!IsTaxNumber(vergiNo))
                         {
-                            return true;
+                            return false;
+                        }
+                        else
+                        {
+                            if (mersisNo.EndsWith("00015") || mersisNo.EndsWith("00016") || mersisNo.EndsWith("00017"))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
             }
+
             return false;
         }
     }
