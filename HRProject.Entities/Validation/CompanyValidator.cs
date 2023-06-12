@@ -25,9 +25,9 @@ namespace HRProject.Entities.Validation
             RuleFor(company => company.PhoneNumber).Must(BeAllDigits).WithMessage("The phone number must consist of numeric expressions.");
             RuleFor(company => company.Address).NotNull().WithMessage("Address cannot be null");
             RuleFor(company => company.TotalEmployees).GreaterThanOrEqualTo(0).WithMessage("Total number of employees must be greater than or equal to 0").NotNull().WithMessage("Total number of employee cannot be null");
-            RuleFor(company => company.FoundationDate).LessThanOrEqualTo(DateTime.Now).WithMessage("Founding date must be less than or equal to today").NotNull().WithMessage("Foundation Date cannot be null");
-            RuleFor(company => company.ContractStartDate).LessThanOrEqualTo(DateTime.Now).WithMessage("Conctract Start date must be less than or equal to today").NotNull().WithMessage("Contract Start Date cannot be null");
-            RuleFor(company => company.ContractEndDate).GreaterThan(c => c.ContractStartDate).WithMessage("Contract End Date must be greater than Contract Start Date").NotNull().WithMessage("Contract End Date cannot be null");
+            RuleFor(company => company.FoundationDate).GreaterThan(new DateTime(1990, 1, 1)).WithMessage("Foundation date cannot be less than 1990").NotNull().WithMessage("Foundation Date cannot be null");
+            RuleFor(company => company.ContractStartDate).GreaterThan(new DateTime(1990,1,1)).WithMessage("Contract start date cannot be less than 1990").NotNull().WithMessage("Contract Start Date cannot be null");
+            RuleFor(company => company.ContractEndDate).GreaterThan(c => c.ContractStartDate.Value.AddDays(30)).WithMessage("Contract End Date must be greater than Contract Start Date").NotNull().WithMessage("Contract End Date cannot be null");
         }
     }
 }
