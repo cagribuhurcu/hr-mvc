@@ -11,13 +11,14 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Security.Policy;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace HRProject.UI.Areas.SiteManagement.Controllers
 {
     [Area("SiteManagement"), Authorize(Roles = "SiteManager")]
     public class CompanyController : Controller
     {
-        string baseURL = "https://localhost:7127";
+        string baseURL = "https://hrprojectapi20230605125226.azurewebsites.net";
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
 
