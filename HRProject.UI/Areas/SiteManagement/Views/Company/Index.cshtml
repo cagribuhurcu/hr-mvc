@@ -9,15 +9,11 @@
 </div>
 
 <div class="card mx-4">
-    <h5 class="card-header">Company List</h5>
+    <h5 class="card-header d-flex justify-content-center">Company List</h5>
     <div class="table-responsive text-nowrap text-center">
-        <table class="table">
-            <caption class="ms-4">
-                List of Companies
-            </caption>
+        <table id="example" class="table table-striped">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Logo</th>
                     <th>Company Name</th>
                     <th>Title</th>
@@ -27,14 +23,10 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                @{
-                    int rowCount = 1;
-                }
+            <tbody class="mb-2">
                 @foreach (Company item in Model)
                 {
                     <tr>
-                        <th>@rowCount</th>
                         <td>
                             <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                                 <li data-bs-toggle="tooltip"
@@ -62,7 +54,6 @@
                             </div>
                         </td>
                     </tr>
-                    rowCount++;
                 }
             </tbody>
         </table>
@@ -106,6 +97,9 @@
 
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -198,6 +192,9 @@
                     }
                 });
             });
+        });
+        $(document).ready(function () {
+            $('#example').DataTable();
         });
 
 
