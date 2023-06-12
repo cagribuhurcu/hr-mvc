@@ -1,4 +1,5 @@
 ﻿@using HRProject.Entities.Enums;
+@using HRProject.UI.Helper;
 @model Company
 
 <form id="formAccountSettings" asp-action="CreateCompany" method="post" enctype="multipart/form-data">
@@ -61,15 +62,17 @@
                     <input asp-for="CompanyName" class="form-control" type="text" id="html5-text-input" />
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label asp-for="Title" class="form-label">Title</label>
-                    <select asp-for="Title" class="form-control" id="html5-text-input">
+                    <label for="Title">Title</label>
+                    <select asp-for="Title"  name="Title" class="form-control">
                         <option value="">Select Title</option>
                         @foreach (var title in Enum.GetValues(typeof(Titles)))
                         {
-                            <option value="@title">@title</option>
+                            var displayName = ((Titles)title).GetDisplayName();
+                            <option value="@title">@displayName</option>
                         }
                     </select>
                 </div>
+
                 <div class="mb-3 col-md-6">
                     <label asp-for="MERSISNo" class="form-label">
                         MERSIS No  <a class="mx-1"

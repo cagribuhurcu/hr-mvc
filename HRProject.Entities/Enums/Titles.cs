@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,21 +10,35 @@ namespace HRProject.Entities.Enums
 {
     public enum Titles
     {
-        [Description("Limited Company")]
-        LimitedCompany =1, //(Ltd.)
-        Incorporated, //(Inc.)
-        Corporation, //(Corp.)
-        Company, //(Co.)
+        [Display(Name = "Limited Company")]
+        LimitedCompany = 1,
+
+        [Display(Name = "Incorporated")]
+        Incorporated,
+
+        [Display(Name = "Corporation")]
+        Corporation,
+
+        [Display(Name = "Company")]
+        Company,
+
+        [Display(Name = "Partnership")]
         Partnership,
-        [Description("Sole Proprietorship")]
+
+        [Display(Name = "Sole Proprietorship")]
         SoleProprietorship,
-        [Description("Public Limited Company")]
-        PublicLimitedCompany, //(PLC)
-        [Description("Nonprofit Organization")]
+
+        [Display(Name = "Public Limited Company")]
+        PublicLimitedCompany,
+
+        [Display(Name = "Nonprofit Organization")]
         NonprofitOrganization,
-        Cooperative, //(Co-op)
-        [Description("Limited Liability Company")]
-        LimitedLiabilityCompany //(LLC)
+
+        [Display(Name = "Cooperative")]
+        Cooperative,
+
+        [Display(Name = "Limited Liability Company")]
+        LimitedLiabilityCompany
 
     }
 }
