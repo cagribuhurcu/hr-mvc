@@ -29,12 +29,13 @@ namespace HRProject.Entities.Entities
             }
             set
             {
-                quitDate = value; IsActive = !quitDate.HasValue;
+                quitDate = value; 
+                IsActive = !quitDate.HasValue;
             }
         }
 
         public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
 
         public int JobID { get; set; }
         public Job? Job { get; set; }
@@ -47,7 +48,7 @@ namespace HRProject.Entities.Entities
         public string PhoneNumber { get; set; }
 
         public decimal Salary { get; set; }
-        public string Password { get; set; }
+        public string? Password { get; set; }
         public Roles Role { get; set; }
 
         public string CreateEmail(string firstname, string lastname)

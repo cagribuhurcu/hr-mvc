@@ -1,4 +1,5 @@
 ﻿using HRProject.Entities.Entities;
+using HRProject.Entities.Validation;
 using HRProject.Repositories.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,33 @@ namespace HRProject.API.Controllers
         {
             var companyManager = service.GetById(id,t0 => t0.Company, t1 => t1.Job);
             return Ok(companyManager);
+        }
+
+        //Create
+
+        [HttpPost]
+        public IActionResult CreateCompanyManager([FromBody] CompanyManagerEntity companyManager)
+        {
+            companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName, companyManager.LastName);
+            CompanyManagerValidator validator = new CompanyManagerValidator();
+            var result = validator.Validate(companyManager);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+            else
+            {
+                var company = service.GetByDefault(x => x.IdentificationNumber == companyManager.IdentificationNumber);
+                if (company is not null)
+                {
+                    return BadRequest("The company manager already exist");
+                }
+                else
+                {
+                    service.Add(companyManager);
+                    return Ok(companyManager);
+                }
+            }
         }
     }
 }

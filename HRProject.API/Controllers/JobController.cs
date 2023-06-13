@@ -15,6 +15,15 @@ namespace HRProject.API.Controllers
             this.service = service;
         }
 
+        //Listele
+
+        [HttpGet]
+        public IActionResult GetAllJobs()
+        {
+            var jobs = service.GetAll();
+            return Ok(jobs);
+        }
+
         [HttpPost]
         public IActionResult CreateJob([FromBody] Job job)
         {

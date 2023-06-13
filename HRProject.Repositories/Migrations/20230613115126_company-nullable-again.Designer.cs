@@ -4,6 +4,7 @@ using HRProject.Repositories.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRProject.Repositories.Migrations
 {
     [DbContext(typeof(HRProjectContext))]
-    partial class HRProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20230613115126_company-nullable-again")]
+    partial class companynullableagain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,7 +270,7 @@ namespace HRProject.Repositories.Migrations
                         .IsRequired();
 
                     b.HasOne("HRProject.Entities.Entities.Job", "Job")
-                        .WithMany("CompanyManagers")
+                        .WithMany()
                         .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -296,8 +298,6 @@ namespace HRProject.Repositories.Migrations
 
             modelBuilder.Entity("HRProject.Entities.Entities.Job", b =>
                 {
-                    b.Navigation("CompanyManagers");
-
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
