@@ -1,5 +1,5 @@
-﻿@*@using HRProject.UI.Areas.SiteManagement.Models;
-@model List<CompanyManager>
+﻿@*@using HRProject.UI.Areas.CompanyManager.Models;*@
+@model List<CompanyManagerEntity>
 
 @{
     ViewData["Title"] = "Index";
@@ -62,7 +62,7 @@
     }
 </style>
 
-@foreach (CompanyManager item in Model)
+@foreach (CompanyManagerEntity item in Model)
 {
     <div class="card mt-4 mx-4">
         <div class="row no-gutters">
@@ -97,11 +97,9 @@
                     </h5>
                     <p class="card-text"><strong>Email: </strong> @item.EmailAddress</p>
                     <p class="card-text"><strong>Phone: </strong>(+90)<span class="bosluklu-nsp"> @item.PhoneNumber</span></p>
-                    <p class="card-text"><strong>Address: </strong> @item.Address</p>
-                    <p class="card-text"><strong>Job Title: </strong> @item.Job.Name</p>
-                    <p class="card-text"><strong>Department: </strong> @item.Department</p>
+                    <p class="card-text"><strong>Company Name : </strong> @item.Company.CompanyName</p>
                     <button class="btn btn-primary btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
-                    <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateUser" asp-route-id="@item.ID" class="btn btn-secondary">Update</a>
+                    <a asp-area="CompanyManager" asp-controller="CompanyManager" asp-action="UpdateCompanyManager" asp-route-id="@item.ID" class="btn btn-secondary">Update</a>
                 </div>
             </div>
         </div>
@@ -220,4 +218,3 @@
 }
 
 
-*@

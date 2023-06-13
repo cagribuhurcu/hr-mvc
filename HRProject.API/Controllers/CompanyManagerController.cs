@@ -20,7 +20,7 @@ namespace HRProject.API.Controllers
         [HttpGet]
         public IActionResult GetAllCompanyManagers()
         {
-            var companyManagers = service.GetAll();
+            var companyManagers = service.GetAll(t0 => t0.Company, t1 => t1.Job);
             return Ok(companyManagers);
         }
 
@@ -29,7 +29,7 @@ namespace HRProject.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetCompanyManagerById(int id)
         {
-            var companyManager = service.GetById(id);
+            var companyManager = service.GetById(id,t0 => t0.Company, t1 => t1.Job);
             return Ok(companyManager);
         }
     }

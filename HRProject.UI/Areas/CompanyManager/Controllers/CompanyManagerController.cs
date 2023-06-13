@@ -32,7 +32,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/User/GetAllCompanyManagers"))
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/CompanyManager/GetAllCompanyManagers"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
                     companyManagers = JsonConvert.DeserializeObject<List<CompanyManagerEntity>>(apiCevap);
@@ -53,20 +53,20 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
         }
 
 
-        //[HttpGet]
-        //public async Task<IActionResult> Detail(int id)
-        //{
-        //    User user = new User();
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        using (var cevap = await httpClient.GetAsync($"{baseURL}/api/User/GetUserById/{id}"))
-        //        {
-        //            string apiCevap = await cevap.Content.ReadAsStringAsync();
-        //            user = JsonConvert.DeserializeObject<List<User>>(apiCevap)[0];
-        //        }
-        //    }
-        //    return Json(user);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            CompanyManagerEntity companyManager = new CompanyManagerEntity();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/CompanyManager/GetCompanyManagerById/{id}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    companyManager = JsonConvert.DeserializeObject<List<CompanyManagerEntity>>(apiCevap)[0];
+                }
+            }
+            return Json(companyManager);
+        }
         //static User updateduser;
 
         //[HttpGet]
