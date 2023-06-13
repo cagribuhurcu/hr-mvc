@@ -15,24 +15,24 @@
 
         <!-- Account -->
         <div class="card-body">
-            <div class="d-flex align-items-start align-items-sm-center gap-4">   
-                @if (ViewBag.BaseLogoUrl!=null)
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                @if (ViewBag.BaseLogoUrl != null)
                 {
                     <img src="@ViewBag.BaseLogoUrl"
-                         alt="company-logo"
-                         class="d-block rounded"
-                         height="100"
-                         width="100"
-                    id="uploadedAvatar" />
+                     alt="company-logo"
+                     class="d-block rounded"
+                     height="100"
+                     width="100"
+                     id="uploadedAvatar" />
                 }
                 else
                 {
                     <img src="@Model.LogoURL"
-                         alt="company-logo"
-                         class="d-block rounded"
-                         height="100"
-                         width="100"
-                         id="uploadedAvatar" />
+                     alt="company-logo"
+                     class="d-block rounded"
+                     height="100"
+                     width="100"
+                     id="uploadedAvatar" />
                 }
 
                 <div class="button-wrapper">
@@ -63,7 +63,7 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="Title">Title</label>
-                    <select asp-for="Title"  name="Title" class="form-control">
+                    <select asp-for="Title" name="Title" class="form-control">
                         <option value="">Select Title</option>
                         @foreach (var title in Enum.GetValues(typeof(Titles)))
                         {
@@ -125,11 +125,11 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="ContractStartDate" class="form-label">Contract Start Date</label>
-                    <input asp-for="ContractStartDate" class="form-control" type="date"  id="html5-date-input" />
+                    <input asp-for="ContractStartDate" class="form-control" type="date" id="html5-date-input" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="ContractEndDate" class="form-label">Contract End Date</label>
-                    <input asp-for="ContractEndDate" class="form-control" type="date"  id="html5-date-input" />
+                    <input asp-for="ContractEndDate" class="form-control" type="date" id="html5-date-input" />
                 </div>
             </div>
             <div class="mt-2">
@@ -143,6 +143,8 @@
 
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#upload').change(function () {
@@ -154,6 +156,33 @@
                 }
 
                 reader.readAsDataURL(file);
+            });
+
+            $('#formAccountSettings').validate();
+
+            $('#formAccountSettings').submit(function (e) {
+                e.preventDefault();
+
+                if ($(this).valid()) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(function () {
+                        
+                        e.currentTarget.submit();
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Validation error',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
             });
         });
     </script>
