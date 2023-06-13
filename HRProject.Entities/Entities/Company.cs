@@ -9,6 +9,11 @@ namespace HRProject.Entities.Entities
 {
     public class Company : BaseEntity
     {
+
+        public Company()
+        {
+            companyManagers= new List<CompanyManager>();    
+        }
         public string? CompanyName { get; set; } //,boş geçilemez
 
         public Titles? Title { get; set; } //boş geçilemez
@@ -32,5 +37,7 @@ namespace HRProject.Entities.Entities
         public DateTime? ContractStartDate { get; set; } // validation: günümüz tarihinden büyük olamaz ,boş geçilemez
 
         public DateTime? ContractEndDate { get; set; }
+
+        public List<CompanyManager> companyManagers { get; set; }
     }
 }
