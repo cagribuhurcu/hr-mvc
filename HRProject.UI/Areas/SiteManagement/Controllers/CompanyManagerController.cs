@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Policy;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using HRProject.UI.Helper;
 
 namespace HRProject.UI.Areas.SiteManagement.Controllers
 {
@@ -65,6 +68,9 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCompanyManager(CompanyManagerEntity companyManager, List<IFormFile> files)
         {
+            companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName, companyManager.LastName);
+            companyManager.Password = PasswordGenerator.GeneratePassword();
+
             if (companyManager.QuitDate <= DateTime.Now)
             {
                 companyManager.IsActive = false;
@@ -146,6 +152,26 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                         ViewData["allmasseges"] = ModelState.ToList();
                         return View(companyManager);
                     }
+                }
+            }
+            string subject = "Hesap Oluşturuldu";
+            string body = $"Merhaba {companyManager.FirstName} senin için bir hesap oluşturduk \n Mailin = {companyManager.EmailAddress} ve Şifren : {companyManager.Password}";
+
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress("galaxyhrsystem@outlook.com");
+                mail.To.Add(companyManager.EmailAddress);
+                mail.Subject = subject;
+                mail.Body = body;
+                mail.IsBodyHtml = true;
+
+
+
+                using (SmtpClient smtp = new SmtpClient("smtp.office365.com", 587))
+                {
+                    smtp.Credentials = new NetworkCredential("galaxyhrsystem@outlook.com", "123ASD123");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
                 }
             }
 
