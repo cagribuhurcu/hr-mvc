@@ -120,7 +120,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
                         if (!jsonResponse.Contains("The company manager already exists"))
                         {
-                            var errorResponseAll = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+                            var errorResponseAll = JsonConvert.DeserializeObject<dynamic>(jsonResponse);//
                             string errorMessage = "";
                             if (errorResponseAll.errors != null)
                             {
@@ -175,7 +175,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","SiteManagement");
         }
     }
 }

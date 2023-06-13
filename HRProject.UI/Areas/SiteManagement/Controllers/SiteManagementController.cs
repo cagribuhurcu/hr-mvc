@@ -32,17 +32,17 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<User> users = new List<User>();
+            List<SiteManager> siteManagers = new List<SiteManager>();
 
             using (var httpClient = new HttpClient())
             {
-                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/User/GetAllUsers"))
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/SiteManager/GetAllSiteManagers"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    users = JsonConvert.DeserializeObject<List<User>>(apiCevap);
+                    siteManagers = JsonConvert.DeserializeObject<List<SiteManager>>(apiCevap);
                 }
             }
-            var newLoginClaim = new Claim("PhotoUrl", users[0].PhotoURL);
+            var newLoginClaim = new Claim("PhotoUrl", siteManagers[0].PhotoURL);
 
             var currentUser = HttpContext.User.Identity as ClaimsIdentity;
             var loginClaim = currentUser.FindFirst("PhotoUrl");
@@ -53,52 +53,52 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             }
             var newPrincipal = new ClaimsPrincipal(currentUser);
             await HttpContext.SignInAsync(newPrincipal);
-            return View(users);
+            return View(siteManagers);
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
-            User user = new User();
+            SiteManager siteManager = new SiteManager();
             using (var httpClient = new HttpClient())
             {
-                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/User/GetUserById/{id}"))
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/SiteManager/GetSiteManagerById/{id}"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    user = JsonConvert.DeserializeObject<List<User>>(apiCevap)[0];
+                    siteManager = JsonConvert.DeserializeObject<List<SiteManager>>(apiCevap)[0];
                 }
             }
-            return Json(user);
+            return Json(siteManager);
         }
-        static User updateduser;
+        static SiteManager updatedSiteManager;
 
         [HttpGet]
-        public async Task<IActionResult> UpdateUser(int id)
+        public async Task<IActionResult> UpdateSiteManager(int id)
         {
 
             using (var httpClient = new HttpClient())
             {
-                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/User/GetUserById/{id}"))
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/SiteManager/GetSiteManagerById/{id}"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    updateduser = JsonConvert.DeserializeObject<List<User>>(apiCevap)[0];
+                    updatedSiteManager = JsonConvert.DeserializeObject<List<SiteManager>>(apiCevap)[0];
                 }
             }
 
-            UpdateUserVM vm = _mapper.Map<UpdateUserVM>(updateduser);
+            UpdateSiteManagerVM vm = _mapper.Map<UpdateSiteManagerVM>(updatedSiteManager);
 
             return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateUser(UpdateUserVM uservm, List<IFormFile> files)
+        public async Task<IActionResult> UpdateSiteManager(UpdateSiteManagerVM uservm, List<IFormFile> files)
         {
 
 
             if (files.Count == 0) //Foto seçilemez ise
             {
-                uservm.PhotoUrl = updateduser.PhotoURL;
+                uservm.PhotoUrl = updatedSiteManager.PhotoURL;
             }
             else
             {
@@ -122,12 +122,12 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                updateduser.PhotoURL = uservm.PhotoUrl;
-                updateduser.Address = uservm.Address;
-                updateduser.PhoneNumber = uservm.PhoneNumber;
-                StringContent content = new StringContent(JsonConvert.SerializeObject(updateduser), Encoding.UTF8, "application/json");
+                updatedSiteManager.PhotoURL = uservm.PhotoUrl;
+                updatedSiteManager.Address = uservm.Address;
+                updatedSiteManager.PhoneNumber = uservm.PhoneNumber;
+                StringContent content = new StringContent(JsonConvert.SerializeObject(updatedSiteManager), Encoding.UTF8, "application/json");
 
-                using (var response = await httpClient.PutAsync($"{baseURL}/api/User/UpdateUser/{updateduser.ID}", content))
+                using (var response = await httpClient.PutAsync($"{baseURL}/api/SiteManager/UpdateSiteManager/{updatedSiteManager.ID}", content))
                 {
 
                     if (!response.IsSuccessStatusCode)

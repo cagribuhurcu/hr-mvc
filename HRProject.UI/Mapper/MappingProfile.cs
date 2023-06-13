@@ -8,10 +8,10 @@ namespace HRProject.UI.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<User, UserVM>()
+            CreateMap<SiteManager, SiteManagerVM>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName}{src.MiddleName}{src.LastName}{src.SecondLastName}"));
 
-            CreateMap<User, UpdateUserVM>().ReverseMap();
+            CreateMap<SiteManager, UpdateSiteManagerVM>().ReverseMap();
             CreateMap<Company, Company>().ReverseMap();
         }
     }

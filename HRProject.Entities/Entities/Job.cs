@@ -11,13 +11,13 @@ namespace HRProject.Entities.Entities
     {
         public Job()
         {
-            Users = new List<User>();
+            siteManagers = new List<SiteManager>();
             CompanyManagers = new List<CompanyManagerEntity>();
         }
 
         public string Name { get; set; }
         public Departments Department { get; set; }
-        public List<User> Users { get; set; }
+        public List<SiteManager> siteManagers { get; set; }
         public List<CompanyManagerEntity> CompanyManagers { get; set; }
     }
 }

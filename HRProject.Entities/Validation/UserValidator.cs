@@ -19,7 +19,7 @@ namespace HRProject.Entities.Validation
             //RuleFor(user => user.HireDate).LessThan(x => x.QuitDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
             RuleFor(user => user.QuitDate).GreaterThan(x => x.HireDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
             RuleFor(user => user.Department).NotNull().WithMessage("Departmant cannot be null");
-            RuleFor(user => user.JobID).NotNull().WithMessage("JobID cannot be null");
+            //RuleFor(user => user.JobID).NotNull().WithMessage("JobID cannot be null");
             RuleFor(user => user.Address).NotNull().WithMessage("Address cannot be null").NotEmpty().WithMessage("Address cannot be empty");
             RuleFor(user => user.PhoneNumber).Length(10).WithMessage("The length of the Phone number must be 10 digits.");
             RuleFor(user => user.PhoneNumber).Must(BeAllDigits).WithMessage("The phone number must consist of numeric expressions.");

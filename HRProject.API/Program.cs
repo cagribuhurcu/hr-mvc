@@ -35,13 +35,13 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<HRProjectContext>();
 
-    // Veritabanýný oluþtur ve seed iþlemini gerçekleþtir (yalnýzca bir kez yapýlacak)
-    if (context.Jobs.Count() == 0 && context.Users.Count() == 0)
-    {
-        context.Database.EnsureCreated();
-        SeedData.Initialize(context);
-        context.SaveChanges();
-    }
+    //// Veritabanýný oluþtur ve seed iþlemini gerçekleþtir (yalnýzca bir kez yapýlacak)
+    //if (context.Jobs.Count() == 0 && context.Users.Count() == 0)
+    //{
+    //    context.Database.EnsureCreated();
+    //    SeedData.Initialize(context);
+    //    context.SaveChanges();
+    //}
 }
 
 // Configure the HTTP request pipeline.

@@ -4,7 +4,7 @@
 
 namespace HRProject.Repositories.Migrations
 {
-    public partial class jobupdate : Migration
+    public partial class deneme2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

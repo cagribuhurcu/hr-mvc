@@ -1,6 +1,6 @@
 ﻿namespace HRProject.UI.Areas.SiteManagement.Models
 {
-    public class UpdateUserVM
+    public class UpdateSiteManagerVM
     {
         public string? PhotoUrl { get; set; }
 

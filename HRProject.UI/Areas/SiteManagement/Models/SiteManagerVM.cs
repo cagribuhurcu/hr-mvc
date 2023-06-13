@@ -3,7 +3,7 @@ using HRProject.Entities.Enums;
 
 namespace HRProject.UI.Areas.SiteManagement.Models
 {
-    public class UserVM
+    public class SiteManagerVM
     {
         public int ID { get; set; }
         public string? PhotoURL { get; set; }

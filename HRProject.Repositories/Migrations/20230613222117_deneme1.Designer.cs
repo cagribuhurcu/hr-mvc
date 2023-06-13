@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRProject.Repositories.Migrations
 {
     [DbContext(typeof(HRProjectContext))]
-    [Migration("20230613090110_companyentity")]
-    partial class companyentity
+    [Migration("20230613222117_deneme1")]
+    partial class deneme1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -131,6 +131,10 @@ namespace HRProject.Repositories.Migrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -140,6 +144,9 @@ namespace HRProject.Repositories.Migrations
 
                     b.Property<DateTime?>("QuitDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
@@ -153,7 +160,91 @@ namespace HRProject.Repositories.Migrations
 
                     b.HasIndex("JobID");
 
-                    b.ToTable("CompanyManagerEntity");
+                    b.ToTable("CompanyManagers");
+                });
+
+            modelBuilder.Entity("HRProject.Entities.Entities.Employee", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BirthPlace")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Department")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdentificationNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("JobID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("QuitDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("SecondLastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("JobID");
+
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("HRProject.Entities.Entities.Job", b =>
@@ -179,7 +270,7 @@ namespace HRProject.Repositories.Migrations
                     b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("HRProject.Entities.Entities.User", b =>
+            modelBuilder.Entity("HRProject.Entities.Entities.SiteManager", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -252,13 +343,32 @@ namespace HRProject.Repositories.Migrations
 
                     b.HasIndex("JobID");
 
-                    b.ToTable("Users");
+                    b.ToTable("SiteManagers");
                 });
 
             modelBuilder.Entity("HRProject.Entities.Entities.CompanyManagerEntity", b =>
                 {
                     b.HasOne("HRProject.Entities.Entities.Company", "Company")
                         .WithMany("companyManagers")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRProject.Entities.Entities.Job", "Job")
+                        .WithMany("CompanyManagers")
+                        .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Job");
+                });
+
+            modelBuilder.Entity("HRProject.Entities.Entities.Employee", b =>
+                {
+                    b.HasOne("HRProject.Entities.Entities.Company", "Company")
+                        .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -274,10 +384,10 @@ namespace HRProject.Repositories.Migrations
                     b.Navigation("Job");
                 });
 
-            modelBuilder.Entity("HRProject.Entities.Entities.User", b =>
+            modelBuilder.Entity("HRProject.Entities.Entities.SiteManager", b =>
                 {
                     b.HasOne("HRProject.Entities.Entities.Job", "Job")
-                        .WithMany("Users")
+                        .WithMany("siteManagers")
                         .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -292,7 +402,9 @@ namespace HRProject.Repositories.Migrations
 
             modelBuilder.Entity("HRProject.Entities.Entities.Job", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("CompanyManagers");
+
+                    b.Navigation("siteManagers");
                 });
 #pragma warning restore 612, 618
         }

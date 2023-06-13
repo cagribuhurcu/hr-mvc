@@ -1,5 +1,5 @@
 ﻿@using HRProject.UI.Areas.SiteManagement.Models;
-@model List<User>
+@model List<SiteManager>
 
 @{
     ViewData["Title"] = "Index";
@@ -62,7 +62,7 @@
     }
 </style>
 
-@foreach (User item in Model)
+@foreach (SiteManager item in Model)
 {
     <div class="card mt-4 mx-4">
         <div class="row no-gutters">
@@ -101,7 +101,7 @@
                     <p class="card-text"><strong>Job Title: </strong> @item.Job.Name</p>
                     <p class="card-text"><strong>Department: </strong> @item.Department</p>
                     <button class="btn btn-primary btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
-                    <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateUser" asp-route-id="@item.ID" class="btn btn-secondary">Update</a>
+                    <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateSiteManager" asp-route-id="@item.ID" class="btn btn-secondary">Update</a>
                 </div>
             </div>
         </div>

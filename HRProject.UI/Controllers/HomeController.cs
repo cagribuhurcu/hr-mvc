@@ -34,7 +34,7 @@ namespace HRProject.UI.Controllers
             User logged = new User();
             using (var httpClient = new HttpClient())
             {
-                using (var answ = await httpClient.GetAsync($"{baseURL}/api/User/Login?email={loginVM.EmailAddress}&password={loginVM.Password}"))
+                using (var answ = await httpClient.GetAsync($"{baseURL}/api/SiteManager/Login?email={loginVM.EmailAddress}&password={loginVM.Password}"))
                 {
                     if (!answ.IsSuccessStatusCode)
                     {

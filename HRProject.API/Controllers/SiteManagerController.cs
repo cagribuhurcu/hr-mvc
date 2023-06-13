@@ -8,11 +8,11 @@ namespace HRProject.API.Controllers
 
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class SiteManagerController : ControllerBase
     {
-        private readonly IGenericRepository<User> service;
+        private readonly IGenericRepository<SiteManager> service;
 
-        public UserController(IGenericRepository<User> service)
+        public SiteManagerController(IGenericRepository<SiteManager> service)
         {
             this.service = service;
         }
@@ -20,59 +20,59 @@ namespace HRProject.API.Controllers
         //Listele
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllSiteManagers()
         {
-            var users = service.GetAll(t0 => t0.Job);
-            return Ok(users);
+            var siteManagers = service.GetAll(t0 => t0.Job);
+            return Ok(siteManagers);
         }
 
         //Site Yöneticisi Özet Bilgileri
 
         [HttpGet("{id}")]
-        public IActionResult GetUserById(int id)
+        public IActionResult GetSiteManagerById(int id)
         {
-            var user = service.GetById(id, t0 => t0.Job);
-            return Ok(user);
+            var siteManager = service.GetById(id, t0 => t0.Job);
+            return Ok(siteManager);
         }
 
         //Güncelleme
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
+        public IActionResult UpdateSiteManager(int id, [FromBody] SiteManager siteManager)
         {
-            if (user.QuitDate != null)
+            if (siteManager.QuitDate != null)
             {
-                user.IsActive = false;
+                siteManager.IsActive = false;
             }
             UserValidator validator = new UserValidator();
-            var result = validator.Validate(user);
+            var result = validator.Validate(siteManager);
             if (!result.IsValid)
             {
                 return BadRequest(result.Errors);
             }
             else
             {
-                service.Update(user);
-                return Ok(user);
+                service.Update(siteManager);
+                return Ok(siteManager);
             }
 
         }
         //Create
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] User user)
+        public IActionResult CreateSiteManager([FromBody] SiteManager siteManager)
         {
-            user.EmailAddress = user.CreateEmail(user.FirstName, user.LastName);
+            siteManager.EmailAddress = siteManager.CreateEmail(siteManager.FirstName, siteManager.LastName);
             UserValidator validator = new UserValidator();
-            var result = validator.Validate(user);
+            var result = validator.Validate(siteManager);
             if (!result.IsValid)
             {
                 return BadRequest(result.Errors);
             }
             else
             {
-                service.Add(user);
-                return Ok(user);
+                service.Add(siteManager);
+                return Ok(siteManager);
             }
         }
 

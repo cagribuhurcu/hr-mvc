@@ -1,5 +1,4 @@
-﻿using HRProject.Entities.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -8,22 +7,18 @@ using System.Threading.Tasks;
 
 namespace HRProject.Entities.Entities
 {
-    public class Employee : User
+    public class SiteManager : User
     {
         [ForeignKey("Job")]
         public int JobID { get; set; }
         public Job? Job { get; set; }
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
-        public decimal Salary { get; set; }
 
+        //Email Create Method for SiteManager
 
-        //Create email for employee
         public string CreateEmail(string firstname, string lastname)
         {
-            return $"{ConvertToEnglish(firstname).ToLower()}.{ConvertToEnglish(lastname).ToLower()}@bilgeadamboost.com";
+            return $"{ConvertToEnglish(firstname).ToLower()}.{ConvertToEnglish(lastname).ToLower()}@bilgeadam.com";
         }
-
         private string ConvertToEnglish(string text)
         {
             StringBuilder convertedText = new StringBuilder();
@@ -75,6 +70,5 @@ namespace HRProject.Entities.Entities
                     return c;
             }
         }
-
     }
 }
