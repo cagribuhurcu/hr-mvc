@@ -12,7 +12,7 @@ namespace HRProject.Entities.Entities
 
         public Company()
         {
-            companyManagers= new List<CompanyManager>();    
+            companyManagers= new List<CompanyManagerEntity>();    
         }
         public string? CompanyName { get; set; } //,boş geçilemez
 
@@ -38,6 +38,6 @@ namespace HRProject.Entities.Entities
 
         public DateTime? ContractEndDate { get; set; }
 
-        public List<CompanyManager> companyManagers { get; set; }
+        public List<CompanyManagerEntity> companyManagers { get; set; }
     }
 }

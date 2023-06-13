@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HRProject.Entities.Entities
 {
-    public class CompanyManager: BaseEntity
+    public class CompanyManagerEntity: BaseEntity
     {
         public string? PhotoURL { get; set; }
 
