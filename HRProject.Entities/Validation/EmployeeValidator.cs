@@ -29,11 +29,11 @@ namespace HRProject.Entities.Validation
             RuleFor(companymanager => companymanager.PhoneNumber).Must(BeAllDigits).WithMessage("The phone number must consist of numeric expressions.");
             RuleFor(companymanager => companymanager.IdentificationNumber).Must(IdentificationNumberVerify).WithMessage("Wrong Identification Number");
             RuleFor(companymanager => companymanager.Address).MaximumLength(100).WithMessage("Address field is cannot more than 100 characters");
-            //RuleFor(companymanager => companymanager.Password)
-            //.NotEmpty().WithMessage("Password cannot be empty")
-            //.MinimumLength(8).WithMessage("Password must contain at least 8 characters.")
-            //.Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$")
-            //.WithMessage("The password must contain at least one uppercase letter, one lowercase letter, one number and one special character.");
+            RuleFor(companymanager => companymanager.Password)
+            .NotEmpty().WithMessage("Password cannot be empty")
+            .MinimumLength(8).WithMessage("Password must contain at least 8 characters.")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$")
+            .WithMessage("The password must contain at least one uppercase letter, one lowercase letter, one number and one special character.");
             RuleFor(companymanager => companymanager.Salary).NotNull().WithMessage("Salary cannot be null").GreaterThan(0).WithMessage("Salary cannot be equal to or less than 0");
         }
     }
