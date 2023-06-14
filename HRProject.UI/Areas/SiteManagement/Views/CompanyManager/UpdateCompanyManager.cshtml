@@ -105,12 +105,12 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="Department">Department</label>
-                    <select asp-for="Department" name="Title" class="form-control">
+                    <select asp-for="Department" name="Department" class="form-control">
                         <option value="">Select Department</option>
-                        @foreach (var departments in Enum.GetValues(typeof(Departments)))
+                        @foreach (var department in Enum.GetValues(typeof(Departments)))
                         {
-                            var displayName = ((Departments)departments).GetDisplayName();
-                            <option value="@departments">@displayName</option>
+                            var displayName = ((Departments)department).GetDisplayName();
+                            <option value="@department">@displayName</option>
                         }
                     </select>
                 </div>

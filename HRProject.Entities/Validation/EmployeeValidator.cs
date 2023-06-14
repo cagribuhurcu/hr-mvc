@@ -18,7 +18,7 @@ namespace HRProject.Entities.Validation
             RuleFor(companymanager => companymanager.LastName).NotEmpty().WithMessage("LastName cannot be empty").NotNull().WithMessage("LastName cannot be null");
             RuleFor(companymanager => companymanager.FirstName).NotEmpty().WithMessage("FirstName cannot be empty").NotNull().WithMessage("FirstName cannot be null");
             RuleFor(companymanager => companymanager.BirthPlace).NotEmpty().WithMessage("Birth Place cannot be empty").NotNull().WithMessage("Birth Place cannot be null");
-            RuleFor(companymanager => companymanager.BirthDate).LessThan(x => x.HireDate.AddYears(-18)).WithMessage("Unable to enter employment before the age of 18").NotNull().WithMessage("Birth Date cannot be null").NotEmpty().WithMessage("Birth Date cannot be empty");
+            //RuleFor(companymanager => companymanager.BirthDate).LessThan(x => x.HireDate.AddYears(-18)).WithMessage("Unable to enter employment before the age of 18").NotNull().WithMessage("Birth Date cannot be null").NotEmpty().WithMessage("Birth Date cannot be empty");
             RuleFor(companymanager => companymanager.IdentificationNumber).Length(11).WithMessage("The length of the Identification number must be 11 digits.");
             //RuleFor(companymanager => companymanager.HireDate).LessThan(x => x.QuitDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
             RuleFor(companymanager => companymanager.QuitDate).GreaterThan(x => x.HireDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");

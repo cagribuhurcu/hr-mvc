@@ -40,7 +40,10 @@ namespace HRProject.API.Controllers
         [HttpPost]
         public IActionResult CreateCompanyManager([FromBody] CompanyManagerEntity companyManager)
         {
-            companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName, companyManager.LastName);
+            if (companyManager.FirstName != null && companyManager.LastName != null)
+            {
+                companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName, companyManager.MiddleName, companyManager.LastName);
+            }
             CompanyManagerValidator validator = new CompanyManagerValidator();
             var result = validator.Validate(companyManager);
             if (!result.IsValid)

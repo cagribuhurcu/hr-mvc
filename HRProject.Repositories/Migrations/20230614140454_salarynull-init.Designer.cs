@@ -4,6 +4,7 @@ using HRProject.Repositories.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRProject.Repositories.Migrations
 {
     [DbContext(typeof(HRProjectContext))]
-    partial class HRProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20230614140454_salarynull-init")]
+    partial class salarynullinit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,7 +96,7 @@ namespace HRProject.Repositories.Migrations
                     b.Property<string>("BirthPlace")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CompanyId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Department")
@@ -115,7 +117,7 @@ namespace HRProject.Repositories.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("JobID")
+                    b.Property<int>("JobID")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
@@ -327,11 +329,15 @@ namespace HRProject.Repositories.Migrations
                 {
                     b.HasOne("HRProject.Entities.Entities.Company", "Company")
                         .WithMany("companyManagers")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HRProject.Entities.Entities.Job", "Job")
                         .WithMany("CompanyManagers")
-                        .HasForeignKey("JobID");
+                        .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 

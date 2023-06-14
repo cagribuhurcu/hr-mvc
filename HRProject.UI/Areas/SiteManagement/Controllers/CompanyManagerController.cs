@@ -86,7 +86,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
 
             ViewBag.Jobs = jobs;
             ViewBag.CompanyName = companies;
-            ViewBag.BaseLogoUrl = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
+            ViewBag.BaseLogoUrl = "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png";
             return View();
         }
 
@@ -95,7 +95,10 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCompanyManager(CompanyManagerEntity companyManager, List<IFormFile> files)
         {
-            companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName, companyManager.LastName);
+            if(companyManager.FirstName!=null && companyManager.LastName != null)
+            {
+                companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName,companyManager.MiddleName, companyManager.LastName);
+            }
             companyManager.Password = PasswordGenerator.GeneratePassword();
 
             if (companyManager.QuitDate <= DateTime.Now)
@@ -104,13 +107,13 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             }
             if (files.Count == 0) //Foto seçilemez ise
             {
-                if (companyManager.PhotoURL != "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png")
+                if (companyManager.PhotoURL != "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png")
                 {
                     companyManager.PhotoURL = BackUpPhotoURL;
                 }
                 else
                 {
-                    companyManager.PhotoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
+                    companyManager.PhotoURL = "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png";
                 }
 
             }
@@ -273,7 +276,8 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     ModelState.AddModelError("", ViewBag.PhotoMessage);
                 }
             }
-
+            ViewBag.Jobss = jobss;
+            ViewBag.CompanyNamee = companiess;
             using (var httpClient = new HttpClient())
             {
                 updatedCompanyManager = _mapper.Map<CompanyManagerEntity>(companyManager);
