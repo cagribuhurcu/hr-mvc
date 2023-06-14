@@ -41,6 +41,9 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     companies = JsonConvert.DeserializeObject<List<Company>>(apiCevap);
                 }
             }
+
+            ViewBag.mssg = TempData["mssg"] as string;
+
             return View(companies);
         }
 
@@ -152,6 +155,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     }
                 }
             }
+            TempData["mssg"] = "Add successful!";
             return RedirectToAction("Index");
         }
 
@@ -239,7 +243,8 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                     }
                 }
             }
-            
+
+            TempData["mssg"] = "Update successful!";
             return RedirectToAction("Index");
         }
     }

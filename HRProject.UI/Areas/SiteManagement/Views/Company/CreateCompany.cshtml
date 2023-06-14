@@ -143,8 +143,6 @@
 
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#upload').change(function () {
@@ -156,33 +154,6 @@
                 }
 
                 reader.readAsDataURL(file);
-            });
-
-            $('#formAccountSettings').validate();
-
-            $('#formAccountSettings').submit(function (e) {
-                e.preventDefault();
-
-                if ($(this).valid()) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 3000
-                    }).then(function () {
-                        
-                        e.currentTarget.submit();
-                    });
-                } else {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Validation error',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
             });
         });
     </script>
