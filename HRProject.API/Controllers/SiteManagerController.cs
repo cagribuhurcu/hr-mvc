@@ -11,10 +11,14 @@ namespace HRProject.API.Controllers
     public class SiteManagerController : ControllerBase
     {
         private readonly IGenericRepository<SiteManager> service;
+        private readonly IGenericRepository<CompanyManagerEntity> companyManagerService;
+        private readonly IGenericRepository<Employee> employeeService;
 
-        public SiteManagerController(IGenericRepository<SiteManager> service)
+        public SiteManagerController(IGenericRepository<SiteManager> service, IGenericRepository<CompanyManagerEntity> companyManagerService, IGenericRepository<Employee> employeeService)
         {
             this.service = service;
+            this.companyManagerService = companyManagerService;
+            this.employeeService = employeeService;
         }
 
         //Listele
@@ -81,7 +85,25 @@ namespace HRProject.API.Controllers
         {
             if (service.Any(x => x.EmailAddress == email))
             {
-                User loggeduser = service.GetByDefault(x => x.EmailAddress == email && x.Password == password);
+                SiteManager loggeduser = service.GetByDefault(x => x.EmailAddress == email && x.Password == password);
+                if (loggeduser != null)
+                    return Ok(loggeduser);
+
+                else
+                    return BadRequest("Email Address or Password is incorrect!");
+            }
+            else if (companyManagerService.Any(x => x.EmailAddress == email))
+            {
+                CompanyManagerEntity loggeduser = companyManagerService.GetByDefault(x => x.EmailAddress == email && x.Password == password);
+                if (loggeduser != null)
+                    return Ok(loggeduser);
+
+                else
+                    return BadRequest("Email Address or Password is incorrect!");
+            }
+            else if (employeeService.Any(x => x.EmailAddress == email))
+            {
+                User loggeduser = employeeService.GetByDefault(x => x.EmailAddress == email && x.Password == password);
                 if (loggeduser != null)
                     return Ok(loggeduser);
 

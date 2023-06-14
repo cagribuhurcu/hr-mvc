@@ -80,11 +80,11 @@ namespace HRProject.UI.Controllers
             switch (logged.Role)
             {
                 case Entities.Enums.Roles.CompanyManager:
-                    return RedirectToAction("Index", "Home", new { Area = "CompanyManager" }); //Düzeltilecek
+                    return RedirectToAction("Index", "CompanyManager", new { Area = "CompanyManager" }); 
                 case Entities.Enums.Roles.SiteManager:
                     return RedirectToAction("Index", "SiteManagement", new { Area = "SiteManagement" });
                 case Entities.Enums.Roles.Employee:
-                    return RedirectToAction("Index", "Home", new { Area = "User" }); //Düzeltilecek
+                    return RedirectToAction("Index", "Employment", new { Area = "Employment" }); //Düzeltilecek
                 default:
                     return View(loginVM);
             }
