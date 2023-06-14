@@ -13,6 +13,7 @@ namespace HRProject.UI.Mapper
 
             CreateMap<SiteManager, UpdateSiteManagerVM>().ReverseMap();
             CreateMap<Company, Company>().ReverseMap();
+            CreateMap<CompanyManagerEntity, CompanyManagerEntity>().ReverseMap();
         }
     }
 }

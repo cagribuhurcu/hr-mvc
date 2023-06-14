@@ -61,5 +61,28 @@ namespace HRProject.API.Controllers
                 }
             }
         }
+
+        //Update
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCompanyManager(int id, [FromBody] CompanyManagerEntity companyManager)
+        {
+            if (companyManager.QuitDate <= DateTime.Now)
+            {
+                companyManager.IsActive = false;
+            }
+            CompanyManagerValidator validator = new CompanyManagerValidator();
+            var result = validator.Validate(companyManager);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+            else
+            {
+                service.Update(companyManager);
+                return Ok(companyManager);
+            }
+
+        }
     }
 }

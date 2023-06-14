@@ -1,0 +1,168 @@
+﻿
+
+@using HRProject.Entities.Enums;
+@using HRProject.UI.Helper;
+@model CompanyManagerEntity
+
+<form id="formAccountSettings" asp-action="UpdateCompanyManager" method="post" enctype="multipart/form-data">
+    <div class="card my-4 mx-4">
+        <h5 class="card-header">Update Company Manager</h5>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert" asp-validation-summary="All">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Account -->
+        <div class="card-body">
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img src="@Model.PhotoURL"
+                     alt="company-logo"
+                     class="d-block rounded"
+                     height="100"
+                     width="100"
+                     id="uploadedAvatar" />
+                <div class="button-wrapper">
+                    <label asp-for="PhotoURL" for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new logo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input asp-for="PhotoURL" type="file" name="files"
+                               id="upload"
+                               class="account-file-input"
+                               hidden
+                               accept="image/png, image/jpeg" />
+                    </label>
+                    <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                        <i class="bx bx-reset d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Reset</span>
+                    </button>
+
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 4MB</p>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0" />
+        <div class="card-body">
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label asp-for="FirstName" class="form-label">First Name</label>
+                    <input asp-for="FirstName" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="MiddleName" class="form-label">Middle Name</label>
+                    <input asp-for="MiddleName" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="LastName" class="form-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="SecondLastName" class="form-label">Second Last Name</label>
+                    <input asp-for="SecondLastName" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="BirthDate" class="form-label">Birthdate</label>
+                    <input asp-for="BirthDate" class="form-control" type="date" id="html5-number-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="BirthPlace" class="form-label">Birth Place</label>
+                    <input asp-for="BirthPlace" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="IdentificationNumber" class="form-label">Identification Number</label>
+                    <input asp-for="IdentificationNumber" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="HireDate" class="form-label">Hire Date</label>
+                    <input asp-for="HireDate" class="form-control" type="date" id="html5-date-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="QuitDate" class="form-label">Quit Date</label>
+                    <input asp-for="QuitDate" class="form-control" type="date" id="html5-date-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="CompanyId" class="form-label">Company</label>
+                    <select asp-for="CompanyId" class="form-control" id="html5-number-input">
+                        <option value="">Select Company</option>
+                        @foreach (Company company in ViewBag.CompanyNamee)
+                        {
+                            <option value="@company.ID">@company.CompanyName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="JobID" class="form-label">Job</label>
+                    <select asp-for="JobID" class="form-control" id="html5-number-input">
+                        <option value="">Select Job</option>
+                        @foreach (Job job in ViewBag.Jobss)
+                        {
+                            <option value="@job.ID">@job.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="Department">Department</label>
+                    <select asp-for="Department" name="Title" class="form-control">
+                        <option value="">Select Department</option>
+                        @foreach (var departments in Enum.GetValues(typeof(Departments)))
+                        {
+                            var displayName = ((Departments)departments).GetDisplayName();
+                            <option value="@departments">@displayName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="EmailAddress" class="form-label">Email</label>
+                    <input asp-for="EmailAddress" class="form-control" type="email" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Address" class="form-label">Address</label>
+                    <input asp-for="Address" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                    <div class="input-group input-group-merge">
+                        <span class="input-group-text">TR (+90)</span>
+                        <input asp-for="PhoneNumber" type="tel"
+                               id="phoneNumber"
+                               name="phoneNumber"
+                               class="form-control" />
+                    </div>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Salary" class="form-label">Salary</label>
+                    <input asp-for="Salary" class="form-control" type="text" id="html5-text-input" />
+                </div>
+                
+            </div>
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary me-2">Update</button>
+                <a asp-action="Index" asp-controller="CompanyManager" asp-area="SiteManagement" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </div>
+        <!-- /Account -->
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#upload').change(function () {
+                var file = $(this)[0].files[0];
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#uploadedAvatar').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+}
+
+
+
