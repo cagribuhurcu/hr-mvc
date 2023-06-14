@@ -28,9 +28,35 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             this.environment = environment;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<CompanyManagerEntity> companyManager = new List<CompanyManagerEntity>();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/CompanyManager/GetAllCompanyManagers"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    companyManager = JsonConvert.DeserializeObject<List<CompanyManagerEntity>>(apiCevap);
+                }
+            }
+
+            return View(companyManager);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            CompanyManagerEntity companyManager = new CompanyManagerEntity();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/CompanyManager/GetCompanyManagerById/{id}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    companyManager = JsonConvert.DeserializeObject<List<CompanyManagerEntity>>(apiCevap)[0];
+                }
+            }
+            return Json(companyManager);
         }
 
         public static List<Company> companies;
