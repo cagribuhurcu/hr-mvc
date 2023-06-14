@@ -45,6 +45,8 @@
                     <p><strong>Department:</strong> <span id="departmentBasic"></span></p>
                     <p><strong>Job :</strong> <span id="jobIDBasic"></span></p>
                     <p><strong>Role:</strong> <span id="roleBasic"></span></p>
+                    <p><strong>Company :</strong> <span id="companyBasic"></span></p>
+                    <p><strong>Salary :</strong> <span id="salaryBasic"></span></p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -196,6 +198,8 @@
                         $('#roleBasic').text(roleText);
                         $('#idnumberBasic').text(response.identificationNumber);
                         $('#bplaceBasic').text(response.birthPlace);
+                        $('#companyBasic').text(response.company.companyName);
+                        $('#salaryBasic').text(response.salary);
 
                         $('#exampleModalCenter').modal('show');
 
