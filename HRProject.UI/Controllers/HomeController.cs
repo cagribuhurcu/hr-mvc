@@ -85,6 +85,8 @@ namespace HRProject.UI.Controllers
             }
             if (logged.IsPasswordChange == true)
             {
+               
+
                 switch (logged.Role)
                 {
                     case Entities.Enums.Roles.CompanyManager:
@@ -108,6 +110,7 @@ namespace HRProject.UI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+           
             return RedirectToAction("Login", "Home", new { Area = "" });
         }
 
@@ -186,7 +189,7 @@ namespace HRProject.UI.Controllers
                         }
                     }
                     
-                    TempData["mssg"] = "Update successful!";
+                    TempData["mssg"] = "Your password was changed correctly! Please, login again with your new password";
                     return RedirectToAction("Logout");
                 }
                 else

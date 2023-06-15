@@ -11,17 +11,25 @@ namespace HRProject.Entities.Entities
     public class Employee : User
     {
         [ForeignKey("Job")]
-        public int JobID { get; set; }
+        public int? JobID { get; set; }
         public Job? Job { get; set; }
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
-        public decimal Salary { get; set; }
+        public int? CompanyId { get; set; }
+        public Company? Company { get; set; }
+        public decimal? Salary { get; set; }
 
 
         //Create email for employee
-        public string CreateEmail(string firstname, string lastname)
+        public string CreateEmail(string firstname, string middlename, string lastname)
         {
-            return $"{ConvertToEnglish(firstname).ToLower()}.{ConvertToEnglish(lastname).ToLower()}@bilgeadamboost.com";
+            if (middlename != null)
+            {
+                return $"{ConvertToEnglish(firstname).ToLower()}{ConvertToEnglish(middlename).ToLower()}.{ConvertToEnglish(lastname).ToLower()}@bilgeadamboost.com";
+            }
+            else
+            {
+                return $"{ConvertToEnglish(firstname).ToLower()}.{ConvertToEnglish(lastname).ToLower()}@bilgeadamboost.com";
+            }
+
         }
 
         private string ConvertToEnglish(string text)

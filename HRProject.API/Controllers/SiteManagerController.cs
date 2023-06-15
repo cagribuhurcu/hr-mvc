@@ -80,37 +80,5 @@ namespace HRProject.API.Controllers
             }
         }
 
-        //[HttpGet]
-        //public IActionResult Login(string email, string password)
-        //{
-        //    if (service.Any(x => x.EmailAddress == email))
-        //    {
-        //        SiteManager loggeduser = service.GetByDefault(x => x.EmailAddress == email && x.Password == password);
-        //        if (loggeduser != null)
-        //            return Ok(loggeduser);
-
-        //        else
-        //            return BadRequest("Email Address or Password is incorrect!");
-        //    }
-        //    else if (companyManagerService.Any(x => x.EmailAddress == email))
-        //    {
-        //        CompanyManagerEntity loggeduser = companyManagerService.GetByDefault(x => x.EmailAddress == email && x.Password == password);
-        //        if (loggeduser != null)
-        //            return Ok(loggeduser);
-
-        //        else
-        //            return BadRequest("Email Address or Password is incorrect!");
-        //    }
-        //    else if (employeeService.Any(x => x.EmailAddress == email))
-        //    {
-        //        Employee loggeduser = employeeService.GetByDefault(x => x.EmailAddress == email && x.Password == password); // degiscek
-        //        if (loggeduser != null)
-        //            return Ok(loggeduser);
-
-        //        else
-        //            return BadRequest("Email Address or Password is incorrect!");
-        //    }
-        //    return NotFound("User not found");
-        //}
     }
 }

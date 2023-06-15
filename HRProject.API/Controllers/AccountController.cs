@@ -78,43 +78,46 @@ namespace HRProject.API.Controllers
             return NotFound("User not found");
         }
 
-        //[HttpPut("{identificationNum}")]
-        //public IActionResult FirstPasswordChange(string identificationNum, [FromBody] User user)
-        //{
-        //    if (service.Any(x => x.IdentificationNumber==identificationNum))
-        //    {
-        //        SiteManager updatedUser = user as SiteManager;
-        //        if (updatedUser != null)
-        //        {
-        //            service.Update(updatedUser);
-        //            return Ok(updatedUser);
-        //        }
-        //        else
-        //            return BadRequest("Incorrect Operation");
-        //    }
-        //    else if (companyManagerService.Any(x => x.IdentificationNumber == identificationNum))
-        //    {
+        [HttpPut("{identificationNum}")]
+        public IActionResult FirstPasswordChange(string identificationNum, [FromBody] User user)
+        {
+            if (service.Any(x => x.IdentificationNumber == identificationNum))
+            {
+                SiteManager cUser = service.GetByDefault(a => a.IdentificationNumber == identificationNum);
+                cUser.Password = user.Password;
+                cUser.IsPasswordChange = true;
+                if (cUser != null)
+                {
+                    service.Update(cUser);
+                    return Ok(cUser);
+                }
                 
-        //        if (cUser != null)
-        //        {
-        //            companyManagerService.Update(cUser);
-        //            return Ok(cUser);
-        //        }
-        //        else
-        //            return BadRequest("Incorrect Operation");
-        //    }
-        //    else if (employeeService.Any(x => x.IdentificationNumber == identificationNum))
-        //    {
-        //        var updatedUser = user as Employee;
-        //        if (updatedUser != null)
-        //        {
-        //            employeeService.Update(updatedUser);
-        //            return Ok(updatedUser);
-        //        }
-        //        else
-        //            return BadRequest("Incorrect Operation");
-        //    }
-        //    return NotFound("User not found");
-        //}
+            }
+            else if (companyManagerService.Any(x => x.IdentificationNumber == identificationNum))
+            {
+                CompanyManagerEntity cUser = companyManagerService.GetByDefault(a => a.IdentificationNumber == identificationNum);
+                cUser.Password = user.Password;
+                cUser.IsPasswordChange = true;
+                if (cUser != null)
+                {
+                    companyManagerService.Update(cUser);
+                    return Ok(cUser);
+                }
+               
+            }
+            else if (employeeService.Any(x => x.IdentificationNumber == identificationNum))
+            {
+                Employee cUser = employeeService.GetByDefault(a => a.IdentificationNumber == identificationNum);
+                cUser.Password = user.Password;
+                cUser.IsPasswordChange = true;
+                if (cUser != null)
+                {
+                    employeeService.Update(cUser);
+                    return Ok(cUser);
+                }
+                
+            }
+            return NotFound("User not found");
+        }
     }
 }
