@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HRProject.Entities.Entities;
+using HRProject.UI.Areas.CompanyManager.Models;
 using HRProject.UI.Areas.SiteManagement.Models;
 
 namespace HRProject.UI.Mapper

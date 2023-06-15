@@ -38,5 +38,7 @@ namespace HRProject.Entities.Entities
         public Roles? Role { get; set; }
 
         public string? Password { get; set; }
+
+        public bool IsPasswordChange { get; set; } = false;
     }
 }

@@ -185,7 +185,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
             }
             string subject = "Hesap Oluşturuldu";
-            string body = $"Merhaba {companyManager.FirstName} senin için bir hesap oluşturduk \n Mailin = {companyManager.EmailAddress} ve Şifren : {companyManager.Password}";
+            string body = $"Hello {companyManager.FirstName}, we are very happy that you have joined us. We hope you have a lot of fun in our Galaxy application. We have created an email address and password for you. You can log in with this data by clicking the link below. Have fun. Have fun.\n\nYour Email Address : {companyManager.EmailAddress}\nYour Password : {companyManager.Password} \n\n Login Link : ";
 
             using (MailMessage mail = new MailMessage())
             {

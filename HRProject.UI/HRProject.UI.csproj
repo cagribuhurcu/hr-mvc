@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\CompanyManager\Data\" />
-    <Folder Include="Areas\CompanyManager\Models\" />
     <Folder Include="Areas\SiteManagement\Data\" />
   </ItemGroup>
 

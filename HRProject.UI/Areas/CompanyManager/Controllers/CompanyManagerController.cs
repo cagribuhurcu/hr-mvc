@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Text;
+using HRProject.UI.Areas.CompanyManager.Models;
 
 namespace HRProject.UI.Areas.CompanyManager.Controllers
 {
@@ -181,6 +182,87 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
 
             TempData["mssg"] = "Update successful!";
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword()
+        {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/CompanyManager/GetCompanyManagerById/{loginIdClaim.Value}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    updatedCompanyManager = JsonConvert.DeserializeObject<List<CompanyManagerEntity>>(apiCevap)[0];
+                }
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM changePasswordVM)
+        {
+            CompanyManagerEntity oldPasscompany = new CompanyManagerEntity();
+            oldPasscompany.Password = updatedCompanyManager.Password;
+            if (changePasswordVM.NewPassword == changePasswordVM.ConfirmPassword)
+            {
+                if (changePasswordVM.OldPassword == updatedCompanyManager.Password)
+                {
+                    updatedCompanyManager.Password = changePasswordVM.NewPassword;
+                    using (var httpClient = new HttpClient())
+                    {
+                        StringContent content = new StringContent(JsonConvert.SerializeObject(updatedCompanyManager), Encoding.UTF8, "application/json");
+                        using (var response = await httpClient.PutAsync($"{baseURL}/api/CompanyManager/UpdateCompanyManager/{updatedCompanyManager.ID}", content))
+                        {
+
+                            if (!response.IsSuccessStatusCode)
+                            {
+                                updatedCompanyManager.Password = oldPasscompany.Password;
+                                var jsonResponse = await response.Content.ReadAsStringAsync();
+                                var errorResponseAll = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+
+                                string errorMessage = "";
+                                if (errorResponseAll.errors != null)
+                                {
+                                    var errors = errorResponseAll.errors;
+                                    foreach (var error in errors)
+                                    {
+                                        var errorMessages = (JArray)error.Value;
+                                        foreach (var errorMessageToken in errorMessages)
+                                        {
+                                            errorMessage = errorMessageToken.ToString() + "\n";
+                                            ModelState.AddModelError("", errorMessage);
+                                        }
+                                    }
+                                }
+
+                                ViewData["allmasseges"] = ModelState.ToList();
+                                return View();
+                            }
+
+                            if (!ModelState.IsValid)
+                            {
+                                ViewData["allmasseges"] = ModelState.ToList();
+                                return View();
+                            }
+                        }
+                    }
+
+                    TempData["mssg"] = "Update successful!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please enter your old password correctly");
+                    return View();
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "New Password and confirm passwords are not equal.");
+                return View();
+            }
         }
     }
 }
