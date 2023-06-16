@@ -20,10 +20,16 @@ namespace HRProject.Entities.Validation
             RuleFor(companymanager => companymanager.BirthPlace).NotNull().WithMessage("Birth Place cannot be null");
             RuleFor(companymanager => companymanager.HireDate).NotNull().WithMessage("Hire Date cannot be null");
             RuleFor(companymanager => companymanager.BirthDate).NotNull().WithMessage("Birth Date cannot be null");
-            RuleFor(companymanager => companymanager.QuitDate).NotNull().WithMessage("Quit Date cannot be null");
+            RuleFor(user => user.BirthDate).Must((user, birthDate) => DateYearControlValidation.Control(user.BirthDate)).WithMessage("Birth Date is not valid");
+            //RuleFor(companymanager => companymanager.QuitDate).NotNull().WithMessage("Quit Date cannot be null");
             RuleFor(companymanager => companymanager.IdentificationNumber).Length(11).WithMessage("The length of the Identification number must be 11 digits.");
-            RuleFor(companymanager => companymanager.HireDate).LessThan(x => x.QuitDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
-            RuleFor(companymanager => companymanager.QuitDate).GreaterThan(x => x.HireDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
+            //RuleFor(companymanager => companymanager.HireDate).LessThan(x => x.QuitDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
+            //RuleFor(companymanager => companymanager.QuitDate).GreaterThan(x => x.HireDate).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
+            RuleFor(user => user.HireDate).Must((user, hireDate) => CompareHireDateAndQuitDateValidation.Compare(user.HireDate, user.QuitDate)).WithMessage("The date of Hire Date must be less than the date of Quit from employment.");
+            RuleFor(user => user.HireDate).Must((user, hireDate) => DateYearControlValidation.Control(user.HireDate)).WithMessage("Hire Date is not valid");
+            RuleFor(user => user.QuitDate).Must((user, quitDate) => QuitDateValidation.ValidateQuitDate(user.QuitDate)).WithMessage("Quit Date is not valid");
+
+            RuleFor(user => user.BirthDate).Must((user, birthDate) => HiringAgeValidation.ValidateAge(user.BirthDate, user.HireDate)).WithMessage("Unable to enter employment before the age of 18");
             RuleFor(companymanager => companymanager.Department).NotNull().WithMessage("Departmant cannot be null");
             RuleFor(companymanager => companymanager.JobID).NotNull().WithMessage("Job cannot be null");
             RuleFor(companymanager => companymanager.Address).NotNull().WithMessage("Address cannot be null");

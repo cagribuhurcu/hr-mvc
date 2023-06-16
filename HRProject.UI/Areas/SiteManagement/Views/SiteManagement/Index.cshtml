@@ -1,4 +1,6 @@
 ﻿@using HRProject.UI.Areas.SiteManagement.Models;
+@using HRProject.UI.Helper;
+
 @model List<SiteManager>
 
 @{
@@ -74,32 +76,36 @@
                     <h5 class="card-title">
                         @if (item.MiddleName != null && item.SecondLastName == null)
                         {
-                            @item.FirstName
+                            @item.FirstName.ToUpper()
 
-                            <span class="bosluklu-nsp">@item.MiddleName</span>
+                            <span class="bosluklu-nsp">@item.MiddleName.ToUpper()</span>
 
-                            @item.LastName
+                            @item.LastName.ToUpper()
                         }
                         else if (item.MiddleName == null && item.SecondLastName != null)
                         {
-                            @item.FirstName
+                            @item.FirstName.ToUpper()
 
-                            <span class="bosluklu-nsp">@item.LastName</span>
+                            <span class="bosluklu-nsp">@item.LastName.ToUpper()</span>
 
-                            @item.SecondLastName
+                            @item.SecondLastName.ToUpper()
                         }
                         else
                         {
-                            @item.FirstName
+                            @item.FirstName.ToUpper()
 
-                            <span class="bosluklu-nsp">@item.LastName</span>
+                            <span class="bosluklu-nsp">@item.LastName.ToUpper()</span>
                         }
                     </h5>
                     <p class="card-text"><strong>Email: </strong> @item.EmailAddress</p>
                     <p class="card-text"><strong>Phone: </strong>(+90)<span class="bosluklu-nsp"> @item.PhoneNumber</span></p>
                     <p class="card-text"><strong>Address: </strong> @item.Address</p>
                     <p class="card-text"><strong>Job Title: </strong> @item.Job.Name</p>
-                    <p class="card-text"><strong>Department: </strong> @item.Department</p>
+                    @{
+                        var displayName = ((Departments)item.Department).GetDisplayName();
+                    }
+                    <p class="card-text">
+                        <strong>Department: </strong>@displayName</p>
                     <button class="btn btn-primary btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
                     <a asp-area="SiteManagement" asp-controller="SiteManagement" asp-action="UpdateSiteManager" asp-route-id="@item.ID" class="btn btn-secondary">Update</a>
                 </div>

@@ -65,7 +65,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
         [HttpGet]
         public IActionResult CreateCompany()
         {
-            ViewBag.BaseLogoUrl = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
+            ViewBag.BaseLogoUrl = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png.png";
             return View();
         }
         public static string BackUpLogoURL;
@@ -79,13 +79,13 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             }
             if (files.Count == 0) //Foto seçilemez ise
             {
-                if(company.LogoURL!= "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png")
+                if(company.LogoURL!= "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png.png")
                 {
                     company.LogoURL = BackUpLogoURL;
                 }
                 else
                 {
-                    company.LogoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
+                    company.LogoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png.png";
                 }
                
             }
@@ -100,7 +100,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
                 else
                 {
-                    company.LogoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
+                    company.LogoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png.png";
                     ViewBag.PhotoMessage = returnedMessaage;
                     ModelState.AddModelError("", ViewBag.PhotoMessage);
 

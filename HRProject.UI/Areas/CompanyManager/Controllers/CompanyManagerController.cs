@@ -267,152 +267,152 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
                 return View();
             }
         }
-        public static List<Company> companies;
-        public static List<Job> jobs;
-        [HttpGet]
-        public async Task<IActionResult> CreateCompanyManager()
-        {
-            using (var httpClient = new HttpClient())
-            {
-                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Company/GetAllCompanies"))
-                {
-                    string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    companies = JsonConvert.DeserializeObject<List<Company>>(apiCevap);
-                }
-            }
+        //public static List<Company> companies;
+        //public static List<Job> jobs;
+        //[HttpGet]
+        //public async Task<IActionResult> CreateCompanyManager()
+        //{
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Company/GetAllCompanies"))
+        //        {
+        //            string apiCevap = await cevap.Content.ReadAsStringAsync();
+        //            companies = JsonConvert.DeserializeObject<List<Company>>(apiCevap);
+        //        }
+        //    }
 
-            using (var httpClient = new HttpClient())
-            {
-                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Job/GetAllJobs"))
-                {
-                    string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    jobs = JsonConvert.DeserializeObject<List<Job>>(apiCevap);
-                }
-            }
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Job/GetAllJobs"))
+        //        {
+        //            string apiCevap = await cevap.Content.ReadAsStringAsync();
+        //            jobs = JsonConvert.DeserializeObject<List<Job>>(apiCevap);
+        //        }
+        //    }
 
-            ViewBag.Jobs = jobs;
-            ViewBag.CompanyName = companies;
-            ViewBag.BaseLogoUrl = "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png";
-            return View();
-        }
+        //    ViewBag.Jobs = jobs;
+        //    ViewBag.CompanyName = companies;
+        //    ViewBag.BaseLogoUrl = "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png";
+        //    return View();
+        //}
 
-        public static string BackUpPhotoURL;
+        //public static string BackUpPhotoURL;
 
-        [HttpPost]
-        public async Task<IActionResult> CreateCompanyManager(CompanyManagerEntity companyManager, List<IFormFile> files)
-        {
-            if (companyManager.FirstName != null && companyManager.LastName != null)
-            {
-                companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName, companyManager.MiddleName, companyManager.LastName);
-            }
-            companyManager.Password = PasswordGenerator.GeneratePassword();
+        //[HttpPost]
+        //public async Task<IActionResult> CreateCompanyManager(CompanyManagerEntity companyManager, List<IFormFile> files)
+        //{
+        //    if (companyManager.FirstName != null && companyManager.LastName != null)
+        //    {
+        //        companyManager.EmailAddress = companyManager.CreateEmail(companyManager.FirstName, companyManager.MiddleName, companyManager.LastName);
+        //    }
+        //    companyManager.Password = PasswordGenerator.GeneratePassword();
 
-            if (companyManager.QuitDate <= DateTime.Now)
-            {
-                companyManager.IsActive = false;
-            }
-            if (files.Count == 0) //Foto seçilemez ise
-            {
-                if (companyManager.PhotoURL != "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png")
-                {
-                    companyManager.PhotoURL = BackUpPhotoURL;
-                }
-                else
-                {
-                    companyManager.PhotoURL = "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png";
-                }
+        //    if (companyManager.QuitDate <= DateTime.Now)
+        //    {
+        //        companyManager.IsActive = false;
+        //    }
+        //    if (files.Count == 0) //Foto seçilemez ise
+        //    {
+        //        if (companyManager.PhotoURL != "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png")
+        //        {
+        //            companyManager.PhotoURL = BackUpPhotoURL;
+        //        }
+        //        else
+        //        {
+        //            companyManager.PhotoURL = "/Uploads/100ad05c_0452_466e_92cb_f2fe1f0755a8.png";
+        //        }
 
-            }
-            else
-            {
-                string returnedMessaage = Upload.ImageUpload(files, environment, out bool imgresult);
+        //    }
+        //    else
+        //    {
+        //        string returnedMessaage = Upload.ImageUpload(files, environment, out bool imgresult);
 
-                if (imgresult)
-                {
-                    companyManager.PhotoURL = returnedMessaage;
-                    BackUpPhotoURL = companyManager.PhotoURL;
-                }
-                else
-                {
-                    companyManager.PhotoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
-                    ViewBag.PhotoMessage = returnedMessaage;
-                    ModelState.AddModelError("", ViewBag.PhotoMessage);
+        //        if (imgresult)
+        //        {
+        //            companyManager.PhotoURL = returnedMessaage;
+        //            BackUpPhotoURL = companyManager.PhotoURL;
+        //        }
+        //        else
+        //        {
+        //            companyManager.PhotoURL = "/Uploads/3b690160_d5f1_4fcf_9712_f6d86d64b9ee.png";
+        //            ViewBag.PhotoMessage = returnedMessaage;
+        //            ModelState.AddModelError("", ViewBag.PhotoMessage);
 
-                }
-            }
+        //        }
+        //    }
 
-            ViewBag.Jobs = jobs;
-            ViewBag.CompanyName = companies;
+        //    ViewBag.Jobs = jobs;
+        //    ViewBag.CompanyName = companies;
 
-            using (var httpClient = new HttpClient())
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(companyManager), Encoding.UTF8, "application/json");
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        StringContent content = new StringContent(JsonConvert.SerializeObject(companyManager), Encoding.UTF8, "application/json");
 
-                using (var cevap = await httpClient.PostAsync($"{baseURL}/api/CompanyManager/CreateCompanyManager", content))
-                {
-                    if (!cevap.IsSuccessStatusCode)
-                    {
-                        var jsonResponse = await cevap.Content.ReadAsStringAsync();
+        //        using (var cevap = await httpClient.PostAsync($"{baseURL}/api/CompanyManager/CreateCompanyManager", content))
+        //        {
+        //            if (!cevap.IsSuccessStatusCode)
+        //            {
+        //                var jsonResponse = await cevap.Content.ReadAsStringAsync();
 
-                        if (!jsonResponse.Contains("The company manager already exists"))
-                        {
-                            var errorResponseAll = JsonConvert.DeserializeObject<dynamic>(jsonResponse);//
-                            string errorMessage = "";
-                            if (errorResponseAll.errors != null)
-                            {
-                                var errors = errorResponseAll.errors;
-                                foreach (var error in errors)
-                                {
-                                    var errorMessages = (JArray)error.Value;
-                                    foreach (var errorMessageToken in errorMessages)
-                                    {
-                                        errorMessage = errorMessageToken.ToString() + "\n";
-                                        ModelState.AddModelError("", errorMessage);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("ExistingError", "The company manager already exists");
-                            ViewData["allmasseges"] = ModelState.ToList();
-                            return View(companyManager);
-                        }
+        //                if (!jsonResponse.Contains("The company manager already exists"))
+        //                {
+        //                    var errorResponseAll = JsonConvert.DeserializeObject<dynamic>(jsonResponse);//
+        //                    string errorMessage = "";
+        //                    if (errorResponseAll.errors != null)
+        //                    {
+        //                        var errors = errorResponseAll.errors;
+        //                        foreach (var error in errors)
+        //                        {
+        //                            var errorMessages = (JArray)error.Value;
+        //                            foreach (var errorMessageToken in errorMessages)
+        //                            {
+        //                                errorMessage = errorMessageToken.ToString() + "\n";
+        //                                ModelState.AddModelError("", errorMessage);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError("ExistingError", "The company manager already exists");
+        //                    ViewData["allmasseges"] = ModelState.ToList();
+        //                    return View(companyManager);
+        //                }
 
-                        ViewData["allmasseges"] = ModelState.ToList();
-                        return View(companyManager);
-                    }
+        //                ViewData["allmasseges"] = ModelState.ToList();
+        //                return View(companyManager);
+        //            }
 
-                    if (!ModelState.IsValid)
-                    {
-                        ViewData["allmasseges"] = ModelState.ToList();
-                        return View(companyManager);
-                    }
-                }
-            }
-            string subject = "Hesap Oluşturuldu";
-            string body = $"Hello {companyManager.FirstName}, we are very happy that you have joined us. We hope you have a lot of fun in our Galaxy application. We have created an email address and password for you. You can log in with this data by clicking the link below. Have fun. Have fun.\n\nYour Email Address : {companyManager.EmailAddress}\nYour Password : {companyManager.Password} \n\n Login Link : ";
+        //            if (!ModelState.IsValid)
+        //            {
+        //                ViewData["allmasseges"] = ModelState.ToList();
+        //                return View(companyManager);
+        //            }
+        //        }
+        //    }
+        //    string subject = "Hesap Oluşturuldu";
+        //    string body = $"Hello {companyManager.FirstName}, we are very happy that you have joined us. We hope you have a lot of fun in our Galaxy application. We have created an email address and password for you. You can log in with this data by clicking the link below. Have fun. Have fun.\n\nYour Email Address : {companyManager.EmailAddress}\nYour Password : {companyManager.Password} \n\n Login Link : ";
 
-            using (MailMessage mail = new MailMessage())
-            {
-                mail.From = new MailAddress("galaxyhrsystem@outlook.com");
-                mail.To.Add(companyManager.EmailAddress);
-                mail.Subject = subject;
-                mail.Body = body;
-                mail.IsBodyHtml = true;
+        //    using (MailMessage mail = new MailMessage())
+        //    {
+        //        mail.From = new MailAddress("galaxyhrsystem@outlook.com");
+        //        mail.To.Add(companyManager.EmailAddress);
+        //        mail.Subject = subject;
+        //        mail.Body = body;
+        //        mail.IsBodyHtml = true;
 
 
 
-                using (SmtpClient smtp = new SmtpClient("smtp.office365.com", 587))
-                {
-                    smtp.Credentials = new NetworkCredential("galaxyhrsystem@outlook.com", "123ASD123");
-                    smtp.EnableSsl = true;
-                    smtp.Send(mail);
-                }
-            }
+        //        using (SmtpClient smtp = new SmtpClient("smtp.office365.com", 587))
+        //        {
+        //            smtp.Credentials = new NetworkCredential("galaxyhrsystem@outlook.com", "123ASD123");
+        //            smtp.EnableSsl = true;
+        //            smtp.Send(mail);
+        //        }
+        //    }
 
-            TempData["mssg"] = "Add successful!";
-            return RedirectToAction("Index", "SiteManagement");
-        }
+        //    TempData["mssg"] = "Add successful!";
+        //    return RedirectToAction("Index", "SiteManagement");
+        //}
     }
 }

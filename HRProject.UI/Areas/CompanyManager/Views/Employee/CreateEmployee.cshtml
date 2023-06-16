@@ -1,4 +1,5 @@
-﻿
+﻿@using HRProject.UI.Helper;
+
 @{
     ViewData["Title"] = "CreateEmployee";
     Layout = "~/Areas/CompanyManager/Views/Shared/_LayoutCompanyManager.cshtml";
@@ -117,16 +118,6 @@
                     <label asp-for="Salary" class="form-label">Salary</label>
                     <input asp-for="Salary" class="form-control" type="number" id="html5-number-input" />
                 </div>
-                @*<div class="mb-3 col-md-6">
-                <label asp-for="CompanyId" class="form-label">Company</label>
-                <select asp-for="CompanyId" class="form-control" id="html5-number-input">
-                <option value="">Select Company</option>
-                @foreach (Company company in ViewBag.CompanyName)
-                {
-                <option value="@company.ID">@company.CompanyName</option>
-                }
-                </select>
-                </div>*@
                 <div class="mb-3 col-md-6">
                     <label asp-for="JobID" class="form-label">Job</label>
                     <select asp-for="JobID" class="form-control" id="html5-number-input">
@@ -141,9 +132,10 @@
                     <label asp-for="Department" class="form-label">Department</label>
                     <select asp-for="Department" class="form-control" id="html5-number-input">
                         <option value="">Select Department</option>
-                        @foreach (var department in Enum.GetValues(typeof(Departments)))
+                        @foreach (var departments in Enum.GetValues(typeof(Departments)))
                         {
-                            <option value="@department">@department</option>
+                            var displayName = ((Departments)departments).GetDisplayName();
+                            <option value="@departments">@displayName</option>
                         }
                     </select>
                 </div>

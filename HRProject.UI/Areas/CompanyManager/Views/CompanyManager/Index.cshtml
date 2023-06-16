@@ -74,29 +74,29 @@
                 <h5 class="card-title">
                     @if (Model.MiddleName != null && Model.SecondLastName == null)
                     {
-                        @Model.FirstName
+                        @Model.FirstName.ToUpper()
 
-                        <span class="bosluklu-nsp">@Model.MiddleName</span>
+                        <span class="bosluklu-nsp">@Model.MiddleName.ToUpper()</span>
 
-                        @Model.LastName
+                        @Model.LastName.ToUpper()
                     }
                     else if (Model.MiddleName == null && Model.SecondLastName != null)
                     {
-                        @Model.FirstName
+                        @Model.FirstName.ToUpper()
 
-                        <span class="bosluklu-nsp">@Model.LastName</span>
+                        <span class="bosluklu-nsp">@Model.LastName.ToUpper()</span>
 
-                        @Model.SecondLastName
+                        @Model.SecondLastName.ToUpper()
                     }
                     else
                     {
-                        @Model.FirstName
+                        @Model.FirstName.ToUpper()
 
-                        <span class="bosluklu-nsp">@Model.LastName</span>
+                        <span class="bosluklu-nsp">@Model.LastName.ToUpper()</span>
                     }
                 </h5>
                 <p class="card-text"><strong>Email: </strong> @Model.EmailAddress</p>
-                <p class="card-text"><strong>Phone: </strong>(+90)<span class="bosluklu-nsp"> @Model.PhoneNumber</span></p>
+                <p class="card-text"><strong>Phone: </strong>(+90) <span class="bosluklu-nsp">@Model.PhoneNumber</span></p>
                 <p class="card-text"><strong>Company Name : </strong> @Model.Company.CompanyName</p>
                 <button class="btn btn-primary btnDetail" value="@Model.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
                 <a asp-area="CompanyManager" asp-controller="CompanyManager" asp-action="UpdateCompanyManager" asp-route-id="@Model.ID" class="btn btn-secondary">Update</a>

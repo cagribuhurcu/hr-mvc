@@ -27,15 +27,27 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
             this.environment = environment;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Employee> employees = new List<Employee>();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Employee/GetAllEmployees"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    employees = JsonConvert.DeserializeObject<List<Employee>>(apiCevap);
+                }
+            }
+
+            ViewBag.mssg = TempData["mssg"] as string;
+            return View(employees);
         }
 
 
         public static List<Company> companies;
         public static List<Job> jobs;
-        public static CompanyManagerEntity companyManager;
+        public static CompanyManagerEntity employees;
         [HttpGet]
         public async Task<IActionResult> CreateEmployee()
         {
@@ -55,7 +67,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
                 using (var cevap = await httpClient.GetAsync($"{baseURL}/api/CompanyManager/GetCompanyManagerById/{loginIdClaim.Value}"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
-                    companyManager = JsonConvert.DeserializeObject<List<CompanyManagerEntity>>(apiCevap)[0];
+                    employees = JsonConvert.DeserializeObject<List<CompanyManagerEntity>>(apiCevap)[0];
                 }
             }
 
@@ -84,7 +96,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
                 employee.EmailAddress = employee.CreateEmail(employee.FirstName, employee.MiddleName, employee.LastName);
             }
             employee.Password = PasswordGenerator.GeneratePassword();
-            employee.CompanyId = companyManager.CompanyId;
+            employee.CompanyId = employees.CompanyId;
             if (employee.QuitDate <= DateTime.Now)
             {
                 employee.IsActive = false;

@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/CompanyManager/Views/Shared/_LayoutCompanyManager.cshtml";
+}
+
+@model List<Employee>
+
+<div class="mt-4 mx-4 mb-4">
+    <a class="btn btn-success" asp-action="CreateEmployee" asp-controller="Employee" asp-area="CompanyManager"><i class='bx bx-buildings'></i> + Create</a>
+</div>
+
+<div class="card mx-4">
+    <h5 class="card-header d-flex justify-content-center">Employee List</h5>
+    <div class="table-responsive text-nowrap text-center">
+        <table id="example" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Company Name</th>
+                    @*<th>Actions</th>*@
+                </tr>
+            </thead>
+            <tbody class="mb-2">
+                @foreach (Employee item in Model)
+                {
+                    <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.FirstName</strong></td>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.LastName</strong></td>
+                        <td>(+90) @item.PhoneNumber</td>
+                        <td>@item.EmailAddress</td>
+                        <td>@item.Company.CompanyName</td>
+                        @*<td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
+                                    <a asp-action="UpdateEmployee" asp-controller="Employee" asp-area="CompanyManager" asp-route-id="@item.ID" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Update</a>
+                                </div>
+                            </div>
+                        </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Details</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div id="profilePictureContainer" class="text-center mt-3"></div>
+                    <p><strong>Firstname :</strong> <span id="firstnameBasic"></span></p>
+                    <p><strong>Middlename:</strong> <span id="middlenameBasic"></span></p>
+                    <p><strong>Lastname:</strong> <span id="lastnameBasic"></span></p>
+                    <p><strong>Second Lastname:</strong> <span id="secondlastnameBasic"></span></p>
+                    <p><strong>Birthdate:</strong> <span id="birthdateBasic"></span></p>
+                    <p><strong>Birth Place:</strong> <span id="birthplaceBasic"></span></p>
+                    <p><strong>Identification Number:</strong> <span id="identificationBasic"></span></p>
+                    <p><strong>Hire Date:</strong> <span id="hiredateBasic"></span></p>
+                    <p><strong>Quit Date:</strong> <span id="quitdateBasic"></span></p>
+                    <p><strong>Company Name:</strong> <span id="companynameBasic"></span></p>
+                    <p><strong>Job:</strong> <span id="jobBasic"></span></p>
+                    <p><strong>Department:</strong> <span id="departmentBasic"></span></p>
+                    <p><strong>Mail:</strong> <span id="mailBasic"></span></p>
+                    <p><strong>Address:</strong> <span id="addressBasic"></span></p>
+                    <p><strong>Phone:</strong> <span id="phoneBasic"></span></p>
+                    <p><strong>Salary:</strong> <span id="salaryBasic"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.btnDetail').click(function () {
+                var id = $(this).val();
+
+                $.ajax({
+                    url: "/CompanyManager/Employee/Detail/" + id,
+                    type: "GET",
+                    success: function (response) {
+                        // Doğum günü Tarih formatını değiştirme
+                        var birthDate = new Date(response.birthDate);
+                        var day = birthDate.getDate();
+                        var month = birthDate.getMonth() + 1;
+                        var year = birthDate.getFullYear();
+                        var formattedBirthDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşe giriş Tarih formatını değiştirme
+                        var hireDate = new Date(response.hireDate);
+                        var day = hireDate.getDate();
+                        var month = hireDate.getMonth() + 1;
+                        var year = hireDate.getFullYear();
+                        var formattedHireDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşten çıkış Tarih formatını değiştirme
+                        var quitDate = new Date(response.quitDate);
+                        var day = quitDate.getDate();
+                        var month = quitDate.getMonth() + 1;
+                        var year = quitDate.getFullYear();
+                        var formattedQuitDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        var departmentText = "";
+                        switch (response.department) {
+                            case 1:
+                                departmentText = "Human Resources";
+                                break;
+                            case 2:
+                                departmentText = "Marketing";
+                                break;
+                            case 3:
+                                departmentText = "Finance";
+                                break;
+                            case 4:
+                                departmentText = "Sales";
+                                break;
+                            case 5:
+                                departmentText = "Information Systems";
+                                break;
+                        }
+
+                        $('#profilePictureContainer').html('<img src="' + response.photoURL + '" alt="Profile Picture" class="rounded-circle" width="100">');
+                        $('#firstnameBasic').text(response.firstName);
+                        $('#middlenameBasic').text(response.middleName);
+                        $('#lastnameBasic').text(response.lastName);
+                        $('#secondlastnameBasic').text(response.secondLastName);
+                        $('#birthdateBasic').text(formattedBirthDate);
+                        $('#birthplaceBasic').text(response.birthPlace);
+                        $('#identificationBasic').text(response.identificationNumber);
+                        $('#hiredateBasic').text(formattedHireDate);
+                        $('#quitdateBasic').text(formattedQuitDate);
+                        $('#companynameBasic').text(response.company.companyName);
+                        $('#jobBasic').text(response.job.name);
+                        $('#departmentBasic').text(departmentText);
+                        $('#mailBasic').text(response.emailAddress);
+                        $('#addressBasic').text(response.address);
+                        $('#phoneBasic').text(response.phoneNumber);
+                        $('#salaryBasic').text(response.salary);
+
+                        $('#exampleModalCenter').modal('show');
+
+                        $('.modal-body p').each(function () {
+                            var spanValue = $(this).find('span').text();
+                            if (spanValue == null || spanValue.trim() == '') {
+                                $(this).remove();
+                            }
+                        });
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+        var strValue = "@((string)ViewBag.mssg)";
+        if (strValue !== null && strValue !== '') {
+            swal("", strValue, "success");
+        }
+    </script>
+}
+

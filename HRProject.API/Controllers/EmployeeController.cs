@@ -15,6 +15,14 @@ namespace HRProject.API.Controllers
         {
             this.service = service;
         }
+        //Listelemek için kullanılan action 
+
+        [HttpGet]
+        public IActionResult GetAllEmployees()
+        {
+            var employees = service.GetAll(t0 => t0.Company, t1 => t1.Job);
+            return Ok(employees);
+        }
 
         //Employee yaratmak için
         [HttpPost]
