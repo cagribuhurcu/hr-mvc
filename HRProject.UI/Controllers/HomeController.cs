@@ -18,7 +18,7 @@ namespace HRProject.UI.Controllers
     public class HomeController : Controller
     {
 
-        string baseURL = "https://lo";
+        string baseURL = "https://localhost:7127/";
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
