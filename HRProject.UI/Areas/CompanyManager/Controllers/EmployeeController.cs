@@ -17,7 +17,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
     [Area("CompanyManager"), Authorize(Roles = "CompanyManager")]
     public class EmployeeController : Controller
     {
-        string baseURL = "https://localhost:7127";
+        string baseURL = "https://hrprojectapi20230605125226.azurewebsites.net/";
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
 
@@ -181,7 +181,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
                 }
             }
             string subject = "Hesap Oluşturuldu";
-            string body = $"Hello {employee.FirstName}, we are very happy that you have joined us. We hope you have a lot of fun in our Galaxy application. We have created an email address and password for you. You can log in with this data by clicking the link below. Have fun. Have fun.\n\nYour Email Address : {employee.EmailAddress}\nYour Password : {employee.Password} \n\n Login Link : ";
+            string body = $"Hello {employee.FirstName}, we are very happy that you have joined us. We hope you have a lot of fun in our Galaxy application. We have created an email address and password for you. You can log in with this data by clicking the link below. Have fun. Have fun.\n\nYour Email Address : {employee.EmailAddress}\nYour Password : {employee.Password} \n\n Login Link : https://hrprojectui20230605130009.azurewebsites.net/ ";
 
             using (MailMessage mail = new MailMessage())
             {
