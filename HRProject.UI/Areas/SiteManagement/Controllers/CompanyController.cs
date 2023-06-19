@@ -18,7 +18,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
     [Area("SiteManagement"), Authorize(Roles = "SiteManager")]
     public class CompanyController : Controller
     {
-        string baseURL = "https://localhost:7127/";
+        string baseURL = "https://localhost:7127";
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
 

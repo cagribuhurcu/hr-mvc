@@ -22,7 +22,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
-        string baseURL = "https://localhost:7127/";
+        string baseURL = "https://localhost:7127";
 
         public SiteManagementController(IMapper mapper, IWebHostEnvironment environment)
         {
