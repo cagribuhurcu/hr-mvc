@@ -27,6 +27,8 @@ namespace HRProject.Entities.Entities
         public int AnnualDay { get; set; }
 
         public List<EmployeePermission> EmployeePermissions { get; set; }
+        public List<Expense> Expenses { get; set; }
+        public List<AdvancePayment> AdvancePayments { get; set; }
 
         //Create email for employee
         public string CreateEmail(string firstname, string middlename, string lastname)
