@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Security.Policy;
+using System.Text;
 
 namespace HRProject.UI.Areas.Employment.Controllers
 {
@@ -82,6 +84,45 @@ namespace HRProject.UI.Areas.Employment.Controllers
                 }
             }
             return View(employeePermissions);
+        }
+
+        public static List<Permission> permissionNames;
+        public static int employeeId;
+
+        [HttpGet]
+        public async Task<IActionResult> CreatePermissionforEmployee()
+        {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Permission/GetAllPermission"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    permissionNames = JsonConvert.DeserializeObject<List<Permission>>(apiCevap);
+                }
+            }
+
+            ViewBag.PermissionName = permissionNames;
+            ViewBag.EmployeeId = loginIdClaim.Value;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePermissionforEmployee(EmployeePermission employeePermission)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(employeePermission), Encoding.UTF8, "application/json");
+
+                using (var cevap = await httpClient.PostAsync($"{baseURL}/api/Permission/CreatePermissionforEmployee", content))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("PermissionList");
         }
     }
 }

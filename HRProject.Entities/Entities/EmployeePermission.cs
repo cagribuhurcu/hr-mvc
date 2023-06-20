@@ -16,7 +16,7 @@ namespace HRProject.Entities.Entities
         public int PermissionId { get; set; }
         public Permission? Permission { get; set; }
 
-        public PermissionState PermissionState { get; set; }
+        public PermissionState PermissionState { get; set; } = PermissionState.Pending;
 
         public DateTime? RequiredDate { get; set; }
 

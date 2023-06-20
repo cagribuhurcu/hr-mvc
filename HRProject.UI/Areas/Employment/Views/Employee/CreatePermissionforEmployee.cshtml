@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "CreatePermissionforEmployee";
+    Layout = "~/Areas/Employment/Views/Shared/_LayoutEmployment.cshtml";
+}
+@model EmployeePermission
+
+<form id="formAccountSettings" asp-action="CreatePermissionforEmployee" method="post" enctype="multipart/form-data">
+    <div class="card my-4 mx-4">
+        <h5 class="card-header">Create Permission</h5>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert" asp-validation-summary="All">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Account -->
+        <hr class="my-0" />
+        <div class="card-body">
+            <div class="row">
+                <input asp-for="EmployeeId" type="hidden" value="@ViewBag.EmployeeId" />
+                <div class="mb-3 col-md-6">
+                    <label asp-for="PermissionId" class="form-label">Job</label>
+                    <select asp-for="PermissionId" class="form-control" id="permission-select">
+                        <option value="">Select Permission</option>
+                        @foreach (Permission permission in ViewBag.PermissionName)
+                        {
+                            <option value="@permission.ID" data-max-days="@permission.MaxPermissionDay">@permission.PermissionName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="StartDate" class="form-label">Start Date</label>
+                    <input asp-for="StartDate" class="form-control" type="date" id="start-date-input" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="EndDate" class="form-label">End Date</label>
+                    <input asp-for="EndDate" class="form-control" type="date" id="end-date-input" />
+                </div>
+            </div>
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary me-2" id="create-button">Create</button>
+                <a asp-action="Index" asp-controller="Index" asp-area="Employment" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </div>
+        <!-- /Account -->
+    </div>
+</form>
+
+<script>
+    // Get the start date and end date input elements
+    var startDateInput = document.getElementById('start-date-input');
+    var endDateInput = document.getElementById('end-date-input');
+    var createButton = document.getElementById('create-button');
+    var permissionSelect = document.getElementById('permission-select');
+
+    // Add event listeners to the input elements
+    startDateInput.addEventListener('input', checkDateDifference);
+    endDateInput.addEventListener('input', checkDateDifference);
+    permissionSelect.addEventListener('change', checkDateDifference);
+
+    function checkDateDifference() {
+        var startDate = new Date(startDateInput.value);
+        var endDate = new Date(endDateInput.value);
+        var selectedOption = permissionSelect.options[permissionSelect.selectedIndex];
+        var maxDays = parseInt(selectedOption.getAttribute('data-max-days'));
+
+        // Calculate the difference in days
+        var differenceInDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+        // Disable the create button if the difference is greater than the maximum days allowed
+        createButton.disabled = differenceInDays > maxDays;
+    }
+</script>

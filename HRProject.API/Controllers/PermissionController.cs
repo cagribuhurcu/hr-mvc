@@ -24,6 +24,7 @@ namespace HRProject.API.Controllers
             permissionService.Add(permission);
             return Ok(permission);
         }
+
         [HttpPost]
         public IActionResult CreatePermissionforEmployee([FromBody] EmployeePermission employeePermission)
         {
@@ -36,6 +37,12 @@ namespace HRProject.API.Controllers
         {
             var permissions = empPermissionService.GetAll(a=>a.Permission,b=>b.Employee).Where(a => a.EmployeeId == id).ToList();
             return Ok(permissions);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllPermission()
+        {
+            return Ok(permissionService.GetAll());
         }
     }
 }
