@@ -11,9 +11,12 @@ namespace HRProject.API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IGenericRepository<Employee> service;
+        
+
         public EmployeeController(IGenericRepository<Employee> service)
         {
             this.service = service;
+           
         }
         //Listelemek için kullanılan action 
 
@@ -22,6 +25,15 @@ namespace HRProject.API.Controllers
         {
             var employees = service.GetAll(t0 => t0.Company, t1 => t1.Job);
             return Ok(employees);
+        }
+
+        //Personel Özet Bilgileri
+
+        [HttpGet("{id}")]
+        public IActionResult GetEmployeeById(int id)
+        {
+            var employee = service.GetById(id, t0 => t0.Company, t1 => t1.Job,t2 => t2.EmployeePermissions);
+            return Ok(employee);
         }
 
         //Employee yaratmak için
@@ -52,5 +64,8 @@ namespace HRProject.API.Controllers
                 }
             }
         }
+
+        
+        
     }
 }

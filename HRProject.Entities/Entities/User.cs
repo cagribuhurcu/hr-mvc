@@ -14,7 +14,7 @@ namespace HRProject.Entities.Entities
         public DateTime? BirthDate { get; set; }
         public string? IdentificationNumber { get; set; }
         public DateTime? HireDate { get; set; }
-
+        
         private DateTime? quitDate;
         public DateTime? QuitDate
         {
@@ -40,5 +40,7 @@ namespace HRProject.Entities.Entities
         public string? Password { get; set; }
 
         public bool IsPasswordChange { get; set; } = false;
+
+        
     }
 }

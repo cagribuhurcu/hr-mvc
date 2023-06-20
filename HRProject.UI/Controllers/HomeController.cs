@@ -94,7 +94,7 @@ namespace HRProject.UI.Controllers
                     case Entities.Enums.Roles.SiteManager:
                         return RedirectToAction("Index", "SiteManagement", new { Area = "SiteManagement" });
                     case Entities.Enums.Roles.Employee:
-                        return RedirectToAction("Index", "Employment", new { Area = "Employment" }); //Düzeltilecek
+                        return RedirectToAction("Index", "Employee", new { Area = "Employment" });
                     default:
                         return View(loginVM);
                 }

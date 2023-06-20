@@ -4,6 +4,7 @@ using HRProject.Repositories.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRProject.Repositories.Migrations
 {
     [DbContext(typeof(HRProjectContext))]
-    partial class HRProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20230620135002_nullable-perm")]
+    partial class nullableperm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,9 +259,6 @@ namespace HRProject.Repositories.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -267,15 +266,6 @@ namespace HRProject.Repositories.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PermissionState")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("RequiredDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("TotalRequiredDay")
                         .HasColumnType("int");
 
                     b.HasKey("ID");

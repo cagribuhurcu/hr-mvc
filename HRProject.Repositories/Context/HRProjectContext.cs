@@ -29,6 +29,8 @@ namespace HRProject.Repositories.Context
         public DbSet<SiteManager> SiteManagers { get; set; }
         public DbSet<CompanyManagerEntity> CompanyManagers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<EmployeePermission> EmployeePermissions { get; set; }
 
     }
 }

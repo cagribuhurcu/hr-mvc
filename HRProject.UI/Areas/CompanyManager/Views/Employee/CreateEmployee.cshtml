@@ -80,6 +80,17 @@
                     <input asp-for="SecondLastName" class="form-control" type="text" id="html5-text-input" />
                 </div>
                 <div class="mb-3 col-md-6">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <select asp-for="Gender" class="form-control" id="html5-number-input">
+                        <option value="">Select Gender</option>
+                        @foreach (var genders in Enum.GetValues(typeof(Gender)))
+                        {
+                            var displayName = ((Gender)genders).GetDisplayName();
+                            <option value="@genders">@displayName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
                     <label asp-for="BirthDate" class="form-label">Birth Date</label>
                     <input asp-for="BirthDate" class="form-control" type="date" id="html5-date-input" />
                 </div>

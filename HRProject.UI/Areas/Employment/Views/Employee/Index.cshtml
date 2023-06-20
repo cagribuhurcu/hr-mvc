@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Employment/Views/Shared/_LayoutEmployment.cshtml";
+}
+@model Employee
+
+<style>
+    .card-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Details</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p><strong>Firstname:</strong> <span id="firstnameBasic"></span></p>
+                    <p><strong>Middlename:</strong> <span id="middlenameBasic"></span></p>
+                    <p><strong>Lastname:</strong> <span id="lastnameBasic"></span></p>
+                    <p><strong>Second Lastname:</strong> <span id="secondlastnameBasic"></span></p>
+                    <p><strong>Email:</strong> <span id="emailBasic"></span></p>
+                    <p><strong>Identification Number:</strong> <span id="idnumberBasic"></span></p>
+                    <p><strong>Birth Date:</strong> <span id="dobBasic"></span></p>
+                    <p><strong>Birth Place:</strong> <span id="bplaceBasic"></span></p>
+                    <p><strong>Address:</strong> <span id="addressBasic"></span></p>
+                    <p><strong>Phone Number:</strong> <span id="phoneBasic"></span></p>
+                    <p><strong>Hire Date:</strong> <span id="hireDTBasic"></span></p>
+                    <p><strong>Quit Date:</strong> <span id="quitDTBasic"></span></p>
+                    <p><strong>Department:</strong> <span id="departmentBasic"></span></p>
+                    <p><strong>Job :</strong> <span id="jobIDBasic"></span></p>
+                    <p><strong>Role:</strong> <span id="roleBasic"></span></p>
+                    <p><strong>Company :</strong> <span id="companyBasic"></span></p>
+                    <p><strong>Salary :</strong> <span id="salaryBasic"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bosluklu-nsp {
+        margin-right: 3px; /* Örnek olarak 3 piksel boşluk */
+    }
+</style>
+
+<div class="card mt-4 mx-4">
+    <div class="row no-gutters">
+        <div class="col-md-4 d-flex justify-content-center align-Models-center">
+            <img src="@Model.PhotoURL" class="card-img rounded-circle" alt="User Image">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">
+                    @if (Model.MiddleName != null && Model.SecondLastName == null)
+                    {
+                        @Model.FirstName.ToUpper()
+
+                        <span class="bosluklu-nsp">@Model.MiddleName.ToUpper()</span>
+
+                        @Model.LastName.ToUpper()
+                    }
+                    else if (Model.MiddleName == null && Model.SecondLastName != null)
+                    {
+                        @Model.FirstName.ToUpper()
+
+                        <span class="bosluklu-nsp">@Model.LastName.ToUpper()</span>
+
+                        @Model.SecondLastName.ToUpper()
+                    }
+                    else
+                    {
+                        @Model.FirstName.ToUpper()
+
+                        <span class="bosluklu-nsp">@Model.LastName.ToUpper()</span>
+                    }
+                </h5>
+                <p class="card-text"><strong>Email: </strong> @Model.EmailAddress</p>
+                <p class="card-text"><strong>Phone: </strong>(+90) <span class="bosluklu-nsp">@Model.PhoneNumber</span></p>
+                <p class="card-text"><strong>Company Name : </strong> @Model.Company.CompanyName</p>
+                <button class="btn btn-primary btnDetail" value="@Model.ID" data-toggle="modal" data-target="#exampleModalCenter">Details</button>
+                <a asp-area="CompanyManager" asp-controller="CompanyManager" asp-action="UpdateCompanyManager" asp-route-id="@Model.ID" class="btn btn-secondary">Update</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.btnDetail').click(function () {
+                var id = $(this).val();
+
+                $.ajax({
+                    url: "/Employment/Employee/Detail/" + id,
+                    type: "GET",
+                    success: function (response) {
+                        // Doğum günü Tarih formatını değiştirme
+                        var birthDate = new Date(response.birthDate);
+                        var day = birthDate.getDate();
+                        var month = birthDate.getMonth() + 1;
+                        var year = birthDate.getFullYear();
+                        var formattedBirthDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşe giriş Tarih formatını değiştirme
+                        var hireDate = new Date(response.hireDate);
+                        var day = hireDate.getDate();
+                        var month = hireDate.getMonth() + 1;
+                        var year = hireDate.getFullYear();
+                        var formattedHireDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+                        // İşten çıkış Tarih formatını değiştirme
+                        var formattedQuitDate;
+
+                        if (response.quitDate != null) {
+                            var quitDate = new Date(response.quitDate);
+                            var day = quitDate.getDate();
+                            var month = quitDate.getMonth() + 1;
+                            var year = quitDate.getFullYear();
+                            formattedQuitDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+                        }
+                        else {
+                            formattedQuitDate = null;
+                        }
+
+                        // Enum değerlerine karşılık gelen metinleri almak
+                        var roleText = "";
+                        switch (response.role) {
+                            case 1:
+                                roleText = "Site Manager";
+                                break;
+                            case 2:
+                                roleText = "Company Manager";
+                                break;
+                            case 3:
+                                roleText = "Employee";
+                                break;
+                            // Diğer enum değerleri için gerekli case ifadelerini buraya ekleyebilirsiniz
+                        }
+                        //Departments enum değerlerine karşılık gelen metinleri tanımlama
+                        var departmentText = "";
+                        switch (response.department) {
+                            case 1:
+                                departmentText = "Human Resources";
+                                break;
+                            case 2:
+                                departmentText = "Marketing";
+                                break;
+                            case 3:
+                                departmentText = "Finance";
+                                break;
+                            case 4:
+                                departmentText = "Sales";
+                                break;
+                            case 5:
+                                departmentText = "Information Systems";
+                                break;
+                            // Diğer enum değerleri için gerekli case ifadelerini buraya ekleyebilirsiniz
+                        }
+
+                        $('#firstnameBasic').text(response.firstName);
+                        $('#middlenameBasic').text(response.middleName);
+                        $('#lastnameBasic').text(response.lastName);
+                        $('#secondlastnameBasic').text(response.secondLastName);
+                        $('#emailBasic').text(response.emailAddress);
+                        $('#dobBasic').text(formattedBirthDate);
+                        $('#hireDTBasic').text(formattedHireDate);
+                        $('#quitDTBasic').text(formattedQuitDate);
+                        $('#addressBasic').text(response.address);
+                        $('#phoneBasic').text(response.phoneNumber);
+                        $('#departmentBasic').text(departmentText);
+                        $('#jobIDBasic').text(response.job.name);
+                        $('#roleBasic').text(roleText);
+                        $('#idnumberBasic').text(response.identificationNumber);
+                        $('#bplaceBasic').text(response.birthPlace);
+                        $('#companyBasic').text(response.company.companyName);
+                        $('#salaryBasic').text(response.salary);
+
+                        $('#exampleModalCenter').modal('show');
+
+                        $('.modal-body p').each(function () {
+                            var spanValue = $(this).find('span').text();
+                            if (spanValue == null || spanValue.trim() == '') {
+                                $(this).remove();
+                            }
+                        });
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+        });
+    </script>
+}
+
