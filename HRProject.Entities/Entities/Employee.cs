@@ -17,6 +17,8 @@ namespace HRProject.Entities.Entities
         public Company? Company { get; set; }
         public decimal? Salary { get; set; }
 
+        public Gender? Gender { get; set; }
+
 
         //Create email for employee
         public string CreateEmail(string firstname, string middlename, string lastname)
