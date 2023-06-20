@@ -31,6 +31,7 @@ namespace HRProject.Repositories.Context
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<EmployeePermission> EmployeePermissions { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
 
     }
 }

@@ -4,6 +4,7 @@ using HRProject.Repositories.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRProject.Repositories.Migrations
 {
     [DbContext(typeof(HRProjectContext))]
-    partial class HRProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20230620213158_expense")]
+    partial class expense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,46 +23,6 @@ namespace HRProject.Repositories.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("HRProject.Entities.Entities.AdvancePayment", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int?>("AdvancePaymentType")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ApprovalStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Currency")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EmployeeID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ReplyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RequestDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("EmployeeID");
-
-                    b.ToTable("AdvancePayment");
-                });
 
             modelBuilder.Entity("HRProject.Entities.Entities.Company", b =>
                 {
@@ -486,17 +448,6 @@ namespace HRProject.Repositories.Migrations
                     b.ToTable("SiteManagers");
                 });
 
-            modelBuilder.Entity("HRProject.Entities.Entities.AdvancePayment", b =>
-                {
-                    b.HasOne("HRProject.Entities.Entities.Employee", "Employee")
-                        .WithMany("AdvancePayments")
-                        .HasForeignKey("EmployeeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("HRProject.Entities.Entities.CompanyManagerEntity", b =>
                 {
                     b.HasOne("HRProject.Entities.Entities.Company", "Company")
@@ -549,7 +500,7 @@ namespace HRProject.Repositories.Migrations
             modelBuilder.Entity("HRProject.Entities.Entities.Expense", b =>
                 {
                     b.HasOne("HRProject.Entities.Entities.Employee", "Employee")
-                        .WithMany("Expenses")
+                        .WithMany("Expense")
                         .HasForeignKey("EmployeeID");
 
                     b.Navigation("Employee");
@@ -573,11 +524,9 @@ namespace HRProject.Repositories.Migrations
 
             modelBuilder.Entity("HRProject.Entities.Entities.Employee", b =>
                 {
-                    b.Navigation("AdvancePayments");
-
                     b.Navigation("EmployeePermissions");
 
-                    b.Navigation("Expenses");
+                    b.Navigation("Expense");
                 });
 
             modelBuilder.Entity("HRProject.Entities.Entities.Job", b =>
