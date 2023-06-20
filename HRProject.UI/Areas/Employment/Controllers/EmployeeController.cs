@@ -21,6 +21,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
             _mapper = mapper;
             this.environment = environment;
         }
+
         public async Task<IActionResult> Index()
         {
             var currentUser = HttpContext.User.Identity as ClaimsIdentity;
@@ -64,6 +65,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
             }
             return Json(employee);
         }
+
         [HttpGet]
         public async Task<IActionResult> PermissionList(int id)
         {

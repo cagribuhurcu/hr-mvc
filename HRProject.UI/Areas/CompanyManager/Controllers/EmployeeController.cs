@@ -27,7 +27,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
             this.environment = environment;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> GetEmployeeList()
         {
             List<Employee> employees = new List<Employee>();
 
@@ -130,6 +130,29 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
 
                 }
             }
+            if (employee.HireDate.HasValue)
+            {
+                DateTime today = DateTime.Today;
+                TimeSpan difference = today - employee.HireDate.Value;
+                double yearsDifference = difference.TotalDays / 365.25;
+
+                if (yearsDifference < 1)
+                {
+                    employee.AnnualDay = 0;
+                }
+                else if (yearsDifference >= 1 && yearsDifference <= 6)
+                {
+                    employee.AnnualDay = 14;
+                }
+                else
+                {
+                    employee.AnnualDay = 20;
+                }
+            }
+            else
+            {
+                employee.AnnualDay = 0;
+            }
 
             ViewBag.Jobs = jobs;
             ViewBag.CompanyName = companies;
@@ -202,7 +225,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
             }
 
             TempData["mssg"] = "Add successful!";
-            return RedirectToAction("Index", "CompanyManager");
+            return RedirectToAction("GetEmployeeList", "CompanyManager");
         }
     }
 }

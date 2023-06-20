@@ -24,41 +24,10 @@ namespace HRProject.Entities.Entities
 
         public Gender? Gender { get; set; }
 
-        private int annualDay;
-        public int AnnualDay
-        {
-            get { return annualDay; }
-            set { annualDay = value; }
-        }
+        public int AnnualDay { get; set; }
 
         public List<EmployeePermission> EmployeePermissions { get; set; }
 
-        public void SetAnnualDayValue()
-        {
-            if (HireDate.HasValue)
-            {
-                DateTime today = DateTime.Today;
-                TimeSpan difference = today - HireDate.Value;
-                int daysDifference = (int)difference.TotalDays;
-
-                if (daysDifference < 365)
-                {
-                    AnnualDay = 0;
-                }
-                else if (daysDifference >= 365 && daysDifference <= 2190)
-                {
-                    AnnualDay = 14;
-                }
-                else
-                {
-                    AnnualDay = 20;
-                }
-            }
-            else
-            {
-                AnnualDay = 0; // Eğer HireDate değeri null ise AnnualDay'i 0 olarak ayarla
-            }
-        }
         //Create email for employee
         public string CreateEmail(string firstname, string middlename, string lastname)
         {
