@@ -11,11 +11,12 @@ namespace HRProject.Entities.Entities
     {
         public AdvancePaymentType? AdvancePaymentType { get; set; }
         public DateTime? RequestDate { get; set; }
-        public PermissionState? ApprovalStatus { get; set; }
+        public Status? ApprovalStatus { get; set; } = Status.Pending;
         public DateTime? ReplyDate { get; set; }
         public Currency? Currency { get; set; }
-        public string Description { get; set; }
-        public int EmployeeID { get; set; }
-        public Employee Employee { get; set; }
+        public string? Description { get; set; }
+        public int? EmployeeID { get; set; }
+        public Employee? Employee { get; set; }
+        public decimal? Amount { get; set; }
     }
 }

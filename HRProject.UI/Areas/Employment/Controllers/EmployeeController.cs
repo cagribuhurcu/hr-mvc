@@ -124,5 +124,96 @@ namespace HRProject.UI.Areas.Employment.Controllers
             }
             return RedirectToAction("PermissionList");
         }
+
+        ////////////////////////////////////////
+
+        [HttpGet]
+        public async Task<IActionResult> AdvancePaymentList()
+        {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+
+            List<AdvancePayment> advancePayments = new List<AdvancePayment>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/AdvancePayment/GetAllAdvancePaymentbyEmployeeId/{loginIdClaim.Value}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    advancePayments = JsonConvert.DeserializeObject<List<AdvancePayment>>(apiCevap);
+                }
+            }
+            return View(advancePayments);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CreateAdvancePayment()
+        {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+            ViewBag.EmployeeId = loginIdClaim.Value;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdvancePayment(AdvancePayment advancePayment)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(advancePayment), Encoding.UTF8, "application/json");
+
+                using (var cevap = await httpClient.PostAsync($"{baseURL}/api/AdvancePayment/CreateAdvancePayment", content))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("AdvancePaymentList");
+        }
+
+        /////////////////////---------------------------------
+
+
+        [HttpGet]
+        public async Task<IActionResult> ExpenseList()
+        {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+
+            List<Expense> expenses = new List<Expense>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Expense/GetAllExpensebyEmployeeId/{loginIdClaim.Value}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    expenses = JsonConvert.DeserializeObject<List<Expense>>(apiCevap);
+                }
+            }
+            return View(expenses);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CreateExpense()
+        {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+            ViewBag.EmployeeId = loginIdClaim.Value;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateExpense(Expense expense)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(expense), Encoding.UTF8, "application/json");
+
+                using (var cevap = await httpClient.PostAsync($"{baseURL}/api/Expense/CreateExpense", content))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("ExpenseList");
+        }
     }
 }

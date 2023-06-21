@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "ExpenseList";
+    Layout = "~/Areas/Employment/Views/Shared/_LayoutEmployment.cshtml";
+}
+@model List<Expense>
+
+<div class="card mx-4">
+    <h5 class="card-header d-flex justify-content-center">Expense List</h5>
+    <div class="table-responsive text-nowrap text-center">
+        <table id="example" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Expense Name</th>
+                    <th>Expense State</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Confirmed Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="mb-2">
+                @foreach (Expense item in Model)
+                {
+                    <tr>
+                        <td>@item.ExpenseType.Value</td>
+                        <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
+                        <td>@item.Amount</td>
+                        <td>@item.Currency</td>
+                        <td>@item.ApprovalDate</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
+                                    <a asp-action="UpdateCompany" asp-controller="Company" asp-area="SiteManagement" asp-route-id="@item.ID" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Update</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

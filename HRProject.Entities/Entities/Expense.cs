@@ -12,7 +12,7 @@ namespace HRProject.Entities.Entities
         public ExpenseType? ExpenseType { get; set; }
         public decimal? Amount { get; set; }
         public Currency? Currency { get; set; }
-        public PermissionState? ApprovalStatus { get; set; }
+        public Status? ApprovalStatus { get; set; } = Status.Pending;
         public DateTime? RequestDate { get; set; }
         public DateTime? ApprovalDate { get; set; }
         public string? FileURL { get; set; }

@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "CreateExpense";
+    Layout = "~/Areas/Employment/Views/Shared/_LayoutEmployment.cshtml";
+}
+@model Expense
+
+<form id="formAccountSettings" asp-action="CreateExpense" method="post" enctype="multipart/form-data">
+    <div class="card my-4 mx-4">
+        <h5 class="card-header">Create Expense</h5>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert" asp-validation-summary="All">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Account -->
+        <hr class="my-0" />
+        <div class="card-body">
+            <div class="row">
+                <input asp-for="EmployeeID" type="hidden" value="@ViewBag.EmployeeId" />
+                <div class="mb-3 col-md-6">
+                    <label asp-for="ExpenseType" class="form-label">Expense Type</label>
+                    <select asp-for="ExpenseType" class="form-control" id="html5-number-input">
+                        <option value="">Select Expense Type</option>
+                        @foreach (var types in Enum.GetValues(typeof(ExpenseType)))
+                        {
+                            var displayName = ((ExpenseType)types).GetDisplayName();
+                            <option value="@types">@displayName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Amount" class="form-label">Amount</label>
+                    <input asp-for="Amount" class="form-control" type="text" id="amount" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Currency" class="form-label">Currency</label>
+                    <select asp-for="Currency" class="form-control" id="html5-number-input">
+                        <option value="">Select Currency</option>
+                        @foreach (var currency in Enum.GetValues(typeof(Currency)))
+                        {
+                            var displayName = ((Currency)currency).GetDisplayName();
+                            <option value="@currency">@displayName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="FileURL" class="form-label">File</label>
+                    <input asp-for="FileURL" class="form-control" type="file" id="file" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label asp-for="RequestDate" class="form-label">Request Date</label>
+                    <input asp-for="RequestDate" class="form-control" type="date" id="request-date" />
+                </div>
+            </div>
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary me-2" id="create-button">Create</button>
+                <a asp-action="Index" asp-controller="Index" asp-area="Employment" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </div>
+        <!-- /Account -->
+    </div>
+</form>

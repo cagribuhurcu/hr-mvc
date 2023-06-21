@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HRProject.Entities.Enums
 {
-    public enum PermissionState
+    public enum Status
     {
         Pending=1,
         Confirmed,
