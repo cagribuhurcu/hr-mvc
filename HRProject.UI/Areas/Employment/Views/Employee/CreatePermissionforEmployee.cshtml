@@ -16,16 +16,27 @@
         }
 
         <!-- Account -->
-        <hr class="my-0" />
         <div class="card-body">
             <div class="row">
-                <input asp-for="EmployeeId" type="hidden" value="@ViewBag.EmployeeId" />
                 <div class="mb-3 col-md-6">
-                    <label asp-for="PermissionId" class="form-label">Job</label>
+                    <label asp-for="PermissionId" class="form-label">Permission</label>
                     <select asp-for="PermissionId" class="form-control" id="permission-select">
                         <option value="">Select Permission</option>
-                        @foreach (Permission permission in ViewBag.PermissionName)
+                        @foreach (Permission permission in ViewBag.PermissionName) 
                         {
+                            @if (permission.PermissionName == PermissionName.PaternityLeave && ViewBag.Gender == Gender.Female)
+                            {
+                                continue;
+                            }
+                            else if (permission.PermissionName == PermissionName.MaternityLeave && ViewBag.Gender == Gender.Male)
+                            {
+                                continue;
+                            }
+                            else if (permission.PermissionName == PermissionName.BreastfeedingLeave && ViewBag.Gender == Gender.Male)
+                            {
+                                continue;
+                            }
+
                             <option value="@permission.ID" data-max-days="@permission.MaxPermissionDay">@permission.PermissionName</option>
                         }
                     </select>
@@ -48,28 +59,40 @@
     </div>
 </form>
 
-<script>
-    // Get the start date and end date input elements
-    var startDateInput = document.getElementById('start-date-input');
-    var endDateInput = document.getElementById('end-date-input');
-    var createButton = document.getElementById('create-button');
-    var permissionSelect = document.getElementById('permission-select');
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        // Get the start date and end date input elements
+        var startDateInput = document.getElementById('start-date-input');
+        var endDateInput = document.getElementById('end-date-input');
+        var createButton = document.getElementById('create-button');
+        var permissionSelect = document.getElementById('permission-select');
 
-    // Add event listeners to the input elements
-    startDateInput.addEventListener('input', checkDateDifference);
-    endDateInput.addEventListener('input', checkDateDifference);
-    permissionSelect.addEventListener('change', checkDateDifference);
+        // Add event listeners to the input elements
+        startDateInput.addEventListener('input', checkDateDifference);
+        endDateInput.addEventListener('input', checkDateDifference);
+        permissionSelect.addEventListener('change', checkDateDifference);
 
-    function checkDateDifference() {
-        var startDate = new Date(startDateInput.value);
-        var endDate = new Date(endDateInput.value);
-        var selectedOption = permissionSelect.options[permissionSelect.selectedIndex];
-        var maxDays = parseInt(selectedOption.getAttribute('data-max-days'));
+        function checkDateDifference() {
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+            var selectedOption = permissionSelect.options[permissionSelect.selectedIndex];
+            var maxDays = parseInt(selectedOption.getAttribute('data-max-days'));
 
-        // Calculate the difference in days
-        var differenceInDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+            // Calculate the difference in days
+            var differenceInDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
 
-        // Disable the create button if the difference is greater than the maximum days allowed
-        createButton.disabled = differenceInDays > maxDays;
-    }
-</script>
+            // Disable the create button if the difference is greater than the maximum days
+            createButton.disabled = differenceInDays > maxDays;
+
+            // Show error message with SweetAlert if the difference is greater than the maximum days
+            if (differenceInDays > maxDays) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The selected permission cannot exceed ' + maxDays + ' days.'
+                });
+            }
+        }
+    </script>
+}

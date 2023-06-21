@@ -22,12 +22,12 @@
                 <input asp-for="EmployeeID" type="hidden" value="@ViewBag.EmployeeId" />
                 <div class="mb-3 col-md-6">
                     <label asp-for="AdvancePaymentType" class="form-label">Advance Payment Type</label>
-                    <select asp-for="AdvancePaymentType" class="form-control" id="html5-number-input">
+                    <select asp-for="AdvancePaymentType" class="form-control" id="payment">
                         <option value="">Select Advance Payment Type</option>
                         @foreach (var types in Enum.GetValues(typeof(AdvancePaymentType)))
                         {
                             var displayName = ((AdvancePaymentType)types).GetDisplayName();
-                            <option value="@types">@displayName</option>
+                            <option value="@types" data-max-amount="@((AdvancePaymentType)types == AdvancePaymentType.Individual ? 5000 : 10000)">@displayName</option>
                         }
                     </select>
                 </div>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="Currency" class="form-label">Currency</label>
-                    <select asp-for="Currency" class="form-control" id="html5-number-input">
+                    <select asp-for="Currency" class="form-control" id="currency">
                         <option value="">Select Currency</option>
                         @foreach (var currency in Enum.GetValues(typeof(Currency)))
                         {
@@ -63,3 +63,58 @@
         <!-- /Account -->
     </div>
 </form>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        var amountInput = document.getElementById('amount');
+        var currencySelect = document.getElementById('currency');
+        var createButton = document.getElementById('create-button');
+        var paymentSelect = document.getElementById('payment');
+
+        amountInput.addEventListener('input', checkAmountRestrictions);
+        currencySelect.addEventListener('change', checkAmountRestrictions);
+        paymentSelect.addEventListener('change', checkAmountRestrictions);
+
+        function checkAmountRestrictions() {
+            var selectedPaymentOption = paymentSelect.options[paymentSelect.selectedIndex];
+            var maxAmount = parseInt(selectedPaymentOption.getAttribute('data-max-amount'));
+
+            var enteredAmount = parseFloat(amountInput.value);
+            var selectedCurrency = currencySelect.value;
+
+            var amountExceedsMax = false;
+            var maxAmountFormatted = '';
+
+            if (selectedCurrency === 'TurkishLira') {
+                if (selectedPaymentOption.value === 'Individual') {
+                    maxAmountFormatted = '5000 Turkish Lira';
+                    amountExceedsMax = enteredAmount > 5000;
+                } else if (selectedPaymentOption.value === 'Institutional') {
+                    maxAmountFormatted = '10000 Turkish Lira';
+                    amountExceedsMax = enteredAmount > 10000;
+                }
+            } else if (selectedCurrency === 'Dolar') {
+                maxAmountFormatted = (maxAmount / 24).toFixed(2) + ' Dollars';
+                amountExceedsMax = enteredAmount > (maxAmount / 24);
+            } else if (selectedCurrency === 'Euro') {
+                maxAmountFormatted = (maxAmount / 26).toFixed(2) + ' Euros';
+                amountExceedsMax = enteredAmount > (maxAmount / 26);
+            }
+
+            createButton.disabled = amountExceedsMax;
+
+            if (amountExceedsMax) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: getErrorMessage(amountExceedsMax, maxAmountFormatted)
+                });
+            }
+        }
+
+        function getErrorMessage(amountExceedsMax, maxAmountFormatted) {
+            return 'The entered amount exceeds the maximum amount of ' + maxAmountFormatted + '.';
+        }
+    </script>
+}
