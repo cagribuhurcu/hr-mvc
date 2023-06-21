@@ -81,7 +81,7 @@ namespace HRProject.Repositories.Concrete
             try
             {
 
-                context.Set<T>().Update(item);
+                context.Set<T>().Remove(item);
                 return Save() > 0; //Bir tek nesne gelip ekleme işlemi yapıldığı için Save() metodundan 1 dönüyorsa buradan true dönsün.
             }
             catch (Exception)

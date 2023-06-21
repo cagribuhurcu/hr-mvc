@@ -46,9 +46,9 @@
                         }
                     </select>
                 </div>
-                <div class="mb-3 col-md-6">
-                    <label asp-for="FileURL" class="form-label">File</label>
-                    <input asp-for="FileURL" class="form-control" type="file" id="file" />
+                <div class="mb-3">
+                    <label asp-for="FileURL" for="formFile" class="form-label">PDF File</label>
+                    <input asp-for="FileURL" class="form-control" name="files" type="file" id="formFile" />
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="RequestDate" class="form-label">Request Date</label>

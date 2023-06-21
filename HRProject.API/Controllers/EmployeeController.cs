@@ -11,12 +11,12 @@ namespace HRProject.API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IGenericRepository<Employee> service;
-        
+        private readonly IGenericRepository<EmployeePermission> emppermissionservice;
 
-        public EmployeeController(IGenericRepository<Employee> service)
+        public EmployeeController(IGenericRepository<Employee> service,IGenericRepository<EmployeePermission> emppermissionservice)
         {
             this.service = service;
-           
+            this.emppermissionservice = emppermissionservice;
         }
         //Listelemek için kullanılan action 
 
@@ -32,8 +32,15 @@ namespace HRProject.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetEmployeeById(int id)
         {
-            var employee = service.GetById(id, t0 => t0.Company, t1 => t1.Job,t2 => t2.EmployeePermissions);
+            var employee = service.GetById(id, t0 => t0.Company, t1 => t1.Job);
             return Ok(employee);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateAnnualDay(int id,[FromBody] Employee emp)
+        {
+            service.Update(emp);
+            return Ok(emp);
         }
 
         //Employee yaratmak için

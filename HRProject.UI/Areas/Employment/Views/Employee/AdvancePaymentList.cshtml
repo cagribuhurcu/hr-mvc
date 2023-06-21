@@ -4,44 +4,230 @@
 }
 @model List<AdvancePayment>
 
-<div class="card mx-4">
-    <h5 class="card-header d-flex justify-content-center">Advance Payment List</h5>
-    <div class="table-responsive text-nowrap text-center">
-        <table id="example" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Advance Payment Name</th>
-                    <th>Advance Payment State</th>
-                    <th>Amount</th>
-                    <th>Currency</th>
-                    <th>Confirmed Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody class="mb-2">
-                @foreach (AdvancePayment item in Model)
-                {
-                    <tr>
-                        <td>@item.AdvancePaymentType.Value</td>
-                        <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
-                        <td>@item.Amount</td>
-                        <td>@item.Currency</td>
-                        <td>@item.ReplyDate</td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
-                                    <a asp-action="UpdateCompany" asp-controller="Company" asp-area="SiteManagement" asp-route-id="@item.ID" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Update</a>
-                                </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<div class="col-lg-12">
+    <div class="card mx-4">
+        <div class="card-header">
+            <div class="align-items-lg-end">
+                <strong class="card-title d-flex justify-content-center">Advance Payment Request</strong>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="custom-tab">
+                <nav>
+
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link active"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#custom-nav-pending"
+                                    aria-controls="custom-nav-pending"
+                                    aria-selected="true">
+                                Pending
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#custom-nav-confirmed"
+                                    aria-controls="navs-top-profile"
+                                    aria-selected="false">
+                                Confirmed
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#custom-nav-cancelled"
+                                    aria-controls="navs-top-messages"
+                                    aria-selected="false">
+                                Cancelled
+                            </button>
+                        </li>
+                    </ul>
+
+                </nav>
+                <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="custom-nav-pending" role="tabpanel" aria-labelledby="custom-nav-pending-permissions">
+                        <div class="card">
+                            <div class="card-header"></div>
+
+                            <div class="card-body">
+                                <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Advance Payment Name</th>
+                                            <th>Advance Payment State</th>
+                                            <th>Amount</th>
+                                            <th>Currency</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+                                            int rowcountt = 1;
+                                        }
+                                        @foreach (AdvancePayment item in Model)
+                                        {
+                                            if (item.ApprovalStatus == Status.Pending)
+                                            {
+                                                <tr>
+                                                    <th scope="row">@rowcountt</th>
+                                                    <td>@item.AdvancePaymentType.Value</td>
+                                                    <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
+                                                    <td>@item.Amount</td>
+                                                    <td>@item.Currency</td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
+                                                                <a asp-action="DeletePayment" asp-controller="Employee" asp-area="Employment" asp-route-id="@item.ID" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            rowcountt++;
+                                        }
+
+                                    </tbody>
+                                </table>
                             </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-nav-confirmed" role="tabpanel" aria-labelledby="custom-nav-confirmed-permissions">
+                        <div class="card">
+                            <div class="card-header"> </div>
+
+                            <div class="card-body">
+                                <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Advance Payment Name</th>
+                                            <th>Advance Payment State</th>
+                                            <th>Amount</th>
+                                            <th>Currency</th>
+                                            <th>Confirmed Date</th>
+                                            <th>Operatiopn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+                                            int rowcount2 = 1;
+                                        }
+                                        @foreach (AdvancePayment item in Model)
+                                        {
+                                            if (item.ApprovalStatus == Status.Confirmed)
+                                            {
+                                                <tr>
+                                                    <th scope="row">@rowcountt</th>
+                                                    <td>@item.AdvancePaymentType.Value</td>
+                                                    <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
+                                                    <td>@item.Amount</td>
+                                                    <td>@item.Currency</td>
+                                                    <td>@item.ReplyDate</td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            rowcount2++;
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-nav-cancelled" role="tabpanel" aria-labelledby="custom-nav-cancelled-permissions">
+                        <div class="card">
+                            <div class="card-header"> </div>
+
+
+                            <div class="card-body">
+                                <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Advance Payment Name</th>
+                                            <th>Advance Payment State</th>
+                                            <th>Amount</th>
+                                            <th>Currency</th>
+                                            <th>Confirmed Date</th>
+                                            <th>Operatiopn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+                                            int rowcount3 = 1;
+                                        }
+                                        @foreach (AdvancePayment item in Model)
+                                        {
+                                            if (item.ApprovalStatus  == Status.Canceled)
+                                            {
+                                                <tr>
+                                                    <th scope="row">@rowcountt</th>
+                                                    <td>@item.AdvancePaymentType.Value</td>
+                                                    <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
+                                                    <td>@item.Amount</td>
+                                                    <td>@item.Currency</td>
+                                                    <td>@item.ReplyDate</td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            rowcount3++;
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
