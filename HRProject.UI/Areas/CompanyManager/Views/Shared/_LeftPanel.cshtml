@@ -82,6 +82,32 @@
                     <div data-i18n="Without menu">Create Employee</div>
                   </a>
                 </li>
+                
+            </ul>
+        </li>
+        <li class="menu-item active">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Employee Request Operation</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-area="CompanyManager" asp-controller="Permission" asp-action="GetPermissionRequest" class="menu-link">
+                        <div data-i18n="Without menu">Permission Request</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a asp-area="CompanyManager" asp-controller="Permission" asp-action="GetAdvancePeymentRequest" class="menu-link">
+                        <div data-i18n="Without menu">Advance Peyment Request</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a asp-area="CompanyManager" asp-controller="Permission" asp-action="GetExpenseRequest" class="menu-link">
+                        <div data-i18n="Without menu">Expense Request</div>
+                    </a>
+                </li>
+
             </ul>
         </li>
 

@@ -21,6 +21,7 @@
     <Folder Include="Areas\Employment\Data\" />
     <Folder Include="Areas\Employment\Models\" />
     <Folder Include="Areas\SiteManagement\Data\" />
+    <Folder Include="wwwroot\FilesUploads\" />
   </ItemGroup>
 
 </Project>

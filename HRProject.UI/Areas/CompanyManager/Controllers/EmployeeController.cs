@@ -48,6 +48,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
         public static List<Company> companies;
         public static List<Job> jobs;
         public static CompanyManagerEntity employees;
+
         [HttpGet]
         public async Task<IActionResult> CreateEmployee()
         {

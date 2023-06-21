@@ -1,25 +1,28 @@
-﻿@{
-    ViewData["Title"] = "ExpenseList";
-    Layout = "~/Areas/Employment/Views/Shared/_LayoutEmployment.cshtml";
+﻿
+@{
+    ViewData["Title"] = "GetPermissionRequest";
+    Layout = "~/Areas/CompanyManager/Views/Shared/_LayoutCompanyManager.cshtml";
 }
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-@model List<Expense>
+@model List<EmployeePermission>
+
 
 <div class="col-lg-12">
     <div class="card mx-4">
         <div class="card-header">
             <div class="align-items-lg-end">
-                <strong class="card-title d-flex justify-content-center">Expense Request</strong>
+                <strong class="card-title d-flex justify-content-center">Permission Request</strong>
             </div>
         </div>
         <div class="card-body">
             <div class="custom-tab">
                 <nav>
 
-
+                 
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <button type="button"
@@ -67,10 +70,11 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Expense Name</th>
-                                            <th>Expense State</th>
-                                            <th>Amount</th>
-                                            <th>Currency</th>
+                                            <th>Employee Fullname</th>
+                                            <th>Permission Name</th>
+                                            <th>Required Date</th>
+                                            <th>Start Day of Permission Request</th>
+                                            <th>End Day of Permission Request</th>
                                             <th>Operation</th>
                                         </tr>
                                     </thead>
@@ -79,26 +83,22 @@
                                         @{
                                             int rowcountt = 1;
                                         }
-                                        @foreach (Expense item in Model)
+                                        @foreach (EmployeePermission item in Model)
                                         {
-                                            if (item.ApprovalStatus == Status.Pending)
+                                            if (item.PermissionState == Status.Pending)
                                             {
                                                 <tr>
                                                     <th scope="row">@rowcountt</th>
-                                                    <td>@item.ExpenseType.Value</td>
-                                                    <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
-                                                    <td>@item.Amount</td>
-                                                    <td>@item.Currency</td>
+                                                    <td>@item.Employee.FirstName @item.Employee.LastName</td>
+                                                    <td>@item.Permission.PermissionName</td>
+                                                    <td>@item.RequiredDate</td>
+                                                    <td>@item.StartDate.Value.ToShortDateString()</td>
+                                                    <td>@item.EndDate.Value.ToShortDateString()</td>
                                                     <td>
-                                                        <div class="dropdown">
-                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
-                                                                <a asp-action="DeleteExpense" asp-controller="Employee" asp-area="Employment" asp-route-id="@item.ID" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>Delete</a>
-                                                            </div>
-                                                        </div>
+                                                        
+                                                        <a asp-area="CompanyManager" asp-controller="Permission" asp-action="ConfirmedPermission" asp-route-id="@item.ID" class="btn btn-sm btn-success">Confirmed</a>
+                                                        <a asp-area="CompanyManager" asp-controller="Permission" asp-action="CancelledPermission" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Cancelled</a>
+
                                                     </td>
                                                 </tr>
                                             }
@@ -121,12 +121,12 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Expense Name</th>
-                                            <th>Expense State</th>
-                                            <th>Amount</th>
-                                            <th>Currency</th>
-                                            <th>Confirmed Date</th>
-                                            <th>Operation</th>
+                                            <th>Employee Fullname</th>
+                                            <th>Permission Name</th>
+                                            <th>Required Date</th>
+                                            <th>Start day of permission request</th>
+                                            <th>End day of permission request</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -134,28 +134,17 @@
                                         @{
                                             int rowcount2 = 1;
                                         }
-                                        @foreach (Expense item in Model)
+                                        @foreach (EmployeePermission item in Model)
                                         {
-                                            if (item.ApprovalStatus == Status.Confirmed)
+                                            if (item.PermissionState == Status.Confirmed)
                                             {
                                                 <tr>
                                                     <th scope="row">@rowcountt</th>
-                                                    <td>@item.ExpenseType.Value</td>
-                                                    <td><span class="badge bg-success">@item.ApprovalStatus</span></td>
-                                                    <td>@item.Amount</td>
-                                                    <td>@item.Currency</td>
-                                                    <td>@item.ApprovalDate</td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                    </td>
+                                                    <td>@item.Employee.FirstName @item.Employee.LastName</td>
+                                                    <td>@item.Permission.PermissionName</td>
+                                                    <td>@item.RequiredDate</td>
+                                                    <td>@item.StartDate.Value.ToShortDateString()</td>
+                                                    <td>@item.EndDate.Value.ToShortDateString()</td>
                                                 </tr>
                                             }
 
@@ -179,12 +168,11 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Expense Name</th>
-                                            <th>Expense State</th>
-                                            <th>Amount</th>
-                                            <th>Currency</th>
-                                            <th>Confirmed Date</th>
-                                            <th>Operation</th>
+                                            <th>Employee Fullname</th>
+                                            <th>Permission Name</th>
+                                            <th>Required Date</th>
+                                            <th>Start day of permission request</th>
+                                            <th>End day of permission request</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -192,28 +180,17 @@
                                         @{
                                             int rowcount3 = 1;
                                         }
-                                        @foreach (Expense item in Model)
+                                        @foreach (EmployeePermission item in Model)
                                         {
-                                            if (item.ApprovalStatus  == Status.Canceled)
+                                            if (item.PermissionState == Status.Canceled)
                                             {
                                                 <tr>
-                                                    <th scope="row">@rowcountt</th>
-                                                    <td>@item.ExpenseType.Value</td>
-                                                    <td><span class="badge bg-danger">@item.ApprovalStatus</span></td>
-                                                    <td>@item.Amount</td>
-                                                    <td>@item.Currency</td>
-                                                    <td>@item.ApprovalDate</td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                <button class="btn btnDetail" value="@item.ID" data-toggle="modal" data-target="#exampleModalCenter"><i class='bx bx-id-card'></i> Details</button>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    </td>
+                                                    <th scope="row">@rowcount3</th>
+                                                    <td>@item.Employee.FirstName @item.Employee.LastName</td>
+                                                    <td>@item.Permission.PermissionName</td>
+                                                    <td>@item.RequiredDate</td>
+                                                    <td>@item.StartDate.Value.ToShortDateString()</td>
+                                                    <td>@item.EndDate.Value.ToShortDateString()</td>
                                                 </tr>
                                             }
 
@@ -231,4 +208,6 @@
         </div>
     </div>
 </div>
+
+
 

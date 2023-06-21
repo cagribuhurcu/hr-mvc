@@ -18,7 +18,7 @@ namespace HRProject.Entities.Entities
 
         public Status PermissionState { get; set; } = Status.Pending;
 
-        public DateTime? RequiredDate { get; set; }
+        public DateTime? RequiredDate { get; set; }= DateTime.Now;
 
         public DateTime? ConfirmedDate { get; set; } //Company manager cevapladığında atanacak date
 

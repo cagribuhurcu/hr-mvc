@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HRProject.Entities.Entities;
 using HRProject.Entities.Enums;
+using HRProject.UI.Models.DTOs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -87,6 +88,8 @@ namespace HRProject.UI.Areas.Employment.Controllers
         }
 
         public static List<Permission> permissionNames;
+        public static Employee updatedEmployee;
+        
         public static int employeeId;
 
         [HttpGet]
@@ -103,9 +106,19 @@ namespace HRProject.UI.Areas.Employment.Controllers
                     permissionNames = JsonConvert.DeserializeObject<List<Permission>>(apiCevap);
                 }
             }
+           
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Employee/GetEmployeeById/{loginIdClaim.Value}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    updatedEmployee = JsonConvert.DeserializeObject<List<Employee>>(apiCevap)[0];
+                }
+            }
 
             ViewBag.PermissionName = permissionNames;
             ViewBag.EmployeeId = loginIdClaim.Value;
+            ViewBag.Gender = updatedEmployee.Gender;
 
             return View();
         }
@@ -113,6 +126,25 @@ namespace HRProject.UI.Areas.Employment.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePermissionforEmployee(EmployeePermission employeePermission)
         {
+            if (employeePermission.PermissionId == 7)
+            {
+
+                int diff = (employeePermission.EndDate.Value.Day - employeePermission.StartDate.Value.Day);
+                updatedEmployee.AnnualDay -= diff;
+
+                using (var httpClient = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(updatedEmployee), Encoding.UTF8, "application/json");
+
+                    using (var response = await httpClient.PutAsync($"{baseURL}/api/Employee/UpdateAnnualDay/{updatedEmployee.ID}", content))
+                    {
+                        {
+                            string apiCevap = await response.Content.ReadAsStringAsync();
+                        }
+                    }
+                }
+
+            }
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(employeePermission), Encoding.UTF8, "application/json");
@@ -123,6 +155,58 @@ namespace HRProject.UI.Areas.Employment.Controllers
                 }
             }
             return RedirectToAction("PermissionList");
+        }
+
+        public static EmployeePermission employeePermission1;
+        [HttpGet]
+        public async Task<IActionResult> DeletePermission(int id)
+        {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Permission/GetEmployeePermissionbyId/{id}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    employeePermission1 = JsonConvert.DeserializeObject<EmployeePermission>(apiCevap);
+                }
+            }
+            if (employeePermission1.PermissionId == 7)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Employee/GetEmployeeById/{loginIdClaim.Value}"))
+                    {
+                        string apiCevap = await cevap.Content.ReadAsStringAsync();
+                        updatedEmployee = JsonConvert.DeserializeObject<List<Employee>>(apiCevap)[0];
+                    }
+                }
+                int diff = (employeePermission1.EndDate.Value.Day - employeePermission1.StartDate.Value.Day);
+                updatedEmployee.AnnualDay += diff;
+
+                using (var httpClient = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(updatedEmployee), Encoding.UTF8, "application/json");
+
+                    using (var response = await httpClient.PutAsync($"{baseURL}/api/Employee/UpdateAnnualDay/{updatedEmployee.ID}", content))
+                    {
+                        {
+                            string apiCevap = await response.Content.ReadAsStringAsync();
+                        }
+                    }
+                }
+
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync($"{baseURL}/api/Permission/DeletePermission/{id}"))
+                {
+                   
+                }
+            }
+            return RedirectToAction("PermissionList");
+
         }
 
         ////////////////////////////////////////
@@ -202,8 +286,30 @@ namespace HRProject.UI.Areas.Employment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateExpense(Expense expense)
+        public async Task<IActionResult> CreateExpense(Expense expense, List<IFormFile> files)
         {
+            Expense expence = new Expense();
+
+            if (files.Count == 0)
+            {
+                //expence.FileURL = updatedCompanyManager.PhotoURL;
+            }
+            else
+            {
+
+                string returnedMessaage = UploadFiles.FilesUpload(files, environment, out bool filesult);
+
+                if (filesult)
+                {
+                    expence.FileURL = returnedMessaage;
+                }
+                else
+                {
+
+                    ViewBag.FileMessage = returnedMessaage;
+                    ModelState.AddModelError("", ViewBag.FileMessage);
+                }
+            }
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(expense), Encoding.UTF8, "application/json");
