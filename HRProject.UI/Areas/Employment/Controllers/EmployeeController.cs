@@ -118,6 +118,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
 
             ViewBag.PermissionName = permissionNames;
             ViewBag.EmployeeId = loginIdClaim.Value;
+            ViewBag.Gender = updatedEmployee.Gender;
 
             return View();
         }
