@@ -84,7 +84,7 @@
                                                     <td>@item.Amount</td>
                                                     <td>@item.Currency</td>
                                                     <td>
-                                                        <a asp-action="DeletePayment" asp-controller="Employee" asp-area="Employment" asp-route-id="@item.ID" class="btn btn-danger"><i class="bx bx-edit-alt me-1"></i> Delete</a>
+                                                        <a asp-action="DeletePayment" asp-controller="Employee" asp-area="Employment" asp-route-id="@item.ID" class="btn btn-danger"><i class='bx bxs-x-circle' style='color:#df0808'></i></a>
                                                     </td>
                                                 </tr>
                                             }
@@ -119,7 +119,7 @@
                                             {
                                                 <tr>
                                                     <td>@item.AdvancePaymentType.Value</td>
-                                                    <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
+                                                    <td><span class="badge bg-success">@item.ApprovalStatus</span></td>
                                                     <td>@item.Amount</td>
                                                     <td>@item.Currency</td>
                                                     <td>@item.ReplyDate</td>
@@ -157,7 +157,7 @@
                                             {
                                                 <tr>
                                                     <td>@item.AdvancePaymentType.Value</td>
-                                                    <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
+                                                    <td><span class="badge bg-danger">@item.ApprovalStatus</span></td>
                                                     <td>@item.Amount</td>
                                                     <td>@item.Currency</td>
                                                     <td>@item.ReplyDate</td>

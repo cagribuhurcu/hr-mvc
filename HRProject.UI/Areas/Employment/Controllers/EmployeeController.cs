@@ -150,10 +150,14 @@ namespace HRProject.UI.Areas.Employment.Controllers
             else if (employeePermissions.Any(a => a.PermissionState == Status.Confirmed))
             {
                 var foundEmp = employeePermissions.FirstOrDefault(x =>
-                                            (x.StartDate == employeePermission.StartDate && x.EndDate == employeePermission.EndDate) ||
-                                            (x.StartDate == employeePermission.StartDate && x.EndDate != employeePermission.EndDate) ||
-                                            (x.StartDate != employeePermission.StartDate && x.EndDate == employeePermission.EndDate) 
-                                                    );
+                {
+                    bool isStartDateInRange = x.StartDate <= employeePermission.StartDate && employeePermission.StartDate <= x.EndDate;
+                    bool isEndDateInRange = x.StartDate <= employeePermission.EndDate && employeePermission.EndDate <= x.EndDate;
+                    bool isRangeWithinX = employeePermission.StartDate <= x.StartDate && x.EndDate <= employeePermission.EndDate;
+
+                    return isStartDateInRange || isEndDateInRange || isRangeWithinX;
+                });
+
                 if (foundEmp != null)
                 {
                     ViewBag.message = "You already have a request on the same date.";

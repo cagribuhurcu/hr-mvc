@@ -13,7 +13,7 @@
     <div class="card mx-4 my-4">
         <div class="card-header">
             <div class="align-items-lg-end">
-                <strong class="card-title d-flex justify-content-center">Advance Payment Request</strong>
+                <strong class="card-title d-flex justify-content-center">Permission Request</strong>
             </div>
         </div>
         <div class="card-body">
@@ -88,7 +88,7 @@
                                                     <td>@item.EndDate.Value.ToShortDateString()</td>
                                       
                                                     <td>
-                                                        <a asp-action="DeletePermission" asp-controller="Employee" asp-area="Employment" asp-route-id="@item.ID" class="btn btn-danger"><i class="bx bx-edit-alt me-1"></i> Delete </a>
+                                                        <a asp-action="DeletePermission" asp-controller="Employee" asp-area="Employment" asp-route-id="@item.ID" class="btn btn-danger"><i class='bx bxs-x-circle' style='color:#df0808'></i></a>
                                                     </td>
                                                 </tr>
                                             }
@@ -124,7 +124,7 @@
                                             {
                                                 <tr>
                                                     <td>@item.Permission.PermissionName</td>
-                                                    <td><span class="badge bg-warning">@item.PermissionState</span></td>
+                                                    <td><span class="badge bg-success">@item.PermissionState</span></td>
                                                     <td>@item.StartDate.Value.ToShortDateString()</td>
                                                     <td>@item.EndDate.Value.ToShortDateString()</td>
                                                     <td>@item.ConfirmedDate</td>
@@ -164,7 +164,7 @@
                                             {
                                                 <tr>
                                                     <td>@item.Permission.PermissionName</td>
-                                                    <td><span class="badge bg-warning">@item.PermissionState</span></td>
+                                                    <td><span class="badge bg-danger">@item.PermissionState</span></td>
                                                     <td>@item.StartDate.Value.ToShortDateString()</td>
                                                     <td>@item.EndDate.Value.ToShortDateString()</td>
                                                     <td>@item.ConfirmedDate</td>

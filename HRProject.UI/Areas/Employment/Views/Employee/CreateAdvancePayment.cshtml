@@ -117,4 +117,117 @@
             return 'The entered amount exceeds the maximum amount of ' + maxAmountFormatted + '.';
         }
     </script>
+    <script>
+        var amountInput = document.getElementById('amount');
+
+        amountInput.addEventListener('input', checkAmount);
+
+        function checkAmount() {
+            var enteredAmount = parseFloat(amountInput.value);
+
+            if (enteredAmount < 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid amount. Please enter a positive number.'
+                });
+
+                createButton.disabled = true;
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
+    <script>
+        var createButton = document.getElementById('create-button');
+
+        createButton.addEventListener('click', checkFormCompletion);
+
+        function checkFormCompletion(event) {
+            var inputs = document.querySelectorAll('input');
+            var selects = document.querySelectorAll('select');
+
+            var isFormComplete = true;
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (!inputs[i].value) {
+                    isFormComplete = false;
+                    break;
+                }
+            }
+
+            for (var j = 0; j < selects.length; j++) {
+                if (!selects[j].value) {
+                    isFormComplete = false;
+                    break;
+                }
+            }
+
+            if (!isFormComplete) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the required fields.'
+                });
+            }
+        }
+    </script>
+    <script>
+        var amountInput = document.getElementById('amount');
+        var createButton = document.getElementById('create-button');
+
+        amountInput.addEventListener('input', checkAmountInput);
+
+        function checkAmountInput() {
+            var enteredValue = amountInput.value.trim();
+            var isNumeric = /^[0-9]+$/.test(enteredValue);
+
+            if (!isNumeric) {
+                createButton.disabled = true;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter a valid number for the amount.'
+                });
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
+    <script>
+        var requestDateInput = document.getElementById('request-date');
+
+        requestDateInput.addEventListener('change', checkRequestDate);
+
+        function checkRequestDate() {
+            var enteredDate = requestDateInput.value;
+            var enteredYear = parseInt(enteredDate.split('-')[0]);
+
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+
+            var minYear = 1900;
+
+            if (enteredYear < minYear || isNaN(enteredYear)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid date. Please select a valid date from 1900 onwards.'
+                });
+
+                createButton.disabled = true;
+            } else if (enteredYear > currentYear) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid date. Please do not select a future date.'
+                });
+
+                createButton.disabled = true;
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
 }
