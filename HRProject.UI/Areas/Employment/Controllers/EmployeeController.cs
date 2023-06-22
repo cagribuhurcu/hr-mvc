@@ -75,7 +75,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
             var currentUser = HttpContext.User.Identity as ClaimsIdentity;
             var loginIdClaim = currentUser.FindFirst("ID");
 
-            List<EmployeePermission> employeePermissions=new List<EmployeePermission>();
+            List<EmployeePermission> employeePermissions = new List<EmployeePermission>();
             using (var httpClient = new HttpClient())
             {
                 using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Permission/GetAllPermissionbyEmployeeId/{loginIdClaim.Value}"))
@@ -89,7 +89,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
 
         public static List<Permission> permissionNames;
         public static Employee updatedEmployee;
-        
+
         public static int employeeId;
 
         [HttpGet]
@@ -106,7 +106,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
                     permissionNames = JsonConvert.DeserializeObject<List<Permission>>(apiCevap);
                 }
             }
-           
+
             using (var httpClient = new HttpClient())
             {
                 using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Employee/GetEmployeeById/{loginIdClaim.Value}"))
@@ -126,6 +126,39 @@ namespace HRProject.UI.Areas.Employment.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePermissionforEmployee(EmployeePermission employeePermission)
         {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+
+            List<EmployeePermission> employeePermissions = new List<EmployeePermission>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Permission/GetAllPermissionbyEmployeeId/{loginIdClaim.Value}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    employeePermissions = JsonConvert.DeserializeObject<List<EmployeePermission>>(apiCevap);
+                }
+            }
+
+            if (employeePermissions.Any(a => a.PermissionState == Status.Pending))
+            {
+                ViewBag.message = "You already have a pending request. You must wait for it to be approved first. Or you can contact your company manager.";
+                ViewBag.PermissionName = permissionNames;
+                ViewBag.EmployeeId = loginIdClaim.Value;
+                ViewBag.Gender = updatedEmployee.Gender;
+                return View();
+            }
+            else if (employeePermissions.Any(a => a.PermissionState == Status.Confirmed))
+            {
+                var foundEmp = employeePermissions.Where(x => x.StartDate == employeePermission.StartDate && x.EndDate == employeePermission.EndDate).FirstOrDefault();
+                if (foundEmp != null)
+                {
+                    ViewBag.message = "You already have a request on the same date.";
+                    ViewBag.PermissionName = permissionNames;
+                    ViewBag.EmployeeId = loginIdClaim.Value;
+                    ViewBag.Gender = updatedEmployee.Gender;
+                    return View();
+                }
+            }
             if (employeePermission.PermissionId == 7)
             {
 
@@ -155,6 +188,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
                 }
             }
             return RedirectToAction("PermissionList");
+
         }
 
         public static EmployeePermission employeePermission1;
@@ -202,7 +236,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
             {
                 using (var response = await httpClient.DeleteAsync($"{baseURL}/api/Permission/DeletePermission/{id}"))
                 {
-                   
+
                 }
             }
             return RedirectToAction("PermissionList");

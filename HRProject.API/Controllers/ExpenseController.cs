@@ -33,5 +33,30 @@ namespace HRProject.API.Controllers
         {
             return Ok(service.GetAll());
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetExpenseRequestbyCompanyId(int id)
+        {
+            var expenses = service.GetAll(a => a.Employee).Where(a => a.Employee.CompanyId == id).ToList();
+            return Ok(expenses);
+        }
+        [HttpGet("{id}")]
+        public IActionResult ConfirmedExpense(int id)
+        {
+            var expenses = service.GetById(id);
+            expenses.ApprovalDate = DateTime.Now;
+            expenses.ApprovalStatus = Entities.Enums.Status.Confirmed;
+            service.Update(expenses);
+            return Ok(expenses);
+        }
+        [HttpGet("{id}")]
+        public IActionResult CancelledExpense(int id)
+        {
+            var expenses = service.GetById(id);
+            expenses.ApprovalDate = DateTime.Now;
+            expenses.ApprovalStatus = Entities.Enums.Status.Canceled;
+            service.Update(expenses);
+            return Ok(expenses);
+        }
     }
 }

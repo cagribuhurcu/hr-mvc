@@ -33,5 +33,30 @@ namespace HRProject.API.Controllers
         {
             return Ok(service.GetAll());
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetAdvancePaymentRequestbyCompanyId(int id)
+        {
+            var permissions = service.GetAll(a=> a.Employee).Where(a => a.Employee.CompanyId == id).ToList();
+            return Ok(permissions);
+        }
+        [HttpGet("{id}")]
+        public IActionResult ConfirmedAdvancePayment(int id)
+        {
+            var empAdvance = service.GetById(id);
+            empAdvance.ReplyDate = DateTime.Now;
+            empAdvance.ApprovalStatus = Entities.Enums.Status.Confirmed;
+            service.Update(empAdvance);
+            return Ok(empAdvance);
+        }
+        [HttpGet("{id}")]
+        public IActionResult CancelledAdvancePayment(int id)
+        {
+            var empAdvance = service.GetById(id);
+            empAdvance.ReplyDate = DateTime.Now;
+            empAdvance.ApprovalStatus = Entities.Enums.Status.Canceled;
+            service.Update(empAdvance);
+            return Ok(empAdvance);
+        }
     }
 }

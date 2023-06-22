@@ -1,6 +1,5 @@
-﻿
-@{
-    ViewData["Title"] = "GetPermissionRequest";
+﻿@{
+    ViewData["Title"] = "GetAdvancePayment";
     Layout = "~/Areas/CompanyManager/Views/Shared/_LayoutCompanyManager.cshtml";
 }
 
@@ -8,21 +7,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-@model List<EmployeePermission>
+@model List<AdvancePayment>
 
 
 <div class="col-lg-12">
     <div class="card mx-4">
         <div class="card-header">
             <div class="align-items-lg-end">
-                <strong class="card-title d-flex justify-content-center">Permission Request</strong>
+                <strong class="card-title d-flex justify-content-center">Advance Payment Request</strong>
             </div>
         </div>
         <div class="card-body">
             <div class="custom-tab">
                 <nav>
 
-                 
+
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <button type="button"
@@ -70,29 +69,29 @@
                                     <thead>
                                         <tr>
                                             <th>Employee Fullname</th>
-                                            <th>Permission Name</th>
-                                            <th>Required Date</th>
-                                            <th>Start Day of Permission Request</th>
-                                            <th>End Day of Permission Request</th>
+                                            <th>Advance Name</th>
+                                            <th>Request Date</th>
+                                            <th>Currency</th>
+                                            <th>Amount</th>
                                             <th>Operation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        @foreach (EmployeePermission item in Model)
+                                        @foreach (AdvancePayment item in Model)
                                         {
-                                            if (item.PermissionState == Status.Pending)
+                                            if (item.ApprovalStatus == Status.Pending)
                                             {
                                                 <tr>
                                                     <td>@item.Employee.FirstName @item.Employee.LastName</td>
-                                                    <td>@item.Permission.PermissionName</td>
-                                                    <td>@item.RequiredDate</td>
-                                                    <td>@item.StartDate.Value.ToShortDateString()</td>
-                                                    <td>@item.EndDate.Value.ToShortDateString()</td>
+                                                    <td>@item.AdvancePaymentType.Value</td>
+                                                    <td>@item.RequestDate</td>
+                                                    <td>@item.Currency</td>
+                                                    <td>@item.Amount</td>
                                                     <td>
-                                                        
-                                                        <a asp-area="CompanyManager" asp-controller="Permission" asp-action="ConfirmedPermission" asp-route-id="@item.ID" class="btn btn-sm btn-success">Confirmed</a>
-                                                        <a asp-area="CompanyManager" asp-controller="Permission" asp-action="CancelledPermission" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Cancelled</a>
+
+                                                        <a asp-area="CompanyManager" asp-controller="AdvancePayment" asp-action="ConfirmedAdvancePayment" asp-route-id="@item.ID" class="btn btn-sm btn-success">Confirmed</a>
+                                                        <a asp-area="CompanyManager" asp-controller="AdvancePayment" asp-action="CancelledAdvancePayment" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Cancelled</a>
 
                                                     </td>
                                                 </tr>
@@ -114,24 +113,24 @@
                                     <thead>
                                         <tr>
                                             <th>Employee Fullname</th>
-                                            <th>Permission Name</th>
-                                            <th>Required Date</th>
-                                            <th>Start day of permission request</th>
-                                            <th>End day of permission request</th>
-                                            
+                                            <th>Advance Name</th>
+                                            <th>Request Date</th>
+                                            <th>Currency</th>
+                                            <th>Amount</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (EmployeePermission item in Model)
+                                        @foreach (AdvancePayment item in Model)
                                         {
-                                            if (item.PermissionState == Status.Confirmed)
+                                            if (item.ApprovalStatus == Status.Confirmed)
                                             {
                                                 <tr>
                                                     <td>@item.Employee.FirstName @item.Employee.LastName</td>
-                                                    <td>@item.Permission.PermissionName</td>
-                                                    <td>@item.RequiredDate</td>
-                                                    <td>@item.StartDate.Value.ToShortDateString()</td>
-                                                    <td>@item.EndDate.Value.ToShortDateString()</td>
+                                                    <td>@item.AdvancePaymentType.Value</td>
+                                                    <td>@item.RequestDate</td>
+                                                    <td>@item.Currency</td>
+                                                    <td>@item.Amount</td>
                                                 </tr>
                                             }
                                         }
@@ -153,25 +152,27 @@
                                     <thead>
                                         <tr>
                                             <th>Employee Fullname</th>
-                                            <th>Permission Name</th>
-                                            <th>Required Date</th>
-                                            <th>Start day of permission request</th>
-                                            <th>End day of permission request</th>
+                                            <th>Advance Name</th>
+                                            <th>Request Date</th>
+                                            <th>Currency</th>
+                                            <th>Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (EmployeePermission item in Model)
+
+                                        @foreach (AdvancePayment item in Model)
                                         {
-                                            if (item.PermissionState == Status.Canceled)
+                                            if (item.ApprovalStatus == Status.Canceled)
                                             {
                                                 <tr>
                                                     <td>@item.Employee.FirstName @item.Employee.LastName</td>
-                                                    <td>@item.Permission.PermissionName</td>
-                                                    <td>@item.RequiredDate</td>
-                                                    <td>@item.StartDate.Value.ToShortDateString()</td>
-                                                    <td>@item.EndDate.Value.ToShortDateString()</td>
+                                                    <td>@item.AdvancePaymentType.Value</td>
+                                                    <td>@item.RequestDate</td>
+                                                    <td>@item.Currency</td>
+                                                    <td>@item.Amount</td>
                                                 </tr>
                                             }
+
                                         }
 
                                     </tbody>
@@ -185,6 +186,3 @@
         </div>
     </div>
 </div>
-
-
-

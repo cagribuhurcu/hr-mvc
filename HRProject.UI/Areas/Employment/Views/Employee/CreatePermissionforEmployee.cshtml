@@ -38,7 +38,7 @@
                                 continue;
                             }
 
-                            <option value="@permission.ID" data-max-days="@permission.MaxPermissionDay">@permission.PermissionName</option>
+                            <option value="@permission.ID" data-max-days="@permission.MaxPermissionDay">@permission.PermissionName.GetDisplayName()</option>
                         }
                     </select>
                 </div>
