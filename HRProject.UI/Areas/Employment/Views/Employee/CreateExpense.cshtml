@@ -22,7 +22,7 @@
                 <input asp-for="EmployeeID" type="hidden" value="@ViewBag.EmployeeId" />
                 <div class="mb-3 col-md-6">
                     <label asp-for="ExpenseType" class="form-label">Expense Type</label>
-                    <select asp-for="ExpenseType" class="form-control" id="html5-number-input">
+                    <select asp-for="ExpenseType" class="form-control" id="expense-type">
                         <option value="">Select Expense Type</option>
                         @foreach (var types in Enum.GetValues(typeof(ExpenseType)))
                         {
@@ -37,7 +37,7 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label asp-for="Currency" class="form-label">Currency</label>
-                    <select asp-for="Currency" class="form-control" id="html5-number-input">
+                    <select asp-for="Currency" class="form-control" id="currency">
                         <option value="">Select Currency</option>
                         @foreach (var currency in Enum.GetValues(typeof(Currency)))
                         {
@@ -46,7 +46,7 @@
                         }
                     </select>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-md-6">
                     <label asp-for="FileURL" for="formFile" class="form-label">PDF File</label>
                     <input asp-for="FileURL" class="form-control" name="files" type="file" id="formFile" />
                 </div>
@@ -63,3 +63,183 @@
         <!-- /Account -->
     </div>
 </form>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        var amountInput = document.getElementById('amount');
+        var currencySelect = document.getElementById('currency');
+        var createButton = document.getElementById('create-button');
+        var expenseTypeSelect = document.getElementById('expense-type');
+
+        amountInput.addEventListener('input', checkAmountRestrictions);
+        currencySelect.addEventListener('change', checkAmountRestrictions);
+        expenseTypeSelect.addEventListener('change', checkAmountRestrictions);
+
+        function checkAmountRestrictions() {
+            var selectedExpenseTypeOption = expenseTypeSelect.options[expenseTypeSelect.selectedIndex];
+            var selectedExpenseType = selectedExpenseTypeOption.value;
+            var maxAmount = 0;
+
+            switch (selectedExpenseType) {
+                case 'FoodExpense':
+                    maxAmount = 500;
+                    break;
+                case 'TravelExpense':
+                    maxAmount = 2000;
+                    break;
+                case 'VehicleExpense':
+                    maxAmount = 1000;
+                    break;
+                case 'CommunicationExpense':
+                    maxAmount = 1000;
+                    break;
+                case 'ClothingExpense':
+                    maxAmount = 1000;
+                    break;
+                default:
+                    maxAmount = 0;
+                    break;
+            }
+
+            var enteredAmount = parseFloat(amountInput.value);
+            var selectedCurrency = currencySelect.value;
+            var maxAmountFormatted = '';
+
+            if (selectedCurrency === 'Dolar') {
+                maxAmountFormatted = (maxAmount / 24).toFixed(2) + ' Dolars';
+                maxAmount = maxAmount / 24;
+            } else if (selectedCurrency === 'Euro') {
+                maxAmountFormatted = (maxAmount / 26).toFixed(2) + ' Euros';
+                maxAmount = maxAmount / 26;
+            } else {
+                maxAmountFormatted = maxAmount + ' Turkish Liras';
+            }
+
+            var amountExceedsMax = enteredAmount > maxAmount;
+
+            createButton.disabled = amountExceedsMax;
+
+            if (amountExceedsMax) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The entered amount exceeds the maximum amount of ' + maxAmountFormatted + '.'
+                });
+            }
+        }
+    </script>
+    <script>
+        var requestDateInput = document.getElementById('request-date');
+
+        requestDateInput.addEventListener('change', checkRequestDate);
+
+        function checkRequestDate() {
+            var enteredDate = requestDateInput.value;
+            var enteredYear = parseInt(enteredDate.split('-')[0]);
+
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+
+            var minYear = 1900;
+
+            if (enteredYear < minYear || isNaN(enteredYear)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid date. Please select a valid date from 1900 onwards.'
+                });
+
+                createButton.disabled = true;
+            } else if (enteredYear > currentYear) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid date. Please do not select a future date.'
+                });
+
+                createButton.disabled = true;
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
+    <script>
+        var fileInput = document.getElementById('formFile');
+
+        fileInput.addEventListener('change', checkFileFormat);
+
+        function checkFileFormat() {
+            var file = fileInput.files[0];
+            var allowedExtensions = /(\.pdf)$/i;
+
+            if (!allowedExtensions.exec(file.name)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid file format. Please select a PDF file.'
+                });
+
+                createButton.disabled = true;
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
+    <script>
+        var amountInput = document.getElementById('amount');
+
+        amountInput.addEventListener('input', checkAmount);
+
+        function checkAmount() {
+            var enteredAmount = parseFloat(amountInput.value);
+
+            if (enteredAmount < 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid amount. Please enter a positive number.'
+                });
+
+                createButton.disabled = true;
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
+    <script>
+        var createButton = document.getElementById('create-button');
+
+        createButton.addEventListener('click', checkFormCompletion);
+
+        function checkFormCompletion(event) {
+            var inputs = document.querySelectorAll('input');
+            var selects = document.querySelectorAll('select');
+
+            var isFormComplete = true;
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (!inputs[i].value) {
+                    isFormComplete = false;
+                    break;
+                }
+            }
+
+            for (var j = 0; j < selects.length; j++) {
+                if (!selects[j].value) {
+                    isFormComplete = false;
+                    break;
+                }
+            }
+
+            if (!isFormComplete) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the required fields.'
+                });
+            }
+        }
+    </script>
+}
