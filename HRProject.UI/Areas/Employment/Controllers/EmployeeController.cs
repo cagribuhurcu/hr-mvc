@@ -149,7 +149,12 @@ namespace HRProject.UI.Areas.Employment.Controllers
             }
             else if (employeePermissions.Any(a => a.PermissionState == Status.Confirmed))
             {
-                var foundEmp = employeePermissions.Where(x => x.StartDate == employeePermission.StartDate && x.EndDate == employeePermission.EndDate).FirstOrDefault();
+                var foundEmp = employeePermissions.FirstOrDefault(x =>
+                                            (x.StartDate == employeePermission.StartDate && x.EndDate == employeePermission.EndDate) ||
+                                            (x.StartDate == employeePermission.StartDate && x.EndDate != employeePermission.EndDate) ||
+                                            (x.StartDate != employeePermission.StartDate && x.EndDate == employeePermission.EndDate) ||
+                                            (x.StartDate != employeePermission.StartDate && x.EndDate != employeePermission.EndDate)
+                                                    );
                 if (foundEmp != null)
                 {
                     ViewBag.message = "You already have a request on the same date.";
@@ -161,10 +166,19 @@ namespace HRProject.UI.Areas.Employment.Controllers
             }
             if (employeePermission.PermissionId == 7)
             {
+                DateTime startDate = employeePermission.StartDate.Value;
+                DateTime endDate = employeePermission.EndDate.Value;
+                int differenceInDays = (int)(endDate - startDate).TotalDays;
+                updatedEmployee.AnnualDay -= differenceInDays;
 
-                int diff = (employeePermission.EndDate.Value.Day - employeePermission.StartDate.Value.Day);
-                updatedEmployee.AnnualDay -= diff;
-
+                if (updatedEmployee.AnnualDay < 0)
+                {
+                    ViewBag.message = "Çalış biraz çok gezdin";
+                    ViewBag.PermissionName = permissionNames;
+                    ViewBag.EmployeeId = loginIdClaim.Value;
+                    ViewBag.Gender = updatedEmployee.Gender;
+                    return View();
+                }
                 using (var httpClient = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(updatedEmployee), Encoding.UTF8, "application/json");
@@ -216,8 +230,10 @@ namespace HRProject.UI.Areas.Employment.Controllers
                         updatedEmployee = JsonConvert.DeserializeObject<List<Employee>>(apiCevap)[0];
                     }
                 }
-                int diff = (employeePermission1.EndDate.Value.Day - employeePermission1.StartDate.Value.Day);
-                updatedEmployee.AnnualDay += diff;
+                DateTime startDate = employeePermission1.StartDate.Value;
+                DateTime endDate = employeePermission1.EndDate.Value;
+                int differenceInDays = (int)(endDate - startDate).TotalDays;
+                updatedEmployee.AnnualDay += differenceInDays;
 
                 using (var httpClient = new HttpClient())
                 {
@@ -276,6 +292,36 @@ namespace HRProject.UI.Areas.Employment.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAdvancePayment(AdvancePayment advancePayment)
         {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+
+            List<AdvancePayment> advancePayments = new List<AdvancePayment>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/AdvancePayment/GetAllAdvancePaymentbyEmployeeId/{loginIdClaim.Value}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    advancePayments = JsonConvert.DeserializeObject<List<AdvancePayment>>(apiCevap);
+                }
+            }
+
+            if (advancePayments.Any(a => a.ApprovalStatus == Status.Pending))
+            {
+                ViewBag.message = "You already have a pending request. You must wait for it to be approved first. Or you can contact your company manager.";
+                ViewBag.EmployeeId = loginIdClaim.Value;
+                return View();
+            }
+            else if (advancePayments.Any(a => a.ApprovalStatus == Status.Confirmed))
+            {
+                var foundEmp = advancePayments.Where(x => x.RequestDate == advancePayment.RequestDate).FirstOrDefault();
+                if (foundEmp != null)
+                {
+                    ViewBag.message = "You already have a request on the same date.";
+                    ViewBag.EmployeeId = loginIdClaim.Value;
+                    return View();
+                }
+            }
+
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(advancePayment), Encoding.UTF8, "application/json");
@@ -322,7 +368,36 @@ namespace HRProject.UI.Areas.Employment.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateExpense(Expense expense, List<IFormFile> files)
         {
-            Expense expence = new Expense();
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            var loginIdClaim = currentUser.FindFirst("ID");
+
+            List<Expense> expenses = new List<Expense>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Expense/GetAllExpensebyEmployeeId/{loginIdClaim.Value}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    expenses = JsonConvert.DeserializeObject<List<Expense>>(apiCevap);
+                }
+            }
+
+            if (expenses.Any(a => a.ApprovalStatus == Status.Pending))
+            {
+                ViewBag.message = "You already have a pending request. You must wait for it to be approved first. Or you can contact your company manager.";
+                ViewBag.EmployeeId = loginIdClaim.Value;
+                return View();
+            }
+            else if (expenses.Any(a => a.ApprovalStatus == Status.Confirmed))
+            {
+                var foundEmp = expenses.Where(x => x.RequestDate == expense.RequestDate).FirstOrDefault();
+                if (foundEmp != null)
+                {
+                    ViewBag.message = "You already have a request on the same date.";
+                    ViewBag.EmployeeId = loginIdClaim.Value;
+                    return View();
+                }
+            }
+
 
             if (files.Count == 0)
             {
@@ -335,7 +410,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
 
                 if (filesult)
                 {
-                    expence.FileURL = returnedMessaage;
+                    expense.FileURL = returnedMessaage;
                 }
                 else
                 {

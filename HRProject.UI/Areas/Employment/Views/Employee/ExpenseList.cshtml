@@ -70,6 +70,7 @@
                                             <th>Expense State</th>
                                             <th>Amount</th>
                                             <th>Currency</th>
+                                            <th>Attachment</th>
                                             <th>Operation</th>
                                         </tr>
                                     </thead>
@@ -83,6 +84,9 @@
                                                     <td><span class="badge bg-warning">@item.ApprovalStatus</span></td>
                                                     <td>@item.Amount</td>
                                                     <td>@item.Currency</td>
+                                                    <td>
+                                                        <a target="_blank" href="@item.FileURL"><i class='bx bxs-file-pdf'></i></a>
+                                                    </td>
                                                     <td>
                                                         <a asp-action="DeleteExpense" asp-controller="Employee" asp-area="Employment" asp-route-id="@item.ID" class="btn btn-danger"><i class="bx bx-edit-alt me-1"></i>Delete</a>
                                                     </td>
@@ -108,6 +112,7 @@
                                             <th>Expense State</th>
                                             <th>Amount</th>
                                             <th>Currency</th>
+                                            <th>Attachment</th>
                                             <th>Confirmed Date</th>
                                         </tr>
                                     </thead>
@@ -121,6 +126,9 @@
                                                     <td><span class="badge bg-success">@item.ApprovalStatus</span></td>
                                                     <td>@item.Amount</td>
                                                     <td>@item.Currency</td>
+                                                    <td>
+                                                        <a target="_blank" href="@item.FileURL"><i class='bx bxs-file-pdf'></i></a>
+                                                    </td>
                                                     <td>@item.ApprovalDate</td>
                                                 </tr>
                                             }
@@ -146,6 +154,7 @@
                                             <th>Expense State</th>
                                             <th>Amount</th>
                                             <th>Currency</th>
+                                            <th>Attachment</th>
                                             <th>Confirmed Date</th>
                                         </tr>
                                     </thead>
@@ -159,6 +168,9 @@
                                                     <td><span class="badge bg-danger">@item.ApprovalStatus</span></td>
                                                     <td>@item.Amount</td>
                                                     <td>@item.Currency</td>
+                                                    <td>
+                                                        <a target="_blank" href="@item.FileURL"><i class='bx bxs-file-pdf'></i></a>
+                                                    </td>
                                                     <td>@item.ApprovalDate</td>
                                                 </tr>
                                             }

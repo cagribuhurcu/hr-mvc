@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 
 namespace HRProject.UI.Areas.CompanyManager.Controllers
 {
@@ -66,6 +67,43 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
         [HttpGet]
         public async Task<IActionResult> CancelledPermission(int id)
         {
+            EmployeePermission employeePermissions = new EmployeePermission();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Permission/GetEmployeePermissionbyId/{id}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    employeePermissions = JsonConvert.DeserializeObject<EmployeePermission>(apiCevap);
+                }
+            }
+
+            Employee employee = new Employee();
+            using (var httpClient = new HttpClient())
+            {
+                using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Employee/GetEmployeebyId/{employeePermissions.EmployeeId}"))
+                {
+                    string apiCevap = await cevap.Content.ReadAsStringAsync();
+                    employee = JsonConvert.DeserializeObject<List<Employee>>(apiCevap)[0];
+                }
+            }
+
+            DateTime startDate = employeePermissions.StartDate.Value;
+            DateTime endDate = employeePermissions.EndDate.Value;
+            int differenceInDays = (int)(endDate - startDate).TotalDays;
+            employee.AnnualDay += differenceInDays;
+
+            using (var httpClient = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(employee), Encoding.UTF8, "application/json");
+
+                using (var response = await httpClient.PutAsync($"{baseURL}/api/Employee/UpdateAnnualDay/{employee.ID}", content))
+                {
+                    {
+                        string apiCevap = await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+
             using (var httpClient = new HttpClient())
             {
                 using (var cevap = await httpClient.GetAsync($"{baseURL}/api/Permission/CancelledPermission/{id}"))

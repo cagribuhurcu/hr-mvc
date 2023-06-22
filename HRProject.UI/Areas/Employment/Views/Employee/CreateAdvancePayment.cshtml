@@ -8,10 +8,10 @@
     <div class="card my-4 mx-4">
         <h5 class="card-header">Create Advance Payment</h5>
 
-        @if (!ViewData.ModelState.IsValid)
+        @if (ViewBag.message != null)
         {
-            <div class="alert alert-danger alert-dismissible" role="alert" asp-validation-summary="All">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert alert-danger alert-dismissible">
+                <p>@ViewBag.message</p>
             </div>
         }
 
