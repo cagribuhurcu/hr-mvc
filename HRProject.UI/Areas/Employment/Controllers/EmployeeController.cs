@@ -152,8 +152,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
                 var foundEmp = employeePermissions.FirstOrDefault(x =>
                                             (x.StartDate == employeePermission.StartDate && x.EndDate == employeePermission.EndDate) ||
                                             (x.StartDate == employeePermission.StartDate && x.EndDate != employeePermission.EndDate) ||
-                                            (x.StartDate != employeePermission.StartDate && x.EndDate == employeePermission.EndDate) ||
-                                            (x.StartDate != employeePermission.StartDate && x.EndDate != employeePermission.EndDate)
+                                            (x.StartDate != employeePermission.StartDate && x.EndDate == employeePermission.EndDate) 
                                                     );
                 if (foundEmp != null)
                 {
