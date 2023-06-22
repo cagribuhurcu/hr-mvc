@@ -96,4 +96,27 @@
             }
         }
     </script>
+    <script>
+        var startDateInput = document.getElementById('start-date-input');
+        var createButton = document.getElementById('create-button');
+
+        startDateInput.addEventListener('change', checkStartDate);
+
+        function checkStartDate() {
+            var enteredDate = new Date(startDateInput.value);
+            var currentDate = new Date();
+
+            if (enteredDate < currentDate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid start date. Please select a date from today onwards.'
+                });
+
+                createButton.disabled = true;
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
 }

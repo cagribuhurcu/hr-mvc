@@ -242,4 +242,26 @@
             }
         }
     </script>
+    <script>
+        var amountInput = document.getElementById('amount');
+        var createButton = document.getElementById('create-button');
+
+        amountInput.addEventListener('input', checkAmountInput);
+
+        function checkAmountInput() {
+            var enteredValue = amountInput.value.trim();
+            var isNumeric = /^[0-9]+$/.test(enteredValue);
+
+            if (!isNumeric) {
+                createButton.disabled = true;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter a valid number for the amount.'
+                });
+            } else {
+                createButton.disabled = false;
+            }
+        }
+    </script>
 }
