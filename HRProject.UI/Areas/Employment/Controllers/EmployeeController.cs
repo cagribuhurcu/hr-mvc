@@ -262,7 +262,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> DeleteAdvancePayment(int id)
         { 
             using (var httpClient = new HttpClient())
