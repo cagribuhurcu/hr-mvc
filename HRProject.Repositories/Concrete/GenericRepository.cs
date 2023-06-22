@@ -101,7 +101,7 @@ namespace HRProject.Repositories.Concrete
                     T item = GetById(id);
                     
                     scope.Complete();
-                    return Update(item);
+                    return Remove(item);
                 }
 
 

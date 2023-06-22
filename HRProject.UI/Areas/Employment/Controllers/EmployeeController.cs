@@ -262,6 +262,33 @@ namespace HRProject.UI.Areas.Employment.Controllers
 
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAdvancePayment(int id)
+        { 
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync($"{baseURL}/api/AdvancePayment/DeleteAdvancePayment/{id}"))
+                {
+                    string apiCevap = await response.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("AdvancePaymentList");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteExpense(int id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync($"{baseURL}/api/Expense/DeleteExpense/{id}"))
+                {
+
+                }
+            }
+            return RedirectToAction("ExpenseList");
+
+        }
+
         ////////////////////////////////////////
 
         [HttpGet]

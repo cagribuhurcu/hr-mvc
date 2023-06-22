@@ -58,5 +58,13 @@ namespace HRProject.API.Controllers
             service.Update(expenses);
             return Ok(expenses);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteExpense(int id)
+        {
+            var expenses = service.GetById(id);
+            service.Remove(expenses);
+            return Ok(expenses);
+        }
     }
 }
