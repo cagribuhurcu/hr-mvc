@@ -22,7 +22,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
-        string baseURL = "https://localhost:7127";
+        string baseURL = "https://hrprojectapi20230623002753.azurewebsites.net";
 
         public SiteManagementController(IMapper mapper, IWebHostEnvironment environment)
         {

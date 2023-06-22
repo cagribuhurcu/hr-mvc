@@ -12,7 +12,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
     [Area("CompanyManager"), Authorize(Roles = "CompanyManager")]
     public class AdvancePaymentController : Controller
     {
-        string baseURL = "https://localhost:7127";
+        string baseURL = "https://hrprojectapi20230623002753.azurewebsites.net";
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
 

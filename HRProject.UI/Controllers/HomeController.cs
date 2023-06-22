@@ -18,7 +18,7 @@ namespace HRProject.UI.Controllers
     public class HomeController : Controller
     {
 
-        string baseURL = "https://localhost:7127";
+        string baseURL = "https://hrprojectapi20230623002753.azurewebsites.net";
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
