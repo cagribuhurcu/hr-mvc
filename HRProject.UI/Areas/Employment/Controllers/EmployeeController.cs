@@ -269,7 +269,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
             {
                 using (var response = await httpClient.DeleteAsync($"{baseURL}/api/AdvancePayment/DeleteAdvancePayment/{id}"))
                 {
-                    string apiCevap = await response.Content.ReadAsStringAsync();
+                    
                 }
             }
             return RedirectToAction("AdvancePaymentList");

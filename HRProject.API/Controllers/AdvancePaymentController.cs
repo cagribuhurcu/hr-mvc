@@ -61,8 +61,10 @@ namespace HRProject.API.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult DeleteAdvancePayment(int id)
-        {            
-            return Ok(service.Remove(id));
+        {
+            var empAdvance = service.GetById(id);
+            service.Remove(empAdvance);
+            return Ok(empAdvance);
         }
     }
 }
