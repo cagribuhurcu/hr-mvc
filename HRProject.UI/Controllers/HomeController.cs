@@ -18,7 +18,7 @@ namespace HRProject.UI.Controllers
     public class HomeController : Controller
     {
 
-        string baseURL = "https://hrprojectapi20230623002753.azurewebsites.net";
+        string baseURL = "https://localhost:7127";
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -188,8 +188,6 @@ namespace HRProject.UI.Controllers
                             }
                         }
                     }
-                    
-                    TempData["mssg"] = "Your password was changed correctly! Please, login again with your new password";
                     return RedirectToAction("Logout");
                 }
                 else

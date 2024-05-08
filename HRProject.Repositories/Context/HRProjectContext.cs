@@ -20,7 +20,7 @@ namespace HRProject.Repositories.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=tcp:ikkaynak2.database.windows.net,1433;Initial Catalog=Database;Persist Security Info=False;User ID=ikkaynak;Password=admin123.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-OEIFO1O\\CAGRISERVER; Database=GalaxyHrProject; Uid=sa; Pwd=1234;");
         }
 
         //DBSetler bu kısımın altında olacak

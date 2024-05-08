@@ -17,7 +17,7 @@ namespace HRProject.UI.Areas.Employment.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
-        string baseURL = "https://hrprojectapi20230623002753.azurewebsites.net";
+        string baseURL = "https://localhost:7127";
 
         public EmployeeController(IMapper mapper, IWebHostEnvironment environment)
         {
@@ -115,7 +115,6 @@ namespace HRProject.UI.Areas.Employment.Controllers
                     updatedEmployee = JsonConvert.DeserializeObject<List<Employee>>(apiCevap)[0];
                 }
             }
-
             ViewBag.PermissionName = permissionNames;
             ViewBag.EmployeeId = loginIdClaim.Value;
             ViewBag.Gender = updatedEmployee.Gender;

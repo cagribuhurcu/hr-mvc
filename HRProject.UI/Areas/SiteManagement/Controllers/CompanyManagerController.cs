@@ -18,7 +18,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
     [Area("SiteManagement"), Authorize(Roles = "SiteManager")]
     public class CompanyManagerController : Controller
     {
-        string baseURL = "https://hrprojectapi20230623002753.azurewebsites.net";
+        string baseURL = "https://localhost:7127";
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
 
@@ -185,7 +185,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
                 }
             }
             string subject = "Hesap Oluşturuldu";
-            string body = $"Hello {companyManager.FirstName}, we are very happy that you have joined us. We hope you have a lot of fun in our Galaxy application. We have created an email address and password for you. You can log in with this data by clicking the link below. Have fun. Have fun.\n\nYour Email Address : {companyManager.EmailAddress}\nYour Password : {companyManager.Password} \n\n Login Link : https://galaxyhrsystem.azurewebsites.net ";
+            string body = $"Hello {companyManager.FirstName}, we are very happy that you have joined us. We hope you have a lot of fun in our Galaxy application. We have created an email address and password for you. Have fun.<br><b>Your Email Address :</b> {companyManager.EmailAddress}<br><b>Your Password :</b> {companyManager.Password} ";
 
             using (MailMessage mail = new MailMessage())
             {
@@ -206,7 +206,7 @@ namespace HRProject.UI.Areas.SiteManagement.Controllers
             }
 
             TempData["mssg"] = "Add successful!";
-            return RedirectToAction("Index","SiteManagement");
+            return RedirectToAction("Index","CompanyManager");
         }
 
 

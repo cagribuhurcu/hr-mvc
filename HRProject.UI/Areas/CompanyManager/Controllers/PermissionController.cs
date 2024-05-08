@@ -13,7 +13,7 @@ namespace HRProject.UI.Areas.CompanyManager.Controllers
     [Area("CompanyManager"), Authorize(Roles = "CompanyManager")]
     public class PermissionController : Controller
     {
-        string baseURL = "https://hrprojectapi20230623002753.azurewebsites.net";
+        string baseURL = "https://localhost:7127";
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment environment;
 
